@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.time.LocalDate;
 import java.util.Scanner;
-import java.util.Collection;
+// import java.util.Collection;
 import domain.Ausleihe;
 import domain.Buch;
 import domain.Benutzer;
@@ -102,16 +102,17 @@ public class Bibliothek {
     }
 
     public void bibliothekarHinzufuegenMitInput() {
-        Scanner scanner = new Scanner(System.in);
-        System.out.println("Bitte geben Sie den Namen des neuen Bibliothekars ein:");
-        String name = scanner.nextLine();
-        System.out.println("Bitte geben Sie die E-Mail-Adresse des neuen Bibliothekars ein:");
-        String email = scanner.nextLine();
+        try (Scanner scanner = new Scanner(System.in)) {
+            System.out.println("Bitte geben Sie den Namen des neuen Bibliothekars ein:");
+            String name = scanner.nextLine();
+            System.out.println("Bitte geben Sie die E-Mail-Adresse des neuen Bibliothekars ein:");
+            String email = scanner.nextLine();
 
-        Mitarbeiter bibliothekar = new Mitarbeiter(name, email);
-        
-        this.bibliothekare.add(bibliothekar);
-        System.out.println("Neuer Bibliothekar erfolgreich hinzugefügt.");
+            Mitarbeiter bibliothekar = new Mitarbeiter(name, email);
+            
+            this.bibliothekare.add(bibliothekar);
+            System.out.println("Neuer Bibliothekar erfolgreich hinzugefügt.");
+        }
     }
 
     public List<Benutzer> getBenutzerListe() {

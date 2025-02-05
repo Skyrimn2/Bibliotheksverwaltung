@@ -1,13 +1,13 @@
 package application;
 
 import java.util.List;
-import java.time.LocalDateTime;
-import java.time.LocalDate;
+// import java.time.LocalDateTime;
+// import java.time.LocalDate;
 import java.util.Scanner;
 
 import domain.*;
 import plugins.*;
-import application.*;
+// import application.*;
 // import adapters.*;
 // import domain.Bewertung;
 
@@ -15,12 +15,16 @@ import application.*;
 
 public class Bibliotheksverwaltung {
         private final BenutzerAuthentifizierung authentifizierung;
+        private List<Bewertung> bewertungen;
+
+        public List<Bewertung> getBewertungen() {
+            return bewertungen;
+        }
 
     public Bibliotheksverwaltung(BenutzerAuthentifizierung authentifizierung) {
         this.authentifizierung = authentifizierung;
     }
 
-    private List<Bewertung> bewertungen;
     private BewertungManager bewertungManager;
     
     public Bibliotheksverwaltung(BenutzerAuthentifizierung authentifizierung, List<Bewertung> bewertungen) {
@@ -51,11 +55,11 @@ public class Bibliotheksverwaltung {
         }
 
 
-        Bibliothek bibliothek = new Bibliothek();
+        // Bibliothek bibliothek = new Bibliothek();
 
-        Scanner scanner = new Scanner(System.in);
+        // Scanner scanner = new Scanner(System.in);
 
-        Benutzer benutzer1 = new Benutzer("Max Mustermann", "abc", 123456, null);
+        // Benutzer benutzer1 = new Benutzer("Max Mustermann", "abc", 123456, null);
         
     }
 
