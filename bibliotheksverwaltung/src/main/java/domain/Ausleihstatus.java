@@ -1,5 +1,5 @@
 package domain;
 public enum Ausleihstatus {
     Ausgeliehen,
-    Zurückgegeben
+    Zurückgegeben, verfuegbar
 }

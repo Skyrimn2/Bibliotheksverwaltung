@@ -3,25 +3,26 @@ package domain;
 import java.time.LocalDate;
 
 public class Mitgliedschaft {
-    private LocalDate beginnDatum;
+    private Benutzer benutzer;
+    private LocalDate startDatum;
     private LocalDate endDatum;
 
-    public Mitgliedschaft(LocalDate beginnDatum, LocalDate endDatum) {
-        this.beginnDatum = beginnDatum;
+    public Mitgliedschaft(LocalDate startDatum, LocalDate endDatum) {
+        this.startDatum = startDatum;
         this.endDatum = endDatum;
     }
     
 
-    public LocalDate getBeginnDatum() {
-        return this.beginnDatum;
+    public LocalDate getstartDatum() {
+        return this.startDatum;
     }
 
     public LocalDate getEndDatum() {
         return this.endDatum;
     }
 
-    public void setBeginnDatum(LocalDate beginnDatum) {
-        this.beginnDatum = beginnDatum;
+    public void setstartDatum(LocalDate startDatum) {
+        this.startDatum = startDatum;
     }
 
     public void setEndDatum(LocalDate endDatum) {

@@ -44,4 +44,14 @@ public class FakeDB implements BuchDBHandler{
             // logik für die verfügbaren Bücher
             .collect(Collectors.toList());
     }
+
+    public Buch getBuchById(int id) {
+        List<Buch> alleBuecher = ladeAlleBuecher();
+        for (Buch buch : alleBuecher) {
+            if (buch.getId() == id) {
+                return buch;
+            }
+        }
+        return null;
+    }
 }

@@ -4,15 +4,15 @@ import java.time.LocalDateTime;
 
 public class Ereignis {
     private String name;
-    private LocalDateTime zeitpunkt;
-    private String raum;
+    private LocalDateTime datum;
+    private String ort;
     private Bibliotheksstandort bibliotheksstandort;
     private String beschreibung;
     
-    public Ereignis(String name, LocalDateTime zeitpunkt, String raum, String beschreibung, Bibliotheksstandort bibliotheksstandort) {
+    public Ereignis(String name, LocalDateTime datum, String ort, String beschreibung, Bibliotheksstandort bibliotheksstandort) {
         this.name = name;
-        this.zeitpunkt = zeitpunkt;
-        this.raum = raum;
+        this.datum = datum;
+        this.ort = ort;
         this.beschreibung = beschreibung;
         this.bibliotheksstandort = bibliotheksstandort;
     }
@@ -21,12 +21,12 @@ public class Ereignis {
         return this.name;
     }
 
-    public LocalDateTime getZeitpunkt() {
-        return this.zeitpunkt;
+    public LocalDateTime getdatum() {
+        return this.datum;
     }
 
-    public String getRaum() {
-        return this.raum;
+    public String getort() {
+        return this.ort;
     }
 
     public String getBeschreibung() {
@@ -37,12 +37,12 @@ public class Ereignis {
         this.name = name;
     }
 
-    public void setZeitpunkt(LocalDateTime zeitpunkt) {
-        this.zeitpunkt = zeitpunkt;
+    public void setdatum(LocalDateTime datum) {
+        this.datum = datum;
     }
 
-    public void setRaum(String raum) {
-        this.raum = raum;
+    public void setort(String ort) {
+        this.ort = ort;
     }
 
     public void setBeschreibung(String beschreibung) {
