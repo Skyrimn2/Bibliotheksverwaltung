@@ -67,17 +67,20 @@ public class Bibliotheksverwaltung {
         Scanner scanner = new Scanner(System.in);
         int auswahl;
         do {
-            System.out.println("Willkommen zur Bibliotheksverwaltung!");
+            System.out.println("*********************************************");
+            System.out.println("|   Willkommen zur Bibliotheksverwaltung!   |");
+            System.out.println("*********************************************");
+
             System.out.println("Bitte wählen Sie eine Aktion aus:");
-            System.out.println("1. Alle Buecher anzeigen");
-            System.out.println("2. Benutzer registrieren");
-            System.out.println("3. Verfügbare Bücher anzeigen");
-            // System.out.println("4. Buch ausleihen");
-            // System.out.println("5. Buch zurückgeben");
-            // System.out.println("6. Bibliotheksstandort hinzufügen");
-            // System.out.println("7. Bibliothekar erstellen");
-            // System.out.println("8. Mitgliedschaft erstellen");
-            // System.out.println("9. Gebühren festlegen");
+            System.out.println("1.  Alle Bücher anzeigen");
+            System.out.println("2.  Benutzer registrieren");
+            System.out.println("3.  Verfügbare Bücher anzeigen");
+            // System.out.println("4.  Buch ausleihen");
+            // System.out.println("5.  Buch zurückgeben");
+            // System.out.println("6.  Bibliotheksstandort hinzufügen");
+            // System.out.println("7.  Bibliothekar erstellen");
+            // System.out.println("8.  Mitgliedschaft erstellen");
+            // System.out.println("9.  Gebühren festlegen");
             // System.out.println("10. Ausleihstatus überprüfen");
             // System.out.println("11. Veranstaltungskategorie erstellen");
             // System.out.println("12. Bibliotheksangebot erstellen");
