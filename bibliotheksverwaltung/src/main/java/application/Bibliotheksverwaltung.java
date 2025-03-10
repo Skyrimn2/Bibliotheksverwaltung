@@ -83,7 +83,7 @@ public class Bibliotheksverwaltung {
             // System.out.println("12. Bibliotheksangebot erstellen");
             // System.out.println("13. Ereignis erstellen");
             // System.out.println("14. Ausgeliehene Bücher eines Benutzers anzeigen");
-            // System.out.println("15. Beenden");
+            System.out.println("15. Beenden");
             System.out.print("\n Ihre Auswahl: ");
             auswahl = scanner.nextInt();
             switch (auswahl) {
