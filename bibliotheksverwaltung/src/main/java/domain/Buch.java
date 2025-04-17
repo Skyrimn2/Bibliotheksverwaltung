@@ -10,6 +10,7 @@ public class Buch {
     private String autor;
     private boolean verfuegbar;
     private List<Bewertung> bewertungen;
+    private Buchkategorie kategorie;
 
     public Buch(String titel, String autor, int id) {
         this.id = id;
