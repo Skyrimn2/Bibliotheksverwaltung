@@ -3,7 +3,6 @@ package domain;
 import java.time.LocalDate;
 
 public class Mitgliedschaft {
-    private Benutzer benutzer;
     private LocalDate startDatum;
     private LocalDate endDatum;
 
