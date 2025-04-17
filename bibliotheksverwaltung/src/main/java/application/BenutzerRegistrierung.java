@@ -1,5 +1,7 @@
 package application;
 
+
+//Das macht keinen Sinn, Die Idee dahinter sollte Application Code sein. Das hier aus der Konsole gelesen wrid ist definitiv Plugin Code. Wichtige Aktionen sind asukommentiert, warum?
 import java.util.Scanner;
 public class BenutzerRegistrierung {
 
