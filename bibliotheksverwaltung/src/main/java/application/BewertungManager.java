@@ -4,6 +4,8 @@ import java.util.List;
 
 import domain.Bewertung;
 
+
+//Was ist der Sinn von der Klasse? Warum Bewertungen in einer neuen Liste speichern? Die sind doch in dem Buch-Objekt schon gespeichert.
 public class BewertungManager {
     
     private List<Bewertung> bewertungen;
