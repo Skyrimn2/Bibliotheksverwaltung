@@ -16,7 +16,7 @@ public class Buch {
         this.titel = titel;
         this.autor = autor;
         this.verfuegbar = true;
-        this.bewertungen = new ArrayList();
+        this.bewertungen = new ArrayList<Bewertung>();
     }
 
     public String getTitel() {
