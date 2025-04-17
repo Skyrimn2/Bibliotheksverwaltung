@@ -11,6 +11,10 @@ import domain.Benutzer;
 import domain.Mitarbeiter;
 import domain.Bibliotheksstandort;
 
+
+//Too Long Class. Muss gefixt werden.
+//Klasse mischt verschiedene Aufgaben -> Aufteilen in kleine Kalssen
+
 public class Bibliothek {
     private List<Ausleihe> ausleihen;
     private List<Buch> buecher;
