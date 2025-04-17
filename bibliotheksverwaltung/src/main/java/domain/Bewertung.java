@@ -1,22 +1,16 @@
 package domain;
 
 public class Bewertung {
-    private Buch buch;
     private Benutzer benutzer;
     private int bewertungId;
     private String kommentar;
     private int sterne;
 
-    public Bewertung(Buch buch, Benutzer benutzer, int bewertungId, String kommentar, int sterne) {
-        this.buch = buch;
+    public Bewertung(Benutzer benutzer, int bewertungId, String kommentar, int sterne) {
         this.benutzer = benutzer;
         this.bewertungId = bewertungId;
         this.kommentar = kommentar;
         this.sterne = sterne;
-    }
-
-    public Buch getBuch() {
-        return this.buch;
     }
 
     public Benutzer getBenutzer() {
@@ -40,10 +34,6 @@ public class Bewertung {
             throw new IllegalArgumentException("Die Anzahl der Sterne muss zwischen 0 und 5 liegen.");
         }
         this.sterne = sterne;
-    }
-    
-    public void setBuch(Buch buch) {
-        this.buch = buch;
     }
 
     public void setBenutzer(Benutzer benutzer) {
