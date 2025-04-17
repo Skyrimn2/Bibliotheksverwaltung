@@ -8,3 +8,4 @@ public interface AusleiheDBHandler {
     public void loescheAusleihe(int ausleihID);
     public void aktualisiereAusleihe(Ausleihe ausleihe);
 }
+    
