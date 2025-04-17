@@ -1,5 +1,6 @@
 package domain;
 
+import java.util.ArrayList;
 // import java.util.ArrayList;
 import java.util.List;
 
@@ -15,6 +16,7 @@ public class Buch {
         this.titel = titel;
         this.autor = autor;
         this.verfuegbar = true;
+        this.bewertungen = new ArrayList();
     }
 
     public String getTitel() {
