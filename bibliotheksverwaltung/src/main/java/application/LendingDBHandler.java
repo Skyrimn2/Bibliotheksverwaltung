@@ -2,7 +2,7 @@ package application;
 
 import domain.Ausleihe;
 
-public interface AusleiheDBHandler {
+public interface LendingDBHandler {
     public void speichereAusleihe(Ausleihe ausleihe);
     public Ausleihe ladeAusleihe(int ausleihID);
     public void loescheAusleihe(int ausleihID);

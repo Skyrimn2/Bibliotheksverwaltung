@@ -1,19 +1,19 @@
 package domain;
 
 public class Bewertung {
-    private Benutzer benutzer;
+    private User benutzer;
     private int bewertungId;
     private String kommentar;
     private int sterne;
 
-    public Bewertung(Benutzer benutzer, int bewertungId, String kommentar, int sterne) {
+    public Bewertung(User benutzer, int bewertungId, String kommentar, int sterne) {
         this.benutzer = benutzer;
         this.bewertungId = bewertungId;
         this.kommentar = kommentar;
         this.sterne = sterne;
     }
 
-    public Benutzer getBenutzer() {
+    public User getBenutzer() {
         return this.benutzer;
     }
 
@@ -36,7 +36,7 @@ public class Bewertung {
         this.sterne = sterne;
     }
 
-    public void setBenutzer(Benutzer benutzer) {
+    public void setBenutzer(User benutzer) {
         this.benutzer = benutzer;
     }
 

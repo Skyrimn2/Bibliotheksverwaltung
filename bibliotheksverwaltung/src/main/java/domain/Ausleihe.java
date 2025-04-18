@@ -4,19 +4,19 @@ import java.time.LocalDate;
 
 public class Ausleihe {
     private int ausleihID;
-    private Benutzer benutzer;
+    private User benutzer;
     private Buch buch;
     private LocalDate ausleihDatum;
     private LocalDate rueckgabeDatum;
     
-    public Ausleihe(Benutzer benutzer, Buch buch, LocalDate ausleihDatum, int ausleihID) {
+    public Ausleihe(User benutzer, Buch buch, LocalDate ausleihDatum, int ausleihID) {
         this.benutzer = benutzer;
         this.buch = buch;
         this.ausleihDatum = ausleihDatum;
         this.ausleihID = ausleihID;
         this.rueckgabeDatum = null;
     }
-    public Benutzer getBenutzer() {
+    public User getBenutzer() {
         return benutzer;
     }
     public Buch getBuch() {

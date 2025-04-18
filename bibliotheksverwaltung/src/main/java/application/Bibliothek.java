@@ -7,7 +7,7 @@ import java.util.Scanner;
 // import java.util.Collection;
 import domain.Ausleihe;
 import domain.Buch;
-import domain.Benutzer;
+import domain.User;
 import domain.Mitarbeiter;
 import domain.Bibliotheksstandort;
 
@@ -18,7 +18,7 @@ import domain.Bibliotheksstandort;
 public class Bibliothek {
     private List<Ausleihe> ausleihen;
     private List<Buch> buecher;
-    private List<Benutzer> benutzer;
+    private List<User> benutzer;
     private List<Mitarbeiter> bibliothekare;
     private List<Bibliotheksstandort> bibliotheksstandorte;
 
@@ -31,7 +31,7 @@ public class Bibliothek {
         this.benutzer = new ArrayList<>();
     }
 
-    public void buchAusleihen(Benutzer benutzer, Buch buch) {
+    public void buchAusleihen(User benutzer, Buch buch) {
         if (buecher.contains(buch)) {
             boolean hatBereitsAusgeliehen = ausleihen.stream()
                     .anyMatch(ausleihe -> ausleihe.getBenutzer().equals(benutzer) && ausleihe.getBuch().equals(buch));
@@ -47,7 +47,7 @@ public class Bibliothek {
         }
     }
 
-    public void buchRueckgabe(Benutzer benutzer, Buch buch) {
+    public void buchRueckgabe(User benutzer, Buch buch) {
         Ausleihe ausleihe = ausleihen.stream()
                 .filter(ausl -> ausl.getBenutzer().equals(benutzer) && ausl.getBuch().equals(buch))
                 .findFirst()
@@ -88,7 +88,7 @@ public class Bibliothek {
         buecher.remove(buch);
     }
 
-    public void benutzerRegistrieren(Benutzer benutzer) {
+    public void benutzerRegistrieren(User benutzer) {
         this.benutzer.add(benutzer);
         System.out.println("Benutzer registriert: " + benutzer.getName());
     }
@@ -119,7 +119,7 @@ public class Bibliothek {
         }
     }
 
-    public List<Benutzer> getBenutzerListe() {
+    public List<User> getBenutzerListe() {
         return benutzer;
     }
     

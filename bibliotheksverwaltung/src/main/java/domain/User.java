@@ -2,14 +2,14 @@ package domain;
 
 import java.util.List;
 
-public class Benutzer {
+public class User {
     private String name;
     private String benutzerPasswort;
     private int benutzerID;
     private List<Buch> ausgelieheneBuecher;
     private Mitgliedschaft mitgliedschaft;
 
-    public Benutzer(String name, String benutzerPasswort, int benutzerID, Mitgliedschaft mitgliedschaft) {
+    public User(String name, String benutzerPasswort, int benutzerID, Mitgliedschaft mitgliedschaft) {
         this.name = name;
         this.benutzerID = benutzerID;
         this.benutzerPasswort = benutzerPasswort;

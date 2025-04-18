@@ -11,7 +11,7 @@ import domain.*;
 import application.*;
 
 public class Bibliotheksverwaltung {
-        private final BenutzerAuthentifizierung authentifizierung;
+        private final UserAuthentication authentifizierung;
         private List<Bewertung> bewertungen;
         private Bibliothek bibliothek;
 
@@ -19,14 +19,14 @@ public class Bibliotheksverwaltung {
             return bewertungen;
         }
 
-    public Bibliotheksverwaltung(BenutzerAuthentifizierung authentifizierung) {
+    public Bibliotheksverwaltung(UserAuthentication authentifizierung) {
         this.authentifizierung = authentifizierung;
         this.bibliothek = new Bibliothek();
     }
     
     private BewertungManager bewertungManager;
     
-    public Bibliotheksverwaltung(BenutzerAuthentifizierung authentifizierung, List<Bewertung> bewertungen) {
+    public Bibliotheksverwaltung(UserAuthentication authentifizierung, List<Bewertung> bewertungen) {
         this.authentifizierung = authentifizierung;
         this.bewertungen = bewertungen;
         this.bewertungManager = new BewertungManager(bewertungen);
@@ -43,12 +43,12 @@ public class Bibliotheksverwaltung {
 
 
     public static void start() {   // Ausführungen beim Starten der Anwendung
-        BenutzerAuthentifizierung authentifizierung = new EinfacheBenutzerAuthentifizierung();
+        UserAuthentication authentifizierung = new EinfacheBenutzerAuthentifizierung();
         Bibliotheksverwaltung bibliotheksverwaltung = new Bibliotheksverwaltung(authentifizierung);
         String benutzername = "admin";
         String passwort = "geheim";
         
-        if (bibliotheksverwaltung.authentifizierung.authentifizieren(benutzername, passwort)) {
+        if (bibliotheksverwaltung.authentifizierung.authenticate(benutzername, passwort)) {
             System.out.println("Benutzer erfolgreich authentifiziert.");
         } else {
             System.out.println("Fehler bei der Authentifizierung.");
@@ -58,7 +58,7 @@ public class Bibliotheksverwaltung {
 
         Scanner scanner = new Scanner(System.in);
 
-        Benutzer benutzer1 = new Benutzer("Max Mustermann", "abc", 123456, null);
+        User benutzer1 = new User("Max Mustermann", "abc", 123456, null);
         
     }
 
@@ -75,7 +75,7 @@ public class Bibliotheksverwaltung {
         Bibliothek bibliothek = new Bibliothek();
         
         // Erstelle einen Testbenutzer
-        Benutzer benutzer1 = new Benutzer("Max Mustermann", "abc", 123456, null);
+        User benutzer1 = new User("Max Mustermann", "abc", 123456, null);
         bibliothek.benutzerRegistrieren(benutzer1);
         
         do {
@@ -139,7 +139,7 @@ public class Bibliotheksverwaltung {
                     }
                     break;
                 case 5:
-                    Benutzer aktiverBenutzer = benutzer1;
+                    User aktiverBenutzer = benutzer1;
                     List<Buch> ausgelieheneBuecherBenutzer = aktiverBenutzer.getAusgelieheneBuecher();
                     if (ausgelieheneBuecherBenutzer.isEmpty()) {
                         System.out.println("Sie haben keine Bücher ausgeliehen.");
@@ -183,7 +183,7 @@ public class Bibliotheksverwaltung {
                     int mitgliedsnummer = scanner.nextInt();
                     scanner.nextLine(); // Verbraucht die Newline
                     
-                    Benutzer neuerBenutzer = new Benutzer(benutzerName, "temp", mitgliedsnummer, null);
+                    User neuerBenutzer = new User(benutzerName, "temp", mitgliedsnummer, null);
                     LocalDate startDatum = LocalDate.now();
                     LocalDate endDatum = startDatum.plusYears(1);
                     
