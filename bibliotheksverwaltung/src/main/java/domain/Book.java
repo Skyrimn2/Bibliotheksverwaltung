@@ -28,7 +28,7 @@ public class Book {
         return autor;
     }
 
-    public boolean istVerfuegbar() {
+    public boolean isAvailable() {
         return verfuegbar;
     }
 

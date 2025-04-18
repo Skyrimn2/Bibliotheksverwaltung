@@ -9,7 +9,7 @@ import domain.Book;
 public class FakeDB implements BookDBHandler{
 
     @Override
-    public void saveBook(domain.Book buch) {
+    public void saveBook(domain.Book book) {
         System.out.println("Fake Buch gespeichert");
     }
 
@@ -25,7 +25,7 @@ public class FakeDB implements BookDBHandler{
     }
 
     @Override
-    public void updateBook(Book buch) {
+    public void updateBook(Book book) {
         System.out.println("Fake Buch aktualisiert");
     }
 
@@ -45,11 +45,11 @@ public class FakeDB implements BookDBHandler{
             .collect(Collectors.toList());
     }
 
-    public Book getBuchById(int id) {
-        List<Book> alleBuecher = loadAllBooks();
-        for (Book buch : alleBuecher) {
-            if (buch.getId() == id) {
-                return buch;
+    public Book getBookById(int id) {
+        List<Book> allBooks = loadAllBooks();
+        for (Book book : allBooks) {
+            if (book.getId() == id) {
+                return book;
             }
         }
         return null;

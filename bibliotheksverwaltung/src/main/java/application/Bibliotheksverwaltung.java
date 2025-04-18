@@ -105,7 +105,7 @@ public class Bibliotheksverwaltung {
             
             switch (auswahl) {
                 case 1:
-                    ShowBooks bucherAnzeigen = new ShowBooks(new FakeDB(), new KonsolenFrontend());
+                    ShowBooks bucherAnzeigen = new ShowBooks(new FakeDB(), new ConsoleFrontend());
                     bucherAnzeigen.showAllBooks();
                     break;
                 case 2:
@@ -114,13 +114,13 @@ public class Bibliotheksverwaltung {
                     break;
                 case 3:
                     System.out.println("\nVerfügbare Bücher:");
-                    ShowBooks verfuegbareBucherAnzeigen = new ShowBooks(new FakeDB(), new KonsolenFrontend());
+                    ShowBooks verfuegbareBucherAnzeigen = new ShowBooks(new FakeDB(), new ConsoleFrontend());
                     verfuegbareBucherAnzeigen.showAllavailableBooks();
                     break;
                 case 4:
                     // Aktion: Buch ausleihen
                     System.out.println("\nBuch ausleihen:");
-                    ShowBooks ausleihBucherAnzeigen = new ShowBooks(new FakeDB(), new KonsolenFrontend());
+                    ShowBooks ausleihBucherAnzeigen = new ShowBooks(new FakeDB(), new ConsoleFrontend());
                     System.out.println("Verfügbare Bücher zum Ausleihen:");
                     ausleihBucherAnzeigen.showAllavailableBooks();
                     
@@ -129,7 +129,7 @@ public class Bibliotheksverwaltung {
                     scanner.nextLine(); // Verbraucht die Newline
                     
                     FakeDB db = new FakeDB();
-                    Book auszuleihendesBuch = db.getBuchById(buchId);
+                    Book auszuleihendesBuch = db.getBookById(buchId);
                     
                     if (auszuleihendesBuch != null) {
                         bibliothek.buchAusleihen(benutzer1, auszuleihendesBuch);
@@ -208,7 +208,7 @@ public class Bibliotheksverwaltung {
                 case 10:
                     // Aktion: Ausleihstatus überprüfen
                     System.out.println("\nAusleihstatus überprüfen:");
-                    ShowBooks statusBucherAnzeigen = new ShowBooks(new FakeDB(), new KonsolenFrontend());
+                    ShowBooks statusBucherAnzeigen = new ShowBooks(new FakeDB(), new ConsoleFrontend());
                     System.out.println("Alle Bücher:");
                     statusBucherAnzeigen.showAllBooks();
                     
@@ -217,10 +217,10 @@ public class Bibliotheksverwaltung {
                     scanner.nextLine(); // Verbraucht die Newline
                     
                     FakeDB statusDb = new FakeDB();
-                    Book statusBuch = statusDb.getBuchById(statusBuchId);
+                    Book statusBuch = statusDb.getBookById(statusBuchId);
                     
                     if (statusBuch != null) {
-                        LendingState status = statusBuch.istVerfuegbar() ? LendingState.Available : LendingState.Loan;
+                        LendingState status = statusBuch.isAvailable() ? LendingState.Available : LendingState.Loan;
                         System.out.println("Buch '" + statusBuch.getTitle() + "' Status: " + status);
                     } else {
                         System.out.println("Das Buch mit der ID " + statusBuchId + " wurde nicht gefunden.");

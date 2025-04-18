@@ -4,17 +4,17 @@ import java.util.Scanner;
 
 import application.FrontendHandler;
 
-public class KonsolenFrontend implements FrontendHandler {
+public class ConsoleFrontend implements FrontendHandler {
 	
-	public KonsolenFrontend() {
+	public ConsoleFrontend() {
 		super();
 	}
 	
     @Override
-    public void showBook(domain.Book buch) {
-        System.out.println("Buchtitel: " + buch.getTitle());
-        System.out.println("Buchautor: " + buch.getAutor());
-        System.out.println("Verfügbar: " + (buch.istVerfuegbar() ? "Ja" : "Nein"));
+    public void showBook(domain.Book book) {
+        System.out.println("Buchtitel: " + book.getTitle());
+        System.out.println("Buchautor: " + book.getAutor());
+        System.out.println("Verfügbar: " + (book.isAvailable() ? "Ja" : "Nein"));
     }
     
     @Override
