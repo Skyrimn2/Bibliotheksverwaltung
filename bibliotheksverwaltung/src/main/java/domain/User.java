@@ -6,7 +6,7 @@ public class User {
     private String name;
     private String benutzerPasswort;
     private int benutzerID;
-    private List<Buch> ausgelieheneBuecher;
+    private List<Book> ausgelieheneBuecher;
     private Mitgliedschaft mitgliedschaft;
 
     public User(String name, String benutzerPasswort, int benutzerID, Mitgliedschaft mitgliedschaft) {
@@ -20,15 +20,15 @@ public class User {
         return name;
     }
 
-    public void buchAusleihen(Buch buch) {
+    public void buchAusleihen(Book buch) {
         ausgelieheneBuecher.add(buch);
     }
 
-    public void buchRueckgabe(Buch buch) {
+    public void buchRueckgabe(Book buch) {
         ausgelieheneBuecher.remove(buch);
     }
 
-    public List<Buch> getAusgelieheneBuecher() {
+    public List<Book> getAusgelieheneBuecher() {
         return ausgelieheneBuecher;
     }
 

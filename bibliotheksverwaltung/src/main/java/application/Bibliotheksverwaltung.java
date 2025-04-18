@@ -12,10 +12,10 @@ import application.*;
 
 public class Bibliotheksverwaltung {
         private final UserAuthentication authentifizierung;
-        private List<Bewertung> bewertungen;
+        private List<Rating> bewertungen;
         private Bibliothek bibliothek;
 
-        public List<Bewertung> getBewertungen() {
+        public List<Rating> getBewertungen() {
             return bewertungen;
         }
 
@@ -26,7 +26,7 @@ public class Bibliotheksverwaltung {
     
     private BewertungManager bewertungManager;
     
-    public Bibliotheksverwaltung(UserAuthentication authentifizierung, List<Bewertung> bewertungen) {
+    public Bibliotheksverwaltung(UserAuthentication authentifizierung, List<Rating> bewertungen) {
         this.authentifizierung = authentifizierung;
         this.bewertungen = bewertungen;
         this.bewertungManager = new BewertungManager(bewertungen);
@@ -43,7 +43,7 @@ public class Bibliotheksverwaltung {
 
 
     public static void start() {   // Ausführungen beim Starten der Anwendung
-        UserAuthentication authentifizierung = new EinfacheBenutzerAuthentifizierung();
+        UserAuthentication authentifizierung = new SimpleUserAuthentication();
         Bibliotheksverwaltung bibliotheksverwaltung = new Bibliotheksverwaltung(authentifizierung);
         String benutzername = "admin";
         String passwort = "geheim";
@@ -76,7 +76,7 @@ public class Bibliotheksverwaltung {
         
         // Erstelle einen Testbenutzer
         User benutzer1 = new User("Max Mustermann", "abc", 123456, null);
-        bibliothek.benutzerRegistrieren(benutzer1);
+        bibliothek.registerUser(benutzer1);
         
         do {
             System.out.println("*********************************************");
@@ -105,55 +105,55 @@ public class Bibliotheksverwaltung {
             
             switch (auswahl) {
                 case 1:
-                    BucherAnzeigen bucherAnzeigen = new BucherAnzeigen(new FakeDB(), new KonsolenFrontend());
-                    bucherAnzeigen.zeigealleBuecher();
+                    ShowBooks bucherAnzeigen = new ShowBooks(new FakeDB(), new KonsolenFrontend());
+                    bucherAnzeigen.showAllBooks();
                     break;
                 case 2:
-                    BenutzerRegistrierung benutzerRegistrierung = new BenutzerRegistrierung();
-                    benutzerRegistrierung.registriereBenutzer();
+                    UserRegistration benutzerRegistrierung = new UserRegistration();
+                    benutzerRegistrierung.registerUser();
                     break;
                 case 3:
                     System.out.println("\nVerfügbare Bücher:");
-                    BucherAnzeigen verfuegbareBucherAnzeigen = new BucherAnzeigen(new FakeDB(), new KonsolenFrontend());
-                    verfuegbareBucherAnzeigen.zeigeVerfuegbareBuecher();
+                    ShowBooks verfuegbareBucherAnzeigen = new ShowBooks(new FakeDB(), new KonsolenFrontend());
+                    verfuegbareBucherAnzeigen.showAllavailableBooks();
                     break;
                 case 4:
                     // Aktion: Buch ausleihen
                     System.out.println("\nBuch ausleihen:");
-                    BucherAnzeigen ausleihBucherAnzeigen = new BucherAnzeigen(new FakeDB(), new KonsolenFrontend());
+                    ShowBooks ausleihBucherAnzeigen = new ShowBooks(new FakeDB(), new KonsolenFrontend());
                     System.out.println("Verfügbare Bücher zum Ausleihen:");
-                    ausleihBucherAnzeigen.zeigeVerfuegbareBuecher();
+                    ausleihBucherAnzeigen.showAllavailableBooks();
                     
                     System.out.println("\nGeben Sie die ID des Buches ein, das Sie ausleihen möchten:");
                     int buchId = scanner.nextInt();
                     scanner.nextLine(); // Verbraucht die Newline
                     
                     FakeDB db = new FakeDB();
-                    Buch auszuleihendesBuch = db.getBuchById(buchId);
+                    Book auszuleihendesBuch = db.getBuchById(buchId);
                     
                     if (auszuleihendesBuch != null) {
                         bibliothek.buchAusleihen(benutzer1, auszuleihendesBuch);
-                        System.out.println("Buch '" + auszuleihendesBuch.getTitel() + "' wurde erfolgreich ausgeliehen.");
+                        System.out.println("Buch '" + auszuleihendesBuch.getTitle() + "' wurde erfolgreich ausgeliehen.");
                     } else {
                         System.out.println("Das Buch mit der ID " + buchId + " wurde nicht gefunden.");
                     }
                     break;
                 case 5:
                     User aktiverBenutzer = benutzer1;
-                    List<Buch> ausgelieheneBuecherBenutzer = aktiverBenutzer.getAusgelieheneBuecher();
+                    List<Book> ausgelieheneBuecherBenutzer = aktiverBenutzer.getAusgelieheneBuecher();
                     if (ausgelieheneBuecherBenutzer.isEmpty()) {
                         System.out.println("Sie haben keine Bücher ausgeliehen.");
                     } else {
                         System.out.println("Folgende Bücher haben Sie ausgeliehen:");
                         for (int i = 0; i < ausgelieheneBuecherBenutzer.size(); i++) {
-                            System.out.println((i+1) + ". " + ausgelieheneBuecherBenutzer.get(i).getTitel());
+                            System.out.println((i+1) + ". " + ausgelieheneBuecherBenutzer.get(i).getTitle());
                         }
                         System.out.println("Bitte geben Sie die Nummer des Buches ein, das Sie zurückgeben möchten:");
                         int buchNummer = Integer.parseInt(scanner.nextLine());
                         if (buchNummer >= 1 && buchNummer <= ausgelieheneBuecherBenutzer.size()) {
-                            Buch buchZurueckgeben = ausgelieheneBuecherBenutzer.get(buchNummer - 1);
-                            bibliothek.buchRueckgabe(aktiverBenutzer, buchZurueckgeben);
-                            System.out.println("Buch '" + buchZurueckgeben.getTitel() + "' wurde erfolgreich zurückgegeben.");
+                            Book buchZurueckgeben = ausgelieheneBuecherBenutzer.get(buchNummer - 1);
+                            bibliothek.returnBook(aktiverBenutzer, buchZurueckgeben);
+                            System.out.println("Buch '" + buchZurueckgeben.getTitle() + "' wurde erfolgreich zurückgegeben.");
                         } else {
                             System.out.println("Ungültige Buchnummer.");
                         }
@@ -167,12 +167,12 @@ public class Bibliotheksverwaltung {
                     Adresse adress = new AdresssReader().readFromString(stringAdress);
                     System.out.println("Bitte geben Sie die Öffnungszeiten des neuen Bibliotheksstandorts ein:");
                     String standortOeffnungszeiten = scanner.nextLine();
-                    Bibliotheksstandort neuerStandort = new Bibliotheksstandort(standortName, standortAdresse, standortOeffnungszeiten);
-                    bibliothek.bibliotheksstandortHinzufuegen(neuerStandort);
+                    LibraryLocation neuerStandort = new LibraryLocation(standortName, standortAdresse, standortOeffnungszeiten);
+                    bibliothek.addLibraryLocation(neuerStandort);
                     System.out.println("Der Bibliotheksstandort \"" + standortName + "\" wurde erfolgreich hinzugefügt.");
                     break;
                 case 7:
-                    bibliothek.bibliothekarHinzufuegenMitInput();
+                    bibliothek.addLibraryLocationUsingInput();
                     break;
                 case 8:
                     // Aktion: Mitgliedschaft erstellen
@@ -208,20 +208,20 @@ public class Bibliotheksverwaltung {
                 case 10:
                     // Aktion: Ausleihstatus überprüfen
                     System.out.println("\nAusleihstatus überprüfen:");
-                    BucherAnzeigen statusBucherAnzeigen = new BucherAnzeigen(new FakeDB(), new KonsolenFrontend());
+                    ShowBooks statusBucherAnzeigen = new ShowBooks(new FakeDB(), new KonsolenFrontend());
                     System.out.println("Alle Bücher:");
-                    statusBucherAnzeigen.zeigealleBuecher();
+                    statusBucherAnzeigen.showAllBooks();
                     
                     System.out.println("\nGeben Sie die ID des Buches ein, dessen Status Sie überprüfen möchten:");
                     int statusBuchId = scanner.nextInt();
                     scanner.nextLine(); // Verbraucht die Newline
                     
                     FakeDB statusDb = new FakeDB();
-                    Buch statusBuch = statusDb.getBuchById(statusBuchId);
+                    Book statusBuch = statusDb.getBuchById(statusBuchId);
                     
                     if (statusBuch != null) {
                         Ausleihstatus status = statusBuch.istVerfuegbar() ? Ausleihstatus.verfuegbar : Ausleihstatus.Ausgeliehen;
-                        System.out.println("Buch '" + statusBuch.getTitel() + "' Status: " + status);
+                        System.out.println("Buch '" + statusBuch.getTitle() + "' Status: " + status);
                     } else {
                         System.out.println("Das Buch mit der ID " + statusBuchId + " wurde nicht gefunden.");
                     }
@@ -265,12 +265,12 @@ public class Bibliotheksverwaltung {
                     break;
                 case 14:
                     System.out.println("\nAusgeliehene Bücher von " + benutzer1.getName() + ":");
-                    List<Buch> ausgelieheneBuecher = benutzer1.getAusgelieheneBuecher();
+                    List<Book> ausgelieheneBuecher = benutzer1.getAusgelieheneBuecher();
                     if (ausgelieheneBuecher.isEmpty()) {
                         System.out.println("Keine ausgeliehenen Bücher vorhanden.");
                     } else {
-                        for (Buch buch : ausgelieheneBuecher) {
-                            System.out.println(buch.getTitel() + " - " + buch.getAutor());
+                        for (Book buch : ausgelieheneBuecher) {
+                            System.out.println(buch.getTitle() + " - " + buch.getAutor());
                         }
                     }
                     break;

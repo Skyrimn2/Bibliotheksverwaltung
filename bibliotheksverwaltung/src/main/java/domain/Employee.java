@@ -1,10 +1,10 @@
 package domain;
 
-public class Mitarbeiter {
+public class Employee {
     private String name;
     private String mitarbeiterID;
 
-    public Mitarbeiter(String name, String mitarbeiterID) {
+    public Employee(String name, String mitarbeiterID) {
         this.name = name;
         this.mitarbeiterID = mitarbeiterID;
     }

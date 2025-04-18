@@ -1,12 +1,12 @@
 package domain;
 
-public class Bewertung {
+public class Rating {
     private User benutzer;
     private int bewertungId;
     private String kommentar;
     private int sterne;
 
-    public Bewertung(User benutzer, int bewertungId, String kommentar, int sterne) {
+    public Rating(User benutzer, int bewertungId, String kommentar, int sterne) {
         this.benutzer = benutzer;
         this.bewertungId = bewertungId;
         this.kommentar = kommentar;

@@ -1,9 +1,9 @@
 package application;
 
-import domain.Buch;
+import domain.Book;
 
 public interface FrontendHandler {
-    public void zeigeBuch(Buch buch);
+    public void showBook(Book buch);
     public void showMenu();
     public int readMenuOption();
 }

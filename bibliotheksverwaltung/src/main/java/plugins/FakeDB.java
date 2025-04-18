@@ -3,51 +3,51 @@ package plugins;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import application.BuchDBHandler;
-import domain.Buch;
+import application.BookDBHandler;
+import domain.Book;
 
-public class FakeDB implements BuchDBHandler{
+public class FakeDB implements BookDBHandler{
 
     @Override
-    public void speichereBuch(domain.Buch buch) {
+    public void saveBook(domain.Book buch) {
         System.out.println("Fake Buch gespeichert");
     }
 
     @Override
-    public Buch ladeBuch(int id) {
+    public Book loadBook(int id) {
         System.out.println("Fake Buch geladen");
-        return new Buch("Java ist toll", "John Doe", 1);
+        return new Book("Java ist toll", "John Doe", 1);
     }
 
     @Override
-    public void loescheBuch(int id) {
+    public void deleteBook(int id) {
         System.out.println("Fake Buch gelöscht");
     }
 
     @Override
-    public void aktualisiereBuch(Buch buch) {
+    public void updateBook(Book buch) {
         System.out.println("Fake Buch aktualisiert");
     }
 
     @Override
-    public List<Buch> ladeAlleBuecher() {
+    public List<Book> loadAllBooks() {
         System.out.println("Fake Alle Bücher geladen");
-        return List.of(new Buch("Java ist toll", "John Doe", 1), new Buch("Python ist toll", "John Doe", 2));
+        return List.of(new Book("Java ist toll", "John Doe", 1), new Book("Python ist toll", "John Doe", 2));
     }
 
     @Override
-    public List<Buch> ladeVerfuegbareBuecher() {
+    public List<Book> loadAvailableBooks() {
         System.out.println("Fake Verfügbare Bücher geladen");
-        return ladeAlleBuecher().stream()
+        return loadAllBooks().stream()
             // Fake Logik momentan
             .filter(buch -> buch.getId() % 2 != 0)
             // logik für die verfügbaren Bücher
             .collect(Collectors.toList());
     }
 
-    public Buch getBuchById(int id) {
-        List<Buch> alleBuecher = ladeAlleBuecher();
-        for (Buch buch : alleBuecher) {
+    public Book getBuchById(int id) {
+        List<Book> alleBuecher = loadAllBooks();
+        for (Book buch : alleBuecher) {
             if (buch.getId() == id) {
                 return buch;
             }

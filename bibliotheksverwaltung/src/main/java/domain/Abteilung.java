@@ -4,8 +4,8 @@ import java.util.List;
 
 public class Abteilung {
     private String name;
-    private List<Mitarbeiter> mitarbeiterListe;
-    public Abteilung(String name, List<Mitarbeiter> mitarbeiterListe) {
+    private List<Employee> mitarbeiterListe;
+    public Abteilung(String name, List<Employee> mitarbeiterListe) {
         this.name = name;
         this.mitarbeiterListe = mitarbeiterListe;
     }
@@ -13,17 +13,17 @@ public class Abteilung {
     public String getName() {
         return this.name;
     }
-    public List<Mitarbeiter> getMitarbeiterListe() {
+    public List<Employee> getMitarbeiterListe() {
         return this.mitarbeiterListe;
     }
     // Setter methods
     public void setName(String name) {
         this.name = name;
     }
-    public void setMitarbeiterListe(List<Mitarbeiter> mitarbeiterListe) {
+    public void setMitarbeiterListe(List<Employee> mitarbeiterListe) {
         this.mitarbeiterListe = mitarbeiterListe;
     }
-    public void addMitarbeiter(Mitarbeiter mitarbeiter) {
+    public void addMitarbeiter(Employee mitarbeiter) {
         this.mitarbeiterListe.add(mitarbeiter);
     }
 }

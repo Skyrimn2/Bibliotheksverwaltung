@@ -2,18 +2,18 @@ package application;
 
 import java.util.List;
 
-import domain.Bewertung;
+import domain.Rating;
 
 
 //Was ist der Sinn von der Klasse? Warum Bewertungen in einer neuen Liste speichern? Die sind doch in dem Buch-Objekt schon gespeichert.
 public class BewertungManager {
     
-    private List<Bewertung> bewertungen;
-    public BewertungManager(List<Bewertung> bewertungen) {
+    private List<Rating> bewertungen;
+    public BewertungManager(List<Rating> bewertungen) {
         this.bewertungen = bewertungen;
     }
     
-    public void bewertungHinzufuegen(Bewertung bewertung) {
+    public void bewertungHinzufuegen(Rating bewertung) {
         bewertungen.add(bewertung);
     }
 
@@ -22,14 +22,14 @@ public class BewertungManager {
             return 0.0;
         }
         int summeSterne = 0;
-        for (Bewertung bewertung : bewertungen) {
+        for (Rating bewertung : bewertungen) {
             summeSterne += bewertung.getSterne();
         }
         return (double) summeSterne / bewertungen.size();
     }
 
     public void alleBewertungenAnzeigen() {
-        for (Bewertung bewertung : bewertungen) {
+        for (Rating bewertung : bewertungen) {
             System.out.println(bewertung);
         }
     }

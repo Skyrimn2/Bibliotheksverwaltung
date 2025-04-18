@@ -2,24 +2,24 @@ package domain;
 
 import java.time.LocalDate;
 
-public class Ausleihe {
+public class Lending {
     private int ausleihID;
     private User benutzer;
-    private Buch buch;
+    private Book buch;
     private LocalDate ausleihDatum;
     private LocalDate rueckgabeDatum;
     
-    public Ausleihe(User benutzer, Buch buch, LocalDate ausleihDatum, int ausleihID) {
+    public Lending(User benutzer, Book buch, LocalDate ausleihDatum, int ausleihID) {
         this.benutzer = benutzer;
         this.buch = buch;
         this.ausleihDatum = ausleihDatum;
         this.ausleihID = ausleihID;
         this.rueckgabeDatum = null;
     }
-    public User getBenutzer() {
+    public User getUser() {
         return benutzer;
     }
-    public Buch getBuch() {
+    public Book getBook() {
         return buch;
     }
     public LocalDate getAusleihDatum() {

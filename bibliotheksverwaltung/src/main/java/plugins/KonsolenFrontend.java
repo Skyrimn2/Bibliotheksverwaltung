@@ -11,8 +11,8 @@ public class KonsolenFrontend implements FrontendHandler {
 	}
 	
     @Override
-    public void zeigeBuch(domain.Buch buch) {
-        System.out.println("Buchtitel: " + buch.getTitel());
+    public void showBook(domain.Book buch) {
+        System.out.println("Buchtitel: " + buch.getTitle());
         System.out.println("Buchautor: " + buch.getAutor());
         System.out.println("Verfügbar: " + (buch.istVerfuegbar() ? "Ja" : "Nein"));
     }

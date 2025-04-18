@@ -6,10 +6,10 @@ public class Ereignis {
     private String name;
     private LocalDateTime datum;
     private String ort;
-    private Bibliotheksstandort bibliotheksstandort;
+    private LibraryLocation bibliotheksstandort;
     private String beschreibung;
     
-    public Ereignis(String name, LocalDateTime datum, String ort, String beschreibung, Bibliotheksstandort bibliotheksstandort) {
+    public Ereignis(String name, LocalDateTime datum, String ort, String beschreibung, LibraryLocation bibliotheksstandort) {
         this.name = name;
         this.datum = datum;
         this.ort = ort;
@@ -49,11 +49,11 @@ public class Ereignis {
         this.beschreibung = beschreibung;
     }
 
-    public Bibliotheksstandort getBibliotheksstandort() {
+    public LibraryLocation getBibliotheksstandort() {
         return this.bibliotheksstandort;
     }
 
-    public void setBibliotheksstandort(Bibliotheksstandort bibliotheksstandort) {
+    public void setBibliotheksstandort(LibraryLocation bibliotheksstandort) {
         this.bibliotheksstandort = bibliotheksstandort;
     }
 

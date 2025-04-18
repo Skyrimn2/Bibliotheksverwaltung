@@ -4,23 +4,23 @@ import java.util.ArrayList;
 // import java.util.ArrayList;
 import java.util.List;
 
-public class Buch {
+public class Book {
     private int id;
     private String titel;
     private String autor;
     private boolean verfuegbar;
-    private List<Bewertung> bewertungen;
+    private List<Rating> bewertungen;
     private Buchkategorie kategorie;
 
-    public Buch(String titel, String autor, int id) {
+    public Book(String titel, String autor, int id) {
         this.id = id;
         this.titel = titel;
         this.autor = autor;
         this.verfuegbar = true;
-        this.bewertungen = new ArrayList<Bewertung>();
+        this.bewertungen = new ArrayList<Rating>();
     }
 
-    public String getTitel() {
+    public String getTitle() {
         return titel;
     }
 
@@ -36,7 +36,7 @@ public class Buch {
         this.verfuegbar = verfuegbar;
     }
 
-    public void bewertungHinzufuegen(Bewertung bewertung) {
+    public void bewertungHinzufuegen(Rating bewertung) {
         this.bewertungen.add(bewertung);
     }
 
@@ -48,7 +48,7 @@ public class Buch {
         this.id = id;
     }
 
-    public List<Bewertung> getBewertungen() {
+    public List<Rating> getBewertungen() {
         return bewertungen;
     }
 

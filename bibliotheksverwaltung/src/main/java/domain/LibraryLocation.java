@@ -1,11 +1,11 @@
 package domain;
 
-public class Bibliotheksstandort {
+public class LibraryLocation {
     private String name;
     private Adresse adresse;
     private String oeffnungszeiten;
     
-    public Bibliotheksstandort(String name, Adresse adresse, String oeffnungszeiten) {
+    public LibraryLocation(String name, Adresse adresse, String oeffnungszeiten) {
         this.name = name;
         this.adresse = adresse;
         this.oeffnungszeiten = oeffnungszeiten;

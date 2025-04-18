@@ -1,15 +1,15 @@
 package domain;
 
 public class BuchExemplar {
-    private Buch buch;
+    private Book buch;
     private int exemplarId;
 
-    public BuchExemplar(Buch buch, int exemplarId) {
+    public BuchExemplar(Book buch, int exemplarId) {
         this.buch = buch;
         this.exemplarId = exemplarId;
     }
     
-    public Buch getBuch() {
+    public Book getBuch() {
         return this.buch;
     }
 
@@ -17,7 +17,7 @@ public class BuchExemplar {
         return this.exemplarId;
     }
     
-    public void setBuch(Buch buch) {
+    public void setBuch(Book buch) {
         this.buch = buch;
     }
 
