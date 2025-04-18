@@ -1,50 +1,16 @@
 package domain;
 
 public class Rating {
-    private User benutzer;
-    private int bewertungId;
-    private String kommentar;
-    private int sterne;
+    private User user;
+    private int ratingID;
+    private String comment;
+    private int stars;
 
-    public Rating(User benutzer, int bewertungId, String kommentar, int sterne) {
-        this.benutzer = benutzer;
-        this.bewertungId = bewertungId;
-        this.kommentar = kommentar;
-        this.sterne = sterne;
-    }
-
-    public User getBenutzer() {
-        return this.benutzer;
+    public Rating(User user, int ratingID, String comment, int stars) {
+        this.user = user;
+        this.ratingID = ratingID;
+        this.comment = comment;
+        this.stars = stars;
     }
 
-    public int getBewertungId() {
-        return this.bewertungId;
-    }
-
-    public String getKommentar() {
-        return this.kommentar;
-    }
-    
-    public int getSterne() {
-        return sterne;
-    }
-    
-    public void setSterne(int sterne) {
-        if (sterne < 0 || sterne > 5 ){
-            throw new IllegalArgumentException("Die Anzahl der Sterne muss zwischen 0 und 5 liegen.");
-        }
-        this.sterne = sterne;
-    }
-
-    public void setBenutzer(User benutzer) {
-        this.benutzer = benutzer;
-    }
-
-    public void setBewertungId(int bewertungId) {
-        this.bewertungId = bewertungId;
-    }
-
-    public void setKommentar(String kommentar) {
-        this.kommentar = kommentar;
-    }
 }

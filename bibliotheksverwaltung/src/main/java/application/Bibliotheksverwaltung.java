@@ -164,7 +164,7 @@ public class Bibliotheksverwaltung {
                     String standortName = scanner.nextLine();
                     System.out.println("Bitte geben Sie die Adresse des neuen Bibliotheksstandorts ein:");
                     String stringAdress = scanner.nextLine();
-                    Adresse adress = new AdresssReader().readFromString(stringAdress);
+                    Adress adress = new AdresssReader().readFromString(stringAdress);
                     System.out.println("Bitte geben Sie die Öffnungszeiten des neuen Bibliotheksstandorts ein:");
                     String standortOeffnungszeiten = scanner.nextLine();
                     LibraryLocation neuerStandort = new LibraryLocation(standortName, standortAdresse, standortOeffnungszeiten);
@@ -187,7 +187,7 @@ public class Bibliotheksverwaltung {
                     LocalDate startDatum = LocalDate.now();
                     LocalDate endDatum = startDatum.plusYears(1);
                     
-                    Mitgliedschaft neueMitgliedschaft = new Mitgliedschaft(startDatum, endDatum);
+                    Mempership neueMitgliedschaft = new Mempership(startDatum, endDatum);
                     System.out.println("Mitgliedschaft für " + benutzerName + " erfolgreich erstellt.");
                     System.out.println("Gültig von " + startDatum + " bis " + endDatum);
                     break;
@@ -200,7 +200,7 @@ public class Bibliotheksverwaltung {
                     double taeglicheGebuehr = scanner.nextDouble();
                     scanner.nextLine(); // Verbraucht die Newline
                     
-                    Gebuehren gebuehren = new Gebuehren(grundgebuehr, taeglicheGebuehr);
+                    Charges gebuehren = new Charges(grundgebuehr, taeglicheGebuehr);
                     System.out.println("Gebühren erfolgreich festgelegt:");
                     System.out.println("Grundgebühr: " + grundgebuehr + " €");
                     System.out.println("Tägliche Versäumnisgebühr: " + taeglicheGebuehr + " €");
@@ -220,7 +220,7 @@ public class Bibliotheksverwaltung {
                     Book statusBuch = statusDb.getBuchById(statusBuchId);
                     
                     if (statusBuch != null) {
-                        Ausleihstatus status = statusBuch.istVerfuegbar() ? Ausleihstatus.verfuegbar : Ausleihstatus.Ausgeliehen;
+                        LendingState status = statusBuch.istVerfuegbar() ? LendingState.Available : LendingState.Loan;
                         System.out.println("Buch '" + statusBuch.getTitle() + "' Status: " + status);
                     } else {
                         System.out.println("Das Buch mit der ID " + statusBuchId + " wurde nicht gefunden.");
@@ -243,7 +243,7 @@ public class Bibliotheksverwaltung {
                     System.out.println("Bitte geben Sie die Beschreibung des Angebots ein:");
                     String angebotBeschreibung = scanner.nextLine();
                     
-                    Bibliotheksangebot neuesAngebot = new Bibliotheksangebot(angebotName, angebotBeschreibung);
+                    LibraryService neuesAngebot = new LibraryService(angebotName, angebotBeschreibung);
                     System.out.println("Bibliotheksangebot '" + angebotName + "' erfolgreich erstellt.");
                     break;
                 case 13:

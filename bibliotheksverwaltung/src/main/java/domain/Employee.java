@@ -2,27 +2,27 @@ package domain;
 
 public class Employee {
     private String name;
-    private String mitarbeiterID;
+    private String employeeID;
 
-    public Employee(String name, String mitarbeiterID) {
+    public Employee(String name, String employeeID) {
         this.name = name;
-        this.mitarbeiterID = mitarbeiterID;
+        this.employeeID = employeeID;
     }
     
     public String getName() {
         return this.name;
     }
 
-    public String getMitarbeiterID() {
-        return this.mitarbeiterID;
+    public String getEmployeeID() {
+        return this.employeeID;
     }
 
     public void setName(String name) {
         this.name = name;
     }
 
-    public void setMitarbeiterID(String mitarbeiterID) {
-        this.mitarbeiterID = mitarbeiterID;
+    public void setEmployeeID(String employeeID) {
+        this.employeeID = employeeID;
     }
 
 }

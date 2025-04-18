@@ -1,5 +1,5 @@
 package application;
-import domain.Adresse;
+import domain.Adress;
 
 public class AdressReader {
 	
@@ -8,7 +8,7 @@ public class AdressReader {
 		
 	}
 	
-	public Adresse readFromString(String input) {
+	public Adress readFromString(String input) {
 		
 		String[] splitted = input.split("\\s+");
 		
@@ -18,7 +18,7 @@ public class AdressReader {
 		String postalCode = splitted[3];
 		
 		
-		return new Adresse(streetName, houseNumber, city, postalCode);
+		return new Adress(streetName, houseNumber, city, postalCode);
 	}
 
 }

@@ -2,13 +2,13 @@ package domain;
 
 public class LibraryLocation {
     private String name;
-    private Adresse adresse;
-    private String oeffnungszeiten;
+    private Adress adress;
+    private String openingHours;
     
-    public LibraryLocation(String name, Adresse adresse, String oeffnungszeiten) {
+    public LibraryLocation(String name, Adress adress, String openingHours) {
         this.name = name;
-        this.adresse = adresse;
-        this.oeffnungszeiten = oeffnungszeiten;
+        this.adress = adress;
+        this.openingHours = openingHours;
     }
     
     // public String getName() {
@@ -23,20 +23,5 @@ public class LibraryLocation {
     //     this.name = name;
     // }
 
-    public void setAdresse(Adresse adresse) {
-        this.adresse = adresse;
-    }
 
-
-	public String getName() {
-	    return name;
-	}
-	
-	public Adresse getAdresse() {
-	    return adresse;
-	}
-	
-	public String getOeffnungszeiten() {
-	    return oeffnungszeiten;
-}
 }
