@@ -1,5 +1,7 @@
 package plugins;
 
+import java.util.Scanner;
+
 import application.FrontendHandler;
 
 public class KonsolenFrontend implements FrontendHandler {
@@ -40,4 +42,12 @@ public class KonsolenFrontend implements FrontendHandler {
         System.out.print("\n Ihre Auswahl: ");
     }
     
+    @Override
+    public int readMenuOption() {
+    	Scanner scanner = new Scanner(System.in);
+    	 int selection = scanner.nextInt();
+         scanner.nextLine();
+    	
+    	return selection;
+    }
 }
