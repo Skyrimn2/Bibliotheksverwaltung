@@ -16,7 +16,6 @@ public class KonsolenFrontend implements FrontendHandler {
     }
     
     @Override
-    @Override
     public void showMenu() {
     	System.out.println("*********************************************");
         System.out.println("|   Willkommen zur Bibliotheksverwaltung!   |");
