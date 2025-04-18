@@ -1,13 +1,14 @@
 package application;
 
 import java.util.List;
+
 import java.time.LocalDateTime;
 import java.time.LocalDate;
 import java.util.Scanner;
 import java.util.ArrayList;
 
 import domain.*;
-import plugins.*;
+import application.*;
 
 public class Bibliotheksverwaltung {
         private final BenutzerAuthentifizierung authentifizierung;
@@ -162,7 +163,8 @@ public class Bibliotheksverwaltung {
                     System.out.println("Bitte geben Sie den Namen des neuen Bibliotheksstandorts ein:");
                     String standortName = scanner.nextLine();
                     System.out.println("Bitte geben Sie die Adresse des neuen Bibliotheksstandorts ein:");
-                    String standortAdresse = scanner.nextLine();
+                    String stringAdress = scanner.nextLine();
+                    Adresse adress = new AdresssReader().readFromString(stringAdress);
                     System.out.println("Bitte geben Sie die Öffnungszeiten des neuen Bibliotheksstandorts ein:");
                     String standortOeffnungszeiten = scanner.nextLine();
                     Bibliotheksstandort neuerStandort = new Bibliotheksstandort(standortName, standortAdresse, standortOeffnungszeiten);
