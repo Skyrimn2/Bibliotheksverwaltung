@@ -4,8 +4,8 @@ import java.util.List;
 
 public interface DBHandler<T> {
 
-	public T loadItem();
-	public T saveItem();
-	public T updateItem();
+	public T loadItemByID(int id);
+	public void saveItem(T item);
+	public void updateItemByID(T item, int id);
 	public List<T> loadAllOfItem();
 }
