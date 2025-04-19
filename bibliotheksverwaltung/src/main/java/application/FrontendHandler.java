@@ -12,4 +12,5 @@ public interface FrontendHandler {
     public void showResult(Displayable disp);
     public void showResultList(List<Displayable> disps);
     public boolean loginView();
+    public String readString();
 }

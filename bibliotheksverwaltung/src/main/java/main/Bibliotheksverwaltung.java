@@ -27,6 +27,7 @@ public class Bibliotheksverwaltung {
         FrontendHandler frontend = new ConsoleFrontend(dbPath);
         Menu menu = new Menu();
         menu.registerAction(new ListBooksAction(new BookDB(dbPath), frontend));
+        menu.registerAction(new ListBookByTitleAction(new BookDB(dbPath), frontend));        
         
         menu.registerAction(new QuitAppAction());
         

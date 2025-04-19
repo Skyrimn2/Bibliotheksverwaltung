@@ -9,6 +9,7 @@ import java.sql.*;
 
 import application.DBHandler;
 import domain.Book;
+import domain.User;
 
 public class BookDB extends DBHandlerConnection<Book> {
 
@@ -67,7 +68,65 @@ public class BookDB extends DBHandlerConnection<Book> {
 
 	@Override
 	public Book getItemByString(String column, String value) {
-		// TODO Auto-generated method stub
+		if (!column.equals("Title") && !column.equals("title") && !column.equals("Author") && !column.equals("Author")) {
+			throw new IllegalArgumentException("Ungültiger Spaltenname");
+		}
+		
+		try {
+			String sql = "SELECT * FROM BOOKS WHERE " + column + " = ?";
+
+			
+			Connection conn = this.conn();
+			PreparedStatement pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, value);
+			ResultSet result = pstmt.executeQuery();
+			
+			if (!result.next()) {
+				return null;
+			}
+
+			
+			Book book = new Book(result.getString("Title"), result.getString("Author"), result.getInt("BookID"));
+			conn.close();
+			return book;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+		
+		
+	}
+
+
+	@Override
+	public List<Book> getItemsByString(String column, String value) {
+		if (!column.equals("Title") && !column.equals("title") && !column.equals("Author") && !column.equals("Author")) {
+			throw new IllegalArgumentException("Ungültiger Spaltenname");
+		}
+		
+		try {
+			String sql = "SELECT * FROM BOOKS WHERE " + column + " LIKE ?";
+
+			
+			Connection conn = this.conn();
+			PreparedStatement pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, "%" + value + "%");
+			ResultSet result = pstmt.executeQuery();
+			
+			List<Book> books = new ArrayList<Book>();
+			
+			while (result.next()) {	
+				Book book = new Book(result.getString("Title"), result.getString("Author"), result.getInt("BookID"));
+				books.add(book);
+			}
+
+			conn.close();
+			return books;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		return null;
 	}
 

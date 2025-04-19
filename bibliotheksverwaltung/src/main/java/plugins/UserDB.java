@@ -125,4 +125,10 @@ public class UserDB extends DBHandlerConnection<User>{
 		return null;
 	}
 
+	@Override
+	public List<User> getItemsByString(String column, String value) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

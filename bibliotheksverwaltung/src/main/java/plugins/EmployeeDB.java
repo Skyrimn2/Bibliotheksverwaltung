@@ -84,4 +84,10 @@ public class EmployeeDB extends DBHandlerConnection<Employee> {
 		return null;
 	}
 
+	@Override
+	public List<Employee> getItemsByString(String column, String value) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

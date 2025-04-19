@@ -103,6 +103,7 @@ public class ConsoleFrontend extends Frontend {
 		return state;
 	}
 	
+	@Override
 	public String readString() {
 		Scanner scanner = new Scanner(System.in);
     	String value = scanner.next();
