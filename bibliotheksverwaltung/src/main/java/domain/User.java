@@ -4,16 +4,20 @@ import java.util.List;
 
 public class User {
     private String name;
-    private String password;
+    private byte[] password;
     private int userID;
     private List<Book> loanBooks;
-    private Mempership membership;
+    private Membership membership;
 
-    public User(String name, String password, int userID, Mempership mempership) {
+    public User(String name, byte[] password, int userID, Membership mempership) {
         this.name = name;
         this.userID = userID;
         this.password = password;
         this.membership = mempership;
+    }
+    
+    public byte[] getPassword() {
+    	return this.password;
     }
 
 
