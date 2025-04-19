@@ -11,4 +11,5 @@ public interface FrontendHandler {
     public int readMenuOption();
     public void showResult(Displayable disp);
     public void showResultList(List<Displayable> disps);
+    public boolean loginView();
 }
