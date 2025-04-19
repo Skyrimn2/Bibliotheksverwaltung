@@ -16,8 +16,11 @@ import domain.Displayable;
 
 public class ConsoleFrontend extends Frontend {
 	
-	public ConsoleFrontend() {
+	private String dbPath;
+	
+	public ConsoleFrontend(String dbpath) {
 		super();
+		this.dbPath = dbpath;
 	}
 	
     @Override
@@ -69,13 +72,13 @@ public class ConsoleFrontend extends Frontend {
 		switch (selection) {
 		case 0:
 			userLevel = 1;
-			Authentication UserAuth = new UserAuthentication();
+			Authentication UserAuth = new UserAuthentication(new UserDB(this.dbPath));
 			state = UserAuth.authenticate(username, password);
 			break;
 			
 		case 1:
 			userLevel = 1;
-			Registration UserReg = new UserRegistration();
+			Registration UserReg = new UserRegistration(new UserDB(this.dbPath));
 			state = UserReg.register(username, password);
 			break;
 
