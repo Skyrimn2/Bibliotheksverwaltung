@@ -1,5 +1,5 @@
 package application;
 
-public interface UserAuthentication {
+public interface Authentication {
     boolean authenticate(String username, String password);
 }
