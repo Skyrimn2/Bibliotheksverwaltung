@@ -24,6 +24,7 @@ public class Menu {
 		int i = 0;
 		for (MenuAction action : actions) {
 			returnString += String.valueOf(i) + "\t\t" + action.getDescription() + "\n";
+			i++;
 		}
 		return returnString;
 	}
