@@ -28,4 +28,8 @@ public class Menu {
 		return returnString;
 	}
 	
+	public void executeAction(int actionNum) {
+		actions.get(actionNum).executeAction();
+	}
+	
 }
