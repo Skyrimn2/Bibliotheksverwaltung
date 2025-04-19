@@ -2,28 +2,20 @@ package plugins;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import adapter.DBHandlerConnection;
+
 import java.sql.*;
 
 import application.DBHandler;
 import domain.Book;
 
-public class BookDB implements DBHandler<Book> {
+public class BookDB extends DBHandlerConnection<Book> {
 
-	String dbPath;
-	
-	public BookDB(String dbPath) {
-		super();
-		this.dbPath = dbPath;
+	public BookDB(String indbPath) {
+		super(indbPath);
 	}
-	
-	private Connection conn() throws SQLException {
-		
-		String db = "jdbc:sqlite:";
-		String connectionstring = db + this.dbPath;
-		
-		Connection conn = DriverManager.getConnection(connectionstring);
-		return conn;
-	}
+
 	
 	@Override
 	public Book loadItemByID(int id) {
@@ -70,6 +62,13 @@ public class BookDB implements DBHandler<Book> {
 		} finally {
 			return books;
 		}
+	}
+
+
+	@Override
+	public Book getItemByString(String column, String value) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	
