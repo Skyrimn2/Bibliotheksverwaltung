@@ -28,13 +28,14 @@ public class Bibliotheksverwaltung {
         Menu menu = new Menu();
         menu.registerAction(new ListBooksAction(new BookDB(dbPath), frontend));
         
+        menu.registerAction(new QuitAppAction());
+        
         frontend.loginView();        
-        
-        frontend.showMenu(menu);
-        int option = frontend.readMenuOption();
-        
-       menu.executeAction(option);
-       
-       sc.close();
+        while (true) {
+        	frontend.showMenu(menu);
+        	int option = frontend.readMenuOption();
+        	menu.executeAction(option);        	
+        }
+
     }
 }
