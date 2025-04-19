@@ -18,10 +18,10 @@ public class BookDB implements DBHandler<Book> {
 	
 	private Connection conn() throws SQLException {
 		
-		String db = "jdbc:sqlite";
+		String db = "jdbc:sqlite:";
 		String connectionstring = db + this.dbPath;
 		
-		Connection conn = DriverManager.getConnection(null);
+		Connection conn = DriverManager.getConnection(connectionstring);
 		return conn;
 	}
 	
@@ -46,25 +46,24 @@ public class BookDB implements DBHandler<Book> {
 	@Override
 	public List<Book> loadAllOfItem() {
 		
-		List<Book> books = new ArrayList();
+		List<Book> books = new ArrayList<Book>();
 		try {	
 			Connection conn = this.conn();
 			
-			String sql = "SELECT * FROM BOOKS;";
+			String sql = "SELECT * FROM Books;";
 			
 			PreparedStatement pstmt = conn.prepareStatement(sql);
 			ResultSet result = pstmt.executeQuery();
-			
-			conn.close();
-			
+						
 			while(result.next()) {
 				int ID = result.getInt("BookID");
-				String title = result.getString("Title");
+				String title = result.getString("Titel");
 				String author = result.getString("Autor");
 				
-				Book book = new Book(title, author, ID);
-				books.add(book);
+				books.add(new Book(title, author, ID));
 			}
+			
+			conn.close();
 			
 		} catch (SQLException e) {
 		    e.printStackTrace();
