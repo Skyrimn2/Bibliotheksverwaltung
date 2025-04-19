@@ -49,8 +49,8 @@ public class BookDB extends DBHandlerConnection<Book> {
 						
 			while(result.next()) {
 				int ID = result.getInt("BookID");
-				String title = result.getString("Titel");
-				String author = result.getString("Autor");
+				String title = result.getString("Title");
+				String author = result.getString("Author");
 				
 				books.add(new Book(title, author, ID));
 			}
