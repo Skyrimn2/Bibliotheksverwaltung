@@ -13,7 +13,6 @@ public class Bibliotheksverwaltung {
     	System.out.println("Please enter DB Path:");
     	Scanner sc = new Scanner(System.in);
     	String dbPath = sc.next();
-    	sc.close();
             
         FrontendHandler frontend = new ConsoleFrontend();
         Menu menu = new Menu();
@@ -21,5 +20,10 @@ public class Bibliotheksverwaltung {
         
         
         frontend.showMenu(menu);
+        int option = frontend.readMenuOption();
+        
+       menu.executeAction(option);
+       
+       sc.close();
     }
 }
