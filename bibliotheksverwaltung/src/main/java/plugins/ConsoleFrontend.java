@@ -3,11 +3,18 @@ package plugins;
 import java.util.List;
 import java.util.Scanner;
 
+import adapter.EmployeeAuthentication;
+import adapter.EmployeeRegistration;
+import adapter.Frontend;
+import adapter.UserAuthentication;
+import adapter.UserRegistration;
+import application.Authentication;
 import application.FrontendHandler;
 import application.Menu;
+import application.Registration;
 import domain.Displayable;
 
-public class ConsoleFrontend implements FrontendHandler {
+public class ConsoleFrontend extends Frontend {
 	
 	public ConsoleFrontend() {
 		super();
@@ -45,4 +52,58 @@ public class ConsoleFrontend implements FrontendHandler {
     public void showResult(Displayable disp) {
     	disp.getDisplayText();	
     }
+
+
+	@Override
+	public boolean loginView() {
+		System.out.println("Please select:\n0\t\tlogin with User\n1\t\tregister User\n2\t\tlogin as employee\n3\t\tregister employee");
+		
+		int selection = this.readMenuOption();
+		boolean state = false;
+		
+		System.out.println("Input username:\t\t");
+		String username = this.readString();
+		System.out.println("Input password:\t\t");
+		String password = this.readString();
+		
+		switch (selection) {
+		case 0:
+			userLevel = 1;
+			Authentication UserAuth = new UserAuthentication();
+			state = UserAuth.authenticate(username, password);
+			break;
+			
+		case 1:
+			userLevel = 1;
+			Registration UserReg = new UserRegistration();
+			state = UserReg.register(username, password);
+			break;
+
+		case 2:
+			userLevel = 2;
+			Authentication EmpAuth = new EmployeeAuthentication();
+			state = EmpAuth.authenticate(username, password);
+			break;
+			
+		case 3:
+			userLevel = 2;
+			Registration EmpReg = new EmployeeRegistration();
+			state = EmpReg.register(username, password);
+			
+		default:
+			break;
+		}
+		if (state == false) {
+			System.out.println("Wrong username or password. Try again.\n\n");
+			state = this.loginView();
+		}
+		return state;
+	}
+	
+	public String readString() {
+		Scanner scanner = new Scanner(System.in);
+    	String value = scanner.next();
+    	scanner.nextLine();
+    	return value;
+	}
 }
