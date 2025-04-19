@@ -28,9 +28,9 @@ public class ConsoleFrontend implements FrontendHandler {
     
     @Override
     public int readMenuOption() {
-    	Scanner scanner = new Scanner(System.in);
-    	 int selection = scanner.nextInt();
-         scanner.nextLine();
+		Scanner scanner = new Scanner(System.in);
+    	int selection = scanner.nextInt();
+        scanner.nextLine();
     	
     	return selection;
     }
