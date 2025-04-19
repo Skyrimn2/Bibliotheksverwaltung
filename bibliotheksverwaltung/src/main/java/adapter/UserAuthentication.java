@@ -1,8 +1,6 @@
 package adapter;
 
 
-import java.security.NoSuchAlgorithmException;
-import java.security.spec.InvalidKeySpecException;
 import java.util.Arrays;
 
 import application.Authentication;
@@ -25,10 +23,11 @@ public class UserAuthentication implements Authentication {
 		if(user_db == null) {
 			return false;
 		}
-		byte[] password_hash = null;
+		byte[] salt = user_db.getSalt();
+		byte[] password_hash = this.hashPassword(password, salt);
 		byte[] db_password_hash = null;
 		
-		password_hash = this.hashPassword(password);
+
 		db_password_hash = user_db.getPassword();
 
 		

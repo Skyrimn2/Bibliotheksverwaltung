@@ -17,8 +17,9 @@ public class UserRegistration implements Registration {
 	
 	@Override
 	public boolean register(String username, String password) {
-		byte[] password_hash = this.hashPassword(password);
-		User user = new User(username, password_hash, 0, null);
+		byte[] salt = this.generateSalt();
+		byte[] password_hash = this.hashPassword(password, salt);
+		User user = new User(username, password_hash, 0, null, salt);
 		
 		db.saveItem(user);
 		

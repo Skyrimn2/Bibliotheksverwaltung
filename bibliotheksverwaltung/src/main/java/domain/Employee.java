@@ -2,27 +2,34 @@ package domain;
 
 public class Employee {
     private String name;
-    private String employeeID;
+    private byte[] password;
+    private int employeeID;
+    private byte[] password_salt;
 
-    public Employee(String name, String employeeID) {
+    public Employee(String name, byte[] password, int employeeID) {
         this.name = name;
         this.employeeID = employeeID;
+        this.password = password;
     }
     
-    public String getName() {
-        return this.name;
-    }
-
-    public String getEmployeeID() {
-        return this.employeeID;
-    }
-
-    public void setName(String name) {
+    public Employee(String name, byte[] password, int employeeID, byte[] salt) {
         this.name = name;
+        this.employeeID = employeeID;
+        this.password = password;
+        this.password_salt = salt;
+    }
+    
+    public byte[] getPassword() {
+    	return this.password;
     }
 
-    public void setEmployeeID(String employeeID) {
-        this.employeeID = employeeID;
-    }
+	public String getName() {
+		return this.name;
+	}
+	
+	public byte[] getSalt() {
+		return this.password_salt;
+	}
+
 
 }

@@ -44,8 +44,22 @@ public class UserDB extends DBHandlerConnection<User>{
 
 	@Override
 	public void saveItem(User item) {
-		// TODO Auto-generated method stub
-		
+		try {
+			
+			String sql = "INSERT INTO USERS(name, password, salt) VALUES (?, ?, ?)";
+			
+			Connection conn = this.conn();
+			PreparedStatement pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, item.getName());
+			pstmt.setBytes(2, item.getPassword());
+			pstmt.setBytes(3, item.getSalt());
+			pstmt.executeUpdate();
+
+			conn.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	@Override
@@ -84,12 +98,16 @@ public class UserDB extends DBHandlerConnection<User>{
 	public User getItemByString(String column, String value) {
 		try {
 			
-			String sql = "SELECT * FROM USERS WHERE ? = ?";
+			if (!column.equals("name") && !column.equals("id") && !column.equals("membership_id")) {
+		        throw new IllegalArgumentException("Ungültiger Spaltenname");
+		    }
+
+		    String sql = "SELECT * FROM USERS WHERE " + column + " = ?";
+
 			
 			Connection conn = this.conn();
 			PreparedStatement pstmt = conn.prepareStatement(sql);
-			pstmt.setString(1, column);
-			pstmt.setString(2, value);
+			pstmt.setString(1, value);
 			ResultSet result = pstmt.executeQuery();
 			
 			if (!result.next()) {
@@ -97,7 +115,7 @@ public class UserDB extends DBHandlerConnection<User>{
 			}
 
 			
-			User user = new User(result.getString("Name"), result.getBytes("Password"), result.getInt("ID"), this.readMembership(conn, result.getInt("membership_id")));
+			User user = new User(result.getString("Name"), result.getBytes("Password"), result.getInt("ID"), this.readMembership(conn, result.getInt("membership_id")), result.getBytes("salt"));
 			conn.close();
 			return user;
 		} catch (SQLException e) {

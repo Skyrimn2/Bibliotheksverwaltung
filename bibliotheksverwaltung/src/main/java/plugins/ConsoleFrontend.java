@@ -84,13 +84,13 @@ public class ConsoleFrontend extends Frontend {
 
 		case 2:
 			userLevel = 2;
-			Authentication EmpAuth = new EmployeeAuthentication();
+			Authentication EmpAuth = new EmployeeAuthentication(new EmployeeDB(this.dbPath));
 			state = EmpAuth.authenticate(username, password);
 			break;
 			
 		case 3:
 			userLevel = 2;
-			Registration EmpReg = new EmployeeRegistration();
+			Registration EmpReg = new EmployeeRegistration(new EmployeeDB(this.dbPath));
 			state = EmpReg.register(username, password);
 			
 		default:
