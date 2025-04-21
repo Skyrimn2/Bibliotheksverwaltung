@@ -96,9 +96,30 @@ public class LendingDB extends DBHandlerConnection<Lending> {
 
 	@Override
 	public List<Lending> loadAllOfItem() {
-		// TODO Auto-generated method stub
-		return null;
+	    List<Lending> lendings = new java.util.ArrayList<>();
+
+	    String sql = "SELECT * FROM LENDING";
+
+	    try (Connection conn = this.conn(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
+	        ResultSet result = pstmt.executeQuery();
+
+	        while (result.next()) {
+	            User user = getUser(result.getInt("UserID"));
+	            BookCopy copy = getBookBopy(result.getInt("CopyID"));
+	            Timestamp lendingDate = result.getTimestamp("LendingDate");
+	            Timestamp returnDate = result.getTimestamp("ReturnDate");
+	            int lendingID = result.getInt("LendingID");
+
+	            lendings.add(new Lending(user, copy, lendingDate, lendingID, returnDate));
+	        }
+
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
+
+	    return lendings;
 	}
+
 
 	@Override
 	public Lending getItemByString(String column, String value) {
@@ -108,9 +129,38 @@ public class LendingDB extends DBHandlerConnection<Lending> {
 
 	@Override
 	public List<Lending> getItemsByString(String column, String value) {
-		// TODO Auto-generated method stub
-		return null;
+	    List<Lending> lendings = new java.util.ArrayList<>();
+
+	    List<String> allowedColumns = List.of("UserID", "CopyID", "userID", "copyID");
+
+	    if (!allowedColumns.contains(column)) {
+	        System.err.println("Invalid column name: " + column);
+	        return lendings;
+	    }
+
+	    String sql = "SELECT * FROM LENDING WHERE " + column + " = ?";
+
+	    try (Connection conn = this.conn(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
+	        pstmt.setString(1, value);
+	        ResultSet result = pstmt.executeQuery();
+
+	        while (result.next()) {
+	            User user = getUser(result.getInt("UserID"));
+	            BookCopy copy = getBookBopy(result.getInt("CopyID"));
+	            Timestamp lendingDate = result.getTimestamp("LendingDate");
+	            Timestamp returnDate = result.getTimestamp("ReturnDate");
+	            int lendingID = result.getInt("LendingID");
+
+	            lendings.add(new Lending(user, copy, lendingDate, lendingID, returnDate));
+	        }
+
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
+
+	    return lendings;
 	}
+
 	
 	private User getUser(int id) {
 		UserDB userDB = new UserDB(this.dbPath);

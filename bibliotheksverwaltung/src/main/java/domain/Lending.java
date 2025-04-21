@@ -51,5 +51,9 @@ public class Lending {
 	public Timestamp getReturnDate() {
 		return this.returnDate;
 	}
+	
+	public int getID() {
+		return this.lendingID;
+	}
 
 }
