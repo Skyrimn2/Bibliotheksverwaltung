@@ -9,7 +9,7 @@ import domain.Displayable;
 
 public class ListBookByTitleAction implements MenuAction {
 
-	private String description = "List books with give title";
+	private String description = "List books with given title";
 	private DBHandler<Book> db;
 	private FrontendHandler frontend;
 	

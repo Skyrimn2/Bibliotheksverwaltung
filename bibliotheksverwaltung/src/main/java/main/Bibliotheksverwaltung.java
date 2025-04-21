@@ -3,14 +3,11 @@ package main;
 import java.util.Scanner;
 
 import application.*;
-import domain.*;
 import plugins.*;
 
 public class Bibliotheksverwaltung {
 
     public static void main(String[] args) {
- 
-
     	
     	System.out.println("Please enter DB Path:");
     	Scanner sc = new Scanner(System.in);
