@@ -1,5 +1,6 @@
 package plugins;
 
+import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 
@@ -38,11 +39,22 @@ public class ConsoleFrontend extends Frontend {
     
     @Override
     public int readMenuOption() {
-		Scanner scanner = new Scanner(System.in);
-    	int selection = scanner.nextInt();
-        scanner.nextLine();
-    	
-    	return selection;
+    	Scanner scanner = new Scanner(System.in);
+	    int selection = -1;
+
+	    while (true) {
+	        try {
+	            System.out.print("Please enter a number: ");
+	            selection = scanner.nextInt();
+	            scanner.nextLine(); // consume the newline character
+	            break;
+	        } catch (InputMismatchException e) {
+	            System.out.println("Invalid input. Please enter a valid number.");
+	            scanner.nextLine(); // consume the invalid input
+	        }
+	    }
+
+	    return selection;
     }
     
     @Override
