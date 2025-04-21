@@ -9,6 +9,7 @@ import java.sql.*;
 
 import application.DBHandler;
 import domain.Book;
+import domain.BookCategory;
 import domain.User;
 
 public class BookDB extends DBHandlerConnection<Book> {
@@ -49,11 +50,8 @@ public class BookDB extends DBHandlerConnection<Book> {
 			ResultSet result = pstmt.executeQuery();
 						
 			while(result.next()) {
-				int ID = result.getInt("BookID");
-				String title = result.getString("Title");
-				String author = result.getString("Author");
 				
-				books.add(new Book(title, author, ID));
+				books.add(new Book(result.getString("Title"), result.getString("Author"), result.getInt("BookID"), this.getAvailableCopies(conn, result.getInt("BookID")), BookCategory.valueOf(result.getString("Category"))));
 			}
 			
 			conn.close();
@@ -86,7 +84,7 @@ public class BookDB extends DBHandlerConnection<Book> {
 			}
 
 			
-			Book book = new Book(result.getString("Title"), result.getString("Author"), result.getInt("BookID"));
+			Book book = new Book(result.getString("Title"), result.getString("Author"), result.getInt("BookID"), this.getAvailableCopies(conn, result.getInt("BookID")), BookCategory.valueOf(result.getString("Category")));
 			conn.close();
 			return book;
 		} catch (SQLException e) {
@@ -115,9 +113,9 @@ public class BookDB extends DBHandlerConnection<Book> {
 			ResultSet result = pstmt.executeQuery();
 			
 			List<Book> books = new ArrayList<Book>();
-			
+
 			while (result.next()) {	
-				Book book = new Book(result.getString("Title"), result.getString("Author"), result.getInt("BookID"));
+				Book book = new Book(result.getString("Title"), result.getString("Author"), result.getInt("BookID"), this.getAvailableCopies(conn, result.getInt("BookID")), BookCategory.valueOf(result.getString("Category")));
 				books.add(book);
 			}
 
@@ -128,6 +126,25 @@ public class BookDB extends DBHandlerConnection<Book> {
 			e.printStackTrace();
 		}
 		return null;
+	}
+	
+	private int getAvailableCopies(Connection conn, int BookID) {
+		try {
+			String sql = "SELECT COUNT(*) as available FROM BOOKCOPIES WHERE BookID = ?";
+
+			
+			PreparedStatement pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, BookID);
+			ResultSet result = pstmt.executeQuery();
+			
+			return result.getInt("available");
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return -1;	
+		
 	}
 
 	
