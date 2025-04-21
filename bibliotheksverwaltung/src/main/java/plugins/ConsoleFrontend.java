@@ -27,6 +27,7 @@ public class ConsoleFrontend extends Frontend {
     @Override
     public void showMenu(Menu menu) {
     	System.out.println(menu.getAllDescriptions());
+    	System.out.print("\n"+"Please enter a number: ");
     	
     }
     
@@ -37,13 +38,12 @@ public class ConsoleFrontend extends Frontend {
 
 	    while (true) {
 	        try {
-	            System.out.print("Please enter a number: ");
 	            selection = scanner.nextInt();
-	            scanner.nextLine(); // consume the newline character
+	            scanner.nextLine();
 	            break;
 	        } catch (InputMismatchException e) {
 	            System.out.println("Invalid input. Please enter a valid number.");
-	            scanner.nextLine(); // consume the invalid input
+	            scanner.nextLine();
 	        }
 	    }
 
