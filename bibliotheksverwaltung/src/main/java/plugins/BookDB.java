@@ -51,7 +51,7 @@ public class BookDB extends DBHandlerConnection<Book> {
 						
 			while(result.next()) {
 				
-				books.add(new Book(result.getString("Title"), result.getString("Author"), result.getInt("BookID"), this.getAvailableCopies(conn, result.getInt("BookID")), BookCategory.valueOf(result.getString("Category"))));
+				books.add(new Book(result.getString("Title"), result.getString("Author"), result.getInt("BookID"), this.getAvailableCopies(conn, result.getInt("BookID")), BookCategory.valueOf(result.getString("Category")), this.getCopies(conn, result.getInt("BookID"))));
 			}
 			
 			conn.close();
@@ -84,7 +84,7 @@ public class BookDB extends DBHandlerConnection<Book> {
 			}
 
 			
-			Book book = new Book(result.getString("Title"), result.getString("Author"), result.getInt("BookID"), this.getAvailableCopies(conn, result.getInt("BookID")), BookCategory.valueOf(result.getString("Category")));
+			Book book = new Book(result.getString("Title"), result.getString("Author"), result.getInt("BookID"), this.getAvailableCopies(conn, result.getInt("BookID")), BookCategory.valueOf(result.getString("Category")), this.getCopies(conn, result.getInt("BookID")));
 			conn.close();
 			return book;
 		} catch (SQLException e) {
@@ -115,7 +115,7 @@ public class BookDB extends DBHandlerConnection<Book> {
 			List<Book> books = new ArrayList<Book>();
 
 			while (result.next()) {	
-				Book book = new Book(result.getString("Title"), result.getString("Author"), result.getInt("BookID"), this.getAvailableCopies(conn, result.getInt("BookID")), BookCategory.valueOf(result.getString("Category")));
+				Book book = new Book(result.getString("Title"), result.getString("Author"), result.getInt("BookID"), this.getAvailableCopies(conn, result.getInt("BookID")), BookCategory.valueOf(result.getString("Category")), this.getCopies(conn, result.getInt("BookID")));
 				books.add(book);
 			}
 
@@ -129,6 +129,25 @@ public class BookDB extends DBHandlerConnection<Book> {
 	}
 	
 	private int getAvailableCopies(Connection conn, int BookID) {
+		try {
+			String sql = "SELECT COUNT(*) as available FROM BOOKCOPIES WHERE BookID = ? AND IsAvailable = 1";
+
+			
+			PreparedStatement pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, BookID);
+			ResultSet result = pstmt.executeQuery();
+			
+			return result.getInt("available");
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return -1;	
+		
+	}
+	
+	private int getCopies(Connection conn, int BookID) {
 		try {
 			String sql = "SELECT COUNT(*) as available FROM BOOKCOPIES WHERE BookID = ?";
 

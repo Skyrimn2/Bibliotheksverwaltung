@@ -23,13 +23,6 @@ public class ConsoleFrontend extends Frontend {
 		super();
 		this.dbPath = dbpath;
 	}
-	
-    @Override
-    public void showBook(domain.Book book) {
-        System.out.println("Buchtitel: " + book.getTitle());
-        System.out.println("Buchautor: " + book.getAutor());
-        System.out.println("Verfügbar: " + (book.isAvailable() ? "Ja" : "Nein"));
-    }
     
     @Override
     public void showMenu(Menu menu) {

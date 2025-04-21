@@ -15,6 +15,6 @@ public class DisplayableBook implements Displayable {
 	
 	@Override
 	public String getDisplayText() {
-		return book.getTitle() +  "\n" + book.getAutor() + "\n";
+		return " ID:\t\t" + book.getId() + "\n title:\t\t" + book.getTitle() +  "\n author:\t" + book.getAutor() + "\n category:\t" + book.getCategoryString() + "\n copies:\t\t" + book.getCopies() + "\n available copies:\t" + book.getAvailableCopies() + "\n";
 	}
 }
