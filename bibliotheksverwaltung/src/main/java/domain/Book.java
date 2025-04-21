@@ -8,16 +8,23 @@ public class Book {
     private int id;
     private String titel;
     private String autor;
-    private boolean verfuegbar;
-    private List<Rating> bewertungen;
-    private BookCategory kategorie;
+    private int availableCopies;
+    private int copies;
+    private BookCategory category;
 
     public Book(String titel, String autor, int id) {
         this.id = id;
         this.titel = titel;
         this.autor = autor;
-        this.verfuegbar = true;
-        this.bewertungen = new ArrayList<Rating>();
+    }
+    
+    public Book(String titel, String autor, int id, int available, BookCategory category, int copies) {
+        this.id = id;
+        this.titel = titel;
+        this.autor = autor;
+        this.availableCopies = available;
+        this.category = category;
+        this.copies = copies;
     }
 
     public String getTitle() {
@@ -28,17 +35,6 @@ public class Book {
         return autor;
     }
 
-    public boolean isAvailable() {
-        return verfuegbar;
-    }
-
-    public void setVerfuegbar(boolean verfuegbar) {
-        this.verfuegbar = verfuegbar;
-    }
-
-    public void bewertungHinzufuegen(Rating bewertung) {
-        this.bewertungen.add(bewertung);
-    }
 
     public int getId(){
         return id;
@@ -47,9 +43,17 @@ public class Book {
     public void setId(int id) {
         this.id = id;
     }
+    
+    public int getAvailableCopies() {
+    	return this.availableCopies;
+    }
+    
+    public String getCategoryString() {
+    	return category.name().replace("_", " ").toLowerCase();
+    }
 
-    public List<Rating> getBewertungen() {
-        return bewertungen;
+    public int getCopies() {
+    	return this.copies;
     }
 
 }

@@ -9,12 +9,9 @@ import javax.crypto.spec.PBEKeySpec;
 
 public interface Authentication {
     boolean authenticate(String username, String password);
-    public default byte[] hashPassword(String password){
+    public default byte[] hashPassword(String password, byte[] salt){
     	byte[] hash = null;
     	
-    	SecureRandom random = new SecureRandom();
-    	byte[] salt = new byte[16];
-    	random.nextBytes(salt);
     	PBEKeySpec spec = new PBEKeySpec(password.toCharArray(), salt, 65536, 128);
     	SecretKeyFactory factory = null;
     	try {
@@ -30,4 +27,10 @@ public interface Authentication {
 
 		return hash;
 	}
+    public default byte[] generateSalt() {
+    	SecureRandom random = new SecureRandom();
+    	byte[] salt = new byte[16];
+    	random.nextBytes(salt);
+    	return salt;
+    }
 }

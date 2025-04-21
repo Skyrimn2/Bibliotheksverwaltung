@@ -58,4 +58,16 @@ public class MembershipDB extends DBHandlerConnection<Membership> {
 		return null;
 	}
 
+	@Override
+	public Membership getItemByString(String column, String value) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<Membership> getItemsByString(String column, String value) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

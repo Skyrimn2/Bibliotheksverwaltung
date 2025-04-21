@@ -10,4 +10,5 @@ public interface DBHandler<T> {
 	public void updateItemByID(T item, int id);
 	public List<T> loadAllOfItem();
 	public T getItemByString(String column, String value);
+	public List<T> getItemsByString(String column, String value);
 }

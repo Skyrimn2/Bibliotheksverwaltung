@@ -1,28 +1,51 @@
 package domain;
 
-public class Employee {
+public class Employee implements UserInterface{
     private String name;
-    private String employeeID;
+    private byte[] password;
+    private int employeeID;
+    private byte[] password_salt;
 
-    public Employee(String name, String employeeID) {
+    public Employee(String name, byte[] password, int employeeID) {
+        this.name = name;
+        this.employeeID = employeeID;
+        this.password = password;
+    }
+    
+    public Employee(String name, byte[] password, int employeeID, byte[] salt) {
+        this.name = name;
+        this.employeeID = employeeID;
+        this.password = password;
+        this.password_salt = salt;
+    }
+    
+    public Employee(String name, int employeeID) {
         this.name = name;
         this.employeeID = employeeID;
     }
     
-    public String getName() {
-        return this.name;
+    
+    public byte[] getPassword() {
+    	return this.password;
     }
 
-    public String getEmployeeID() {
-        return this.employeeID;
-    }
+    @Override
+	public String getName() {
+		return this.name;
+	}
+	
+	public byte[] getSalt() {
+		return this.password_salt;
+	}
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public void setEmployeeID(String employeeID) {
-        this.employeeID = employeeID;
-    }
+	@Override
+	public int getUserLevel() {
+		return 1;
+	}
+	
+	@Override
+	public int getID() {
+		return this.employeeID;
+	}
 
 }

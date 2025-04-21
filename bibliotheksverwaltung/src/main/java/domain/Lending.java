@@ -1,20 +1,59 @@
 package domain;
 
-import java.time.LocalDate;
+import java.sql.Timestamp;
 
 public class Lending {
     private int lendingID;
     private User user;
-    private Book book;
-    private LocalDate lendingDate;
-    private LocalDate returnDate;
+    private BookCopy book;
+    private Timestamp lendingDate;
+    private Timestamp returnDate;
     
-    public Lending(User user, Book book, LocalDate lendingDate, int lendingID) {
+    public Lending(User user, BookCopy book, Timestamp lendingDate, int lendingID) {
         this.user = user;
         this.book = book;
         this.lendingDate = lendingDate;
         this.lendingID = lendingID;
         this.returnDate = null;
     }
+    public Lending(User user, BookCopy book, Timestamp lendingDate) {
+        this.user = user;
+        this.book = book;
+        this.lendingDate = lendingDate;
+        this.returnDate = null;
+    }
+    
+    public Lending(User user, BookCopy book, Timestamp lendingDate, int lendingID, Timestamp returnDate) {
+        this.user = user;
+        this.book = book;
+        this.lendingDate = lendingDate;
+        this.lendingID = lendingID;
+        this.returnDate = returnDate;
+    }
+    
+    public User getUser() {
+    	return this.user;
+    }
+    
+    public BookCopy getBookCopy() {
+    	return this.book;
+    }
+    
+    public Timestamp getLendingDate() {
+    	return this.lendingDate;
+    }
+    
+    public void setReturnDate(Timestamp date) {
+    	System.out.println(date.toString());
+    	this.returnDate = date;
+    }
+
+	public Timestamp getReturnDate() {
+		return this.returnDate;
+	}
+	
+	public int getID() {
+		return this.lendingID;
+	}
 
 }
