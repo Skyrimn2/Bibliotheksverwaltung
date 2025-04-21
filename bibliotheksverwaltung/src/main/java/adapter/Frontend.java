@@ -3,14 +3,19 @@ package adapter;
 
 
 import application.FrontendHandler;
+import domain.UserInterface;
 
 
 public abstract class Frontend implements FrontendHandler {
 
-	protected int userLevel = 0;
+	protected UserInterface user;
 	
 	public Frontend() {
 		super();
+	}
+	
+	public UserInterface getUser() {
+		return this.user;
 	}
 
 }

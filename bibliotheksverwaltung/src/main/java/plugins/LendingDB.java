@@ -47,8 +47,23 @@ public class LendingDB extends DBHandlerConnection<Lending> {
 
 	@Override
 	public void saveItem(Lending item) {
-		// TODO Auto-generated method stub
-		
+	    String sql = "INSERT INTO LENDING (UserID, CopyID, LendingDate, ReturnDate) VALUES (?, ?, ?, ?)";
+	    
+	    try (Connection conn = this.conn(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
+	        pstmt.setInt(1, item.getUser().getID());
+	        pstmt.setInt(2, item.getBookCopy().getCopyID());
+	        pstmt.setTimestamp(3, item.getLendingDate());
+	        
+	        if (item.getReturnDate() != null) {
+	            pstmt.setTimestamp(4, item.getReturnDate());
+	        } else {
+	            pstmt.setNull(4, java.sql.Types.TIMESTAMP);
+	        }
+
+	        pstmt.executeUpdate();
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
 	}
 
 	@Override

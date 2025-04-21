@@ -21,9 +21,39 @@ public class BookDB extends DBHandlerConnection<Book> {
 	
 	@Override
 	public Book loadItemByID(int id) {
-		// TODO Auto-generated method stub
-		return null;
+	    try {
+	        String sql = "SELECT * FROM BOOKS WHERE BookID = ?";
+	        Connection conn = this.conn();
+	        PreparedStatement pstmt = conn.prepareStatement(sql);
+	        pstmt.setInt(1, id);
+	        ResultSet result = pstmt.executeQuery();
+
+	        if (!result.next()) {
+	            conn.close();
+	            return null;
+	        }
+
+	        String title = result.getString("Title");
+	        String author = result.getString("Author");
+	        String categoryStr = result.getString("Category");
+	        BookCategory category = BookCategory.valueOf(categoryStr.toUpperCase());
+
+	        int available = getAvailableCopies(conn, id);
+	        int copies = getCopies(conn, id);
+
+	        Book book = new Book(title, author, id, available, category, copies);
+	        conn.close();
+	        return book;
+
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+
+	    }
+
+	    return null;
 	}
+
+
 
 	@Override
 	public void saveItem(Book item) {

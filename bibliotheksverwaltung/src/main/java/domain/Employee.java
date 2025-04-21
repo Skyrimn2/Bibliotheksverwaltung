@@ -1,6 +1,6 @@
 package domain;
 
-public class Employee {
+public class Employee implements UserInterface{
     private String name;
     private byte[] password;
     private int employeeID;
@@ -19,10 +19,17 @@ public class Employee {
         this.password_salt = salt;
     }
     
+    public Employee(String name, int employeeID) {
+        this.name = name;
+        this.employeeID = employeeID;
+    }
+    
+    
     public byte[] getPassword() {
     	return this.password;
     }
 
+    @Override
 	public String getName() {
 		return this.name;
 	}
@@ -31,5 +38,14 @@ public class Employee {
 		return this.password_salt;
 	}
 
+	@Override
+	public int getUserLevel() {
+		return 1;
+	}
+	
+	@Override
+	public int getID() {
+		return this.employeeID;
+	}
 
 }

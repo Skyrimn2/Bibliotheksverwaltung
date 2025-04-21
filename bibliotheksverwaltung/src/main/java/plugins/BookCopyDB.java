@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 import adapter.DBHandlerConnection;
@@ -51,9 +52,20 @@ public class BookCopyDB extends DBHandlerConnection<BookCopy> {
 
 	@Override
 	public void updateItemByID(BookCopy item, int id) {
-		// TODO Auto-generated method stub
-		
+	    String sql = "UPDATE BOOKCOPIES SET BookID = ?, IsAvailable = ? WHERE CopyID = ?";
+	    
+	    try (Connection conn = this.conn(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
+	        pstmt.setInt(1, item.getBook().getId());
+	        pstmt.setBoolean(2, item.isAvailable());
+	        pstmt.setInt(3, id);
+	        
+	        pstmt.executeUpdate();
+
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
 	}
+
 
 	@Override
 	public List<BookCopy> loadAllOfItem() {
@@ -69,9 +81,35 @@ public class BookCopyDB extends DBHandlerConnection<BookCopy> {
 
 	@Override
 	public List<BookCopy> getItemsByString(String column, String value) {
-		// TODO Auto-generated method stub
-		return null;
+	    if (!column.equals("BookID")) {
+	        throw new IllegalArgumentException("Ungültiger Spaltenname. Nur 'BookID' erlaubt.");
+	    }
+	    
+	    try {
+	        String sql = "SELECT * FROM BOOKCOPIES WHERE " + column + " = ?";
+
+	        Connection conn = this.conn();
+	        PreparedStatement pstmt = conn.prepareStatement(sql);
+	        pstmt.setInt(1, Integer.parseInt(value)); 
+	        ResultSet result = pstmt.executeQuery();
+
+	        List<BookCopy> copies = new ArrayList<>();
+	        
+	        while (result.next()) {
+	            BookCopy copy = new BookCopy(this.getBook(result.getInt("BookID")), result.getInt("CopyID"), result.getBoolean("IsAvailable"));
+	            copies.add(copy);
+	        }
+
+	        conn.close();
+	        return copies;
+
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
+
+	    return null;
 	}
+
 	
 	private Book getBook(int id) {
 		BookDB bookDB = new BookDB(dbPath);

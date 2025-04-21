@@ -2,7 +2,7 @@ package domain;
 
 import java.util.List;
 
-public class User {
+public class User implements UserInterface{
     private String name;
     private byte[] password;
     private int userID;
@@ -25,10 +25,17 @@ public class User {
         this.password_salt = salt;
     }
     
+    public User(String name, int userID, Membership membership) {
+    	this.name = name;
+    	this.userID = userID;
+    	this.membership = membership;
+    }
+    
     public byte[] getPassword() {
     	return this.password;
     }
 
+    @Override
 	public String getName() {
 		return this.name;
 	}
@@ -37,5 +44,19 @@ public class User {
 		return this.password_salt;
 	}
 
+	@Override
+	public int getID() {
+		return this.userID;
+	}
+
+	@Override
+	public int getUserLevel() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+	
+	public Membership getMembership() {
+		return this.membership;
+	}
 
 }

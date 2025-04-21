@@ -10,10 +10,15 @@ import adapter.Frontend;
 import adapter.UserAuthentication;
 import adapter.UserRegistration;
 import application.Authentication;
+import application.DBHandler;
 import application.FrontendHandler;
 import application.Menu;
 import application.Registration;
+import domain.Book;
 import domain.Displayable;
+import domain.Employee;
+import domain.User;
+import domain.UserInterface;
 
 public class ConsoleFrontend extends Frontend {
 	
@@ -76,26 +81,34 @@ public class ConsoleFrontend extends Frontend {
 		
 		switch (selection) {
 		case 0:
-			userLevel = 1;
-			Authentication UserAuth = new UserAuthentication(new UserDB(this.dbPath));
+			DBHandler<User> db = new UserDB(this.dbPath);
+			User user = db.getItemByString("name", username);
+			this.setUser(user);
+			Authentication UserAuth = new UserAuthentication(db);
 			state = UserAuth.authenticate(username, password);
 			break;
 			
 		case 1:
-			userLevel = 1;
-			Registration UserReg = new UserRegistration(new UserDB(this.dbPath));
+			DBHandler<User> db1 = new UserDB(this.dbPath);
+			User user1 = db1.getItemByString("name", username);
+			this.setUser(user1);
+			Registration UserReg = new UserRegistration(db1);
 			state = UserReg.register(username, password);
 			break;
 
 		case 2:
-			userLevel = 2;
-			Authentication EmpAuth = new EmployeeAuthentication(new EmployeeDB(this.dbPath));
+			DBHandler<Employee> db2 = new EmployeeDB(this.dbPath);
+			Employee emp = db2.getItemByString("name", username);
+			this.setUser(emp);
+			Authentication EmpAuth = new EmployeeAuthentication(db2);
 			state = EmpAuth.authenticate(username, password);
 			break;
 			
 		case 3:
-			userLevel = 2;
-			Registration EmpReg = new EmployeeRegistration(new EmployeeDB(this.dbPath));
+			DBHandler<Employee> db3 = new EmployeeDB(this.dbPath);
+			Employee emp1 = db3.getItemByString("name", username);
+			this.setUser(emp1);
+			Registration EmpReg = new EmployeeRegistration(db3);
 			state = EmpReg.register(username, password);
 			
 		default:
@@ -103,7 +116,8 @@ public class ConsoleFrontend extends Frontend {
 		}
 		if (state == false) {
 			System.out.println("Wrong username or password. Try again.\n\n");
-			state = this.loginView();
+			this.deleteUser();
+			state = this.loginView();	
 		}
 		return state;
 	}
@@ -115,4 +129,28 @@ public class ConsoleFrontend extends Frontend {
     	scanner.nextLine();
     	return value;
 	}
+
+	@Override
+	public void showBook(Book buch) {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	@Override
+	public void setUser(User user) {
+		UserInterface u = new User(user.getName(), user.getID(), user.getMembership());
+		this.user = u;
+	}
+	
+	@Override
+	public void setUser(Employee emp) {
+		UserInterface u = new Employee(emp.getName(), emp.getID());
+		this.user = u;
+	}
+	
+	@Override
+	public void deleteUser() {
+		this.user = null;
+	}
+	
 }
