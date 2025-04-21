@@ -149,7 +149,7 @@ public class ConsoleFrontend extends Frontend {
 	
 	@Override
 	public void setUser(User user) {
-		UserInterface u = new User(user.getName(), user.getID(), user.getMembership());
+		UserInterface u = new User(user.getName(), user.getID());
 		this.user = u;
 	}
 	

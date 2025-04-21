@@ -19,7 +19,7 @@ public class UserRegistration implements Registration {
 	public boolean register(String username, String password) {
 		byte[] salt = this.generateSalt();
 		byte[] password_hash = this.hashPassword(password, salt);
-		User user = new User(username, password_hash, 0, null, salt);
+		User user = new User(username, password_hash, salt);
 		
 		db.saveItem(user);
 		

@@ -7,28 +7,30 @@ public class User implements UserInterface{
     private byte[] password;
     private int userID;
     private List<Book> loanBooks;
-    private Membership membership;
     private byte[] password_salt;
 
-    public User(String name, byte[] password, int userID, Membership mempership) {
+    public User(String name, byte[] password, int userID) {
         this.name = name;
         this.userID = userID;
         this.password = password;
-        this.membership = mempership;
     }
     
-    public User(String name, byte[] password, int userID, Membership mempership, byte[] salt) {
+    public User(String name, byte[] password, int userID, byte[] salt) {
         this.name = name;
         this.userID = userID;
         this.password = password;
-        this.membership = mempership;
         this.password_salt = salt;
     }
     
-    public User(String name, int userID, Membership membership) {
+    public User(String name, byte[] password, byte[] salt) {
+        this.name = name;
+        this.password = password;
+        this.password_salt = salt;
+    }
+    
+    public User(String name, int userID) {
     	this.name = name;
     	this.userID = userID;
-    	this.membership = membership;
     }
     
     public byte[] getPassword() {
@@ -55,8 +57,5 @@ public class User implements UserInterface{
 		return 0;
 	}
 	
-	public Membership getMembership() {
-		return this.membership;
-	}
 
 }

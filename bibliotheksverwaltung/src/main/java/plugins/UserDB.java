@@ -7,7 +7,6 @@ import java.sql.SQLException;
 import java.util.List;
 
 import adapter.DBHandlerConnection;
-import domain.Membership;
 import domain.User;
 
 public class UserDB extends DBHandlerConnection<User>{
@@ -32,7 +31,7 @@ public class UserDB extends DBHandlerConnection<User>{
 			}
 
 			
-			User user = new User(result.getString("Name"), result.getBytes("Password"), result.getInt("ID"), this.readMembership(conn, result.getInt("membership_id")));
+			User user = new User(result.getString("Name"), result.getBytes("Password"), result.getInt("ID"));
 			conn.close();
 			return user;
 		} catch (SQLException e) {
@@ -73,26 +72,6 @@ public class UserDB extends DBHandlerConnection<User>{
 		// TODO Auto-generated method stub
 		return null;
 	}
-	
-	private Membership readMembership(Connection conn, int id) {
-		String sql = "SELECT * FROM MEMBERSHIP WHERE ID = ?";
-		
-		try {
-			Membership mem;
-			PreparedStatement pstmt = conn.prepareStatement(sql);
-		
-			pstmt.setInt(1, id);
-			ResultSet result = pstmt.executeQuery();
-			if (!result.next()) {
-				return null;
-			}
-			return new Membership(result.getTimestamp("StartDate"), result.getTimestamp("EndDate"), result.getInt("ID"));
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return null;
-	}
 
 	@Override
 	public User getItemByString(String column, String value) {
@@ -115,7 +94,7 @@ public class UserDB extends DBHandlerConnection<User>{
 			}
 
 			
-			User user = new User(result.getString("Name"), result.getBytes("Password"), result.getInt("ID"), this.readMembership(conn, result.getInt("membership_id")), result.getBytes("salt"));
+			User user = new User(result.getString("Name"), result.getBytes("Password"), result.getInt("ID"), result.getBytes("salt"));
 			conn.close();
 			return user;
 		} catch (SQLException e) {
