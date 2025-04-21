@@ -1,15 +1,15 @@
 package domain;
 
-import java.time.LocalDate;
+import java.sql.Timestamp;
 
 public class Lending {
     private int lendingID;
     private User user;
-    private Book book;
-    private LocalDate lendingDate;
-    private LocalDate returnDate;
+    private BookCopy book;
+    private Timestamp lendingDate;
+    private Timestamp returnDate;
     
-    public Lending(User user, Book book, LocalDate lendingDate, int lendingID) {
+    public Lending(User user, BookCopy book, Timestamp lendingDate, int lendingID) {
         this.user = user;
         this.book = book;
         this.lendingDate = lendingDate;
