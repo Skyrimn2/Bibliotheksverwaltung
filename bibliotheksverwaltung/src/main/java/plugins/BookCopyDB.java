@@ -21,7 +21,7 @@ public class BookCopyDB extends DBHandlerConnection<BookCopy> {
 	@Override
 	public BookCopy loadItemByID(int id) {
 		try {
-			String sql = "SELECT * FROM BOOKS WHERE CopyID = ?";
+			String sql = "SELECT * FROM BOOKCOPIES WHERE CopyID = ?";
 
 			
 			Connection conn = this.conn();

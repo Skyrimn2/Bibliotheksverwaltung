@@ -23,6 +23,14 @@ public class Lending {
         this.returnDate = null;
     }
     
+    public Lending(User user, BookCopy book, Timestamp lendingDate, int lendingID, Timestamp returnDate) {
+        this.user = user;
+        this.book = book;
+        this.lendingDate = lendingDate;
+        this.lendingID = lendingID;
+        this.returnDate = returnDate;
+    }
+    
     public User getUser() {
     	return this.user;
     }
@@ -36,6 +44,7 @@ public class Lending {
     }
     
     public void setReturnDate(Timestamp date) {
+    	System.out.println(date.toString());
     	this.returnDate = date;
     }
 

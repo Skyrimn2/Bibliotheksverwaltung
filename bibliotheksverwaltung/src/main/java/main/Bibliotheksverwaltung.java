@@ -29,6 +29,7 @@ public class Bibliotheksverwaltung {
         menu.registerAction(new ListBooksAction(new BookDB(dbPath), frontend));
         menu.registerAction(new ListBookByTitleAction(new BookDB(dbPath), frontend));
         menu.registerAction(new LendBookAction(new BookDB(dbPath), new BookCopyDB(dbPath), new LendingDB(dbPath), new UserDB(dbPath), frontend));
+        menu.registerAction(new ReturnLendingAction(new LendingDB(dbPath), new BookCopyDB(dbPath), frontend));
         
         menu.registerAction(new QuitAppAction());
         

@@ -19,5 +19,6 @@ public interface FrontendHandler {
     public void setUser(User user);
     public void setUser(Employee emp);
     public void deleteUser();
+    public void setUser(UserInterface user);
     public UserInterface getUser();
 }

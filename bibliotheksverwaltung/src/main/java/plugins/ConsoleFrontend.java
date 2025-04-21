@@ -79,10 +79,12 @@ public class ConsoleFrontend extends Frontend {
 		System.out.println("Input password:\t\t");
 		String password = this.readString();
 		
+		UserInterface user;
+		
 		switch (selection) {
 		case 0:
 			DBHandler<User> db = new UserDB(this.dbPath);
-			User user = db.getItemByString("name", username);
+			user = db.getItemByString("name", username);
 			this.setUser(user);
 			Authentication UserAuth = new UserAuthentication(db);
 			state = UserAuth.authenticate(username, password);
@@ -90,24 +92,33 @@ public class ConsoleFrontend extends Frontend {
 			
 		case 1:
 			DBHandler<User> db1 = new UserDB(this.dbPath);
-			User user1 = db1.getItemByString("name", username);
-			this.setUser(user1);
+			user = db1.getItemByString("name", username);
+			if (user == null)  {
+				return this.loginView();
+			}
+			this.setUser(user);
 			Registration UserReg = new UserRegistration(db1);
 			state = UserReg.register(username, password);
 			break;
 
 		case 2:
 			DBHandler<Employee> db2 = new EmployeeDB(this.dbPath);
-			Employee emp = db2.getItemByString("name", username);
-			this.setUser(emp);
+			user = db2.getItemByString("name", username);
+			if (user == null)  {
+				return this.loginView();
+			}
+			this.setUser(user);
 			Authentication EmpAuth = new EmployeeAuthentication(db2);
 			state = EmpAuth.authenticate(username, password);
 			break;
 			
 		case 3:
 			DBHandler<Employee> db3 = new EmployeeDB(this.dbPath);
-			Employee emp1 = db3.getItemByString("name", username);
-			this.setUser(emp1);
+			user = db3.getItemByString("name", username);
+			if (user == null)  {
+				return this.loginView();
+			}
+			this.setUser(user);
 			Registration EmpReg = new EmployeeRegistration(db3);
 			state = EmpReg.register(username, password);
 			
@@ -146,6 +157,11 @@ public class ConsoleFrontend extends Frontend {
 	public void setUser(Employee emp) {
 		UserInterface u = new Employee(emp.getName(), emp.getID());
 		this.user = u;
+	}
+	
+	@Override
+	public void setUser(UserInterface user) {
+		this.user = user;
 	}
 	
 	@Override
