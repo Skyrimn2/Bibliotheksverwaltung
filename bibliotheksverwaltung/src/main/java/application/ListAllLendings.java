@@ -1,12 +1,11 @@
-package domain;
+package application;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import adapter.DisplayableLendingsPerUser;
-import application.DBHandler;
-import application.FrontendHandler;
-import application.MenuAction;
+import domain.Displayable;
+import domain.Lending;
 
 public class ListAllLendings implements MenuAction {
 	

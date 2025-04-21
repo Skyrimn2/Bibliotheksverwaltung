@@ -44,7 +44,6 @@ public class Lending {
     }
     
     public void setReturnDate(Timestamp date) {
-    	System.out.println(date.toString());
     	this.returnDate = date;
     }
 
