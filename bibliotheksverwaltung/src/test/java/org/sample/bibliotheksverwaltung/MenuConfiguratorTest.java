@@ -2,14 +2,8 @@ package org.sample.bibliotheksverwaltung;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
-import static org.mockito.Mockito.atLeast;
-import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.spy;
-import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-
-import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -17,10 +11,16 @@ import org.mockito.ArgumentCaptor;
 
 import application.DBHandler;
 import application.FrontendHandler;
+import application.ListAllLendings;
+import application.ListBookByTitleAction;
+import application.ListBooksAction;
+import application.LendBookAction;
+import application.ListUserLendings;
 import application.Menu;
 import application.MenuAction;
 import application.MenuConfigurator;
 import application.QuitAppAction;
+import application.ReturnLendingAction;
 import domain.Book;
 import domain.BookCopy;
 import domain.Employee;
@@ -30,7 +30,7 @@ import domain.User;
 /**
  * Test für die MenuConfigurator-Klasse
  *
- * Folgt denke ich den ATRIP-Regeln:
+ * Folgt den ATRIP-Regeln:
  * - Automatic: Der Test läuft automatisch ohne manuelle Eingriffe
  * - Thorough: Testet verschiedene Szenarien (Mitarbeiter und regulärer Benutzer)
  * - Repeatable: Der Test führt bei jedem Durchlauf zum gleichen Ergebnis
@@ -39,9 +39,14 @@ import domain.User;
  */
 public class MenuConfiguratorTest {
 
+    // Konstanten für Testfälle
+    private static final String TEST_DB_PATH = "test.db";
+    
+    // Zu testende Objekte
     private MenuConfigurator menuConfiguratorForUser;
     private MenuConfigurator menuConfiguratorForEmployee;
-    private String dbPath;
+    
+    // Mock-Objekte
     private FrontendHandler frontendMock;
     private DBHandler<Book> bookDBMock;
     private DBHandler<BookCopy> bookCopyDBMock;
@@ -54,7 +59,6 @@ public class MenuConfiguratorTest {
     @Before
     public void setUp() {
         // Mock-Objekte erstellen
-        dbPath = "test.db";
         frontendMock = mock(FrontendHandler.class);
         bookDBMock = mock(DBHandler.class);
         bookCopyDBMock = mock(DBHandler.class);
@@ -65,17 +69,20 @@ public class MenuConfiguratorTest {
         userMock = mock(User.class);
         employeeMock = mock(Employee.class);
 
+        // Standardverhalten für Mocks konfigurieren
+        when(employeeMock.getUserLevel()).thenReturn(1);
+        
         // MenuConfigurator für User erstellen
         when(frontendMock.getUser()).thenReturn(userMock);
-        menuConfiguratorForUser = new MenuConfigurator(dbPath, frontendMock,
-                                                        bookDBMock, bookCopyDBMock,
-                                                        lendingDBMock, userDBMock);
+        menuConfiguratorForUser = new MenuConfigurator(TEST_DB_PATH, frontendMock,
+                                                      bookDBMock, bookCopyDBMock,
+                                                      lendingDBMock, userDBMock);
 
         // MenuConfigurator für Employee erstellen
         when(frontendMock.getUser()).thenReturn(employeeMock);
-        menuConfiguratorForEmployee = new MenuConfigurator(dbPath, frontendMock,
-                                                            bookDBMock, bookCopyDBMock,
-                                                            lendingDBMock, userDBMock);
+        menuConfiguratorForEmployee = new MenuConfigurator(TEST_DB_PATH, frontendMock,
+                                                           bookDBMock, bookCopyDBMock,
+                                                           lendingDBMock, userDBMock);
     }
 
     /**
@@ -83,19 +90,28 @@ public class MenuConfiguratorTest {
      */
     @Test
     public void testConfigureMenuForEmployee() {
+        // Mitarbeiter-Kontext sicherstellen
+        when(frontendMock.getUser()).thenReturn(employeeMock);
+        
         // Konfiguriere Menü für Mitarbeiter
         Menu menu = menuConfiguratorForEmployee.configureMenu();
 
         // Überprüfe Menüstruktur - Menü sollte 4 Einträge haben (3 Spezifische + QuitAppAction)
         String menuDescriptions = menu.getAllDescriptions();
-        assertTrue(menuDescriptions.contains("List all Books"));
-        assertTrue(menuDescriptions.contains("List books with given title"));
-        assertTrue(menuDescriptions.contains("List all lendings"));
-        assertTrue(menuDescriptions.contains("Quit app"));
+        
+        // Prüfe auf erwartete Menüeinträge
+        assertTrue("Menü sollte 'List all Books' enthalten", 
+                  menuDescriptions.contains("List all Books"));
+        assertTrue("Menü sollte 'List books with given title' enthalten", 
+                  menuDescriptions.contains("List books with given title"));
+        assertTrue("Menü sollte 'List all lendings' enthalten", 
+                  menuDescriptions.contains("List all lendings"));
+        assertTrue("Menü sollte 'Quit app' enthalten", 
+                  menuDescriptions.contains("Quit app"));
 
-        // Zähle die Anzahl der Zeilen, um zu überprüfen, ob es 4 Menüoptionen gibt
+        // Zählt die Anzahl der Zeilen, um zu überprüfen, ob es 4 Menüoptionen gibt
         String[] lines = menuDescriptions.split("\n");
-        assertEquals(4, lines.length);
+        assertEquals("Mitarbeitermenü sollte 4 Einträge haben", 4, lines.length);
     }
 
     /**
@@ -103,26 +119,32 @@ public class MenuConfiguratorTest {
      */
     @Test
     public void testConfigureMenuForUser() {
-        // Stelle sicher, dass frontendMock.getUser() den userMock zurückgibt
+        // Benutzerkontext sicherstellen
         when(frontendMock.getUser()).thenReturn(userMock);
+        
         // Konfiguriere Menü für Benutzer
         Menu menu = menuConfiguratorForUser.configureMenu();
-        
 
         // Überprüfe Menüstruktur - Menü sollte 6 Einträge haben (5 Spezifische + QuitAppAction)
         String menuDescriptions = menu.getAllDescriptions();
-        // Debug Ausgabe
-        System.out.println("Menübeschreibungen: " + menuDescriptions);
-        assertTrue(menuDescriptions.contains("List all Books"));
-        assertTrue(menuDescriptions.contains("Lend A Book by ID"));
-        assertTrue(menuDescriptions.contains("Return a loan Book by Lending ID"));
-        assertTrue(menuDescriptions.contains("List books with given title"));
-        assertTrue(menuDescriptions.contains("List all your lendings"));
-        assertTrue(menuDescriptions.contains("Quit app"));
+        
+        // Prüfe auf erwartete Menüeinträge
+        assertTrue("Menü sollte 'List all Books' enthalten", 
+                  menuDescriptions.contains("List all Books"));
+        assertTrue("Menü sollte 'Lend A Book by ID' enthalten", 
+                  menuDescriptions.contains("Lend A Book by ID"));
+        assertTrue("Menü sollte 'Return a loan Book by Lending ID' enthalten", 
+                  menuDescriptions.contains("Return a loan Book by Lending ID"));
+        assertTrue("Menü sollte 'List books with given title' enthalten", 
+                  menuDescriptions.contains("List books with given title"));
+        assertTrue("Menü sollte 'List all your lendings' enthalten", 
+                  menuDescriptions.contains("List all your lendings"));
+        assertTrue("Menü sollte 'Quit app' enthalten", 
+                  menuDescriptions.contains("Quit app"));
 
         // Zähle die Anzahl der Zeilen, um zu überprüfen, ob es 6 Menüoptionen gibt
         String[] lines = menuDescriptions.split("\n");
-        assertEquals(6, lines.length);
+        assertEquals("Benutzermenü sollte 6 Einträge haben", 6, lines.length);
     }
 
     /**
@@ -130,31 +152,51 @@ public class MenuConfiguratorTest {
      */
     @Test
     public void testMenuActionsAreCorrectlyCreated() {
-        // Erstelle eine Menü-Simulation, die den registerAction-Aufruf protokolliert
-        Menu menuMock = mock(Menu.class);
-
-        // Erstelle einen Mocking-Wrapper für die configureMenu-Methode
-        MenuConfigurator spyConfiguratorForEmployee = spy(menuConfiguratorForEmployee);
-        doReturn(menuMock).when(spyConfiguratorForEmployee).configureMenu();
+        // 1. Test für Mitarbeiter-Menü
+        // Mitarbeiterkontext sicherstellen
+        when(frontendMock.getUser()).thenReturn(employeeMock);
         
-        // Rufe die Methode auf
-        spyConfiguratorForEmployee.configureMenu();
-
-        // Überprüfe, ob registerAction mit den richtigen Aktionstypen aufgerufen wurde
-        ArgumentCaptor<MenuAction> actionCaptor = ArgumentCaptor.forClass(MenuAction.class);
-        verify(menuMock, atLeast(4)).registerAction(actionCaptor.capture());
-
-        // Extrahiere die registrierten Aktionen und überprüfe ihre Typen
-        List<MenuAction> capturedActions = actionCaptor.getAllValues();
-
-        // Überprüfe ob die QuitAppAction dabei ist
-        boolean hasQuitAction = false;
-        for (MenuAction action : capturedActions) {
-            if (action instanceof QuitAppAction) {
-                hasQuitAction = true;
-                break;
-            }
-        }
-        assertTrue("Das Menü sollte eine QuitAppAction enthalten", hasQuitAction);
+        // Menü für Mitarbeiter konfigurieren
+        Menu employeeMenu = menuConfiguratorForEmployee.configureMenu();
+        
+        // Menü-Beschreibungen holen und analysieren
+        String employeeMenuDesc = employeeMenu.getAllDescriptions();
+        assertTrue("Mitarbeitermenü sollte 'List all Books' enthalten", 
+                  employeeMenuDesc.contains("List all Books"));
+        assertTrue("Mitarbeitermenü sollte 'List books with given title' enthalten", 
+                  employeeMenuDesc.contains("List books with given title"));
+        assertTrue("Mitarbeitermenü sollte 'List all lendings' enthalten", 
+                  employeeMenuDesc.contains("List all lendings"));
+        assertTrue("Mitarbeitermenü sollte 'Quit app' enthalten", 
+                  employeeMenuDesc.contains("Quit app"));
+        
+        // 2. Test für Benutzer-Menü
+        // Benutzerkontext sicherstellen
+        when(frontendMock.getUser()).thenReturn(userMock);
+        
+        // Menü für Benutzer konfigurieren
+        Menu userMenu = menuConfiguratorForUser.configureMenu();
+        
+        // Menü-Beschreibungen holen und analysieren
+        String userMenuDesc = userMenu.getAllDescriptions();
+        assertTrue("Benutzermenü sollte 'List all Books' enthalten", 
+                  userMenuDesc.contains("List all Books"));
+        assertTrue("Benutzermenü sollte 'Lend A Book by ID' enthalten", 
+                  userMenuDesc.contains("Lend A Book by ID"));
+        assertTrue("Benutzermenü sollte 'Return a loan Book by Lending ID' enthalten", 
+                  userMenuDesc.contains("Return a loan Book by Lending ID"));
+        assertTrue("Benutzermenü sollte 'List books with given title' enthalten", 
+                  userMenuDesc.contains("List books with given title"));
+        assertTrue("Benutzermenü sollte 'List all your lendings' enthalten", 
+                  userMenuDesc.contains("List all your lendings"));
+        assertTrue("Benutzermenü sollte 'Quit app' enthalten", 
+                  userMenuDesc.contains("Quit app"));
+        
+        // Sicherstellen, dass die Anzahl der Menüeinträge korrekt ist
+        String[] employeeLines = employeeMenuDesc.split("\n");
+        assertEquals("Mitarbeitermenü sollte 4 Einträge haben", 4, employeeLines.length);
+        
+        String[] userLines = userMenuDesc.split("\n");
+        assertEquals("Benutzermenü sollte 6 Einträge haben", 6, userLines.length);
     }
 }
