@@ -131,7 +131,7 @@ public class MenuConfiguratorTest {
     @Test
     public void testMenuActionsAreCorrectlyCreated() {
         // Erstelle eine Menü-Simulation, die den registerAction-Aufruf protokolliert
-        Menu menuMock = new Menu();
+        Menu menuMock = mock(Menu.class);
 
         // Erstelle einen Mocking-Wrapper für die configureMenu-Methode
         MenuConfigurator spyConfiguratorForEmployee = spy(menuConfiguratorForEmployee);
