@@ -103,11 +103,16 @@ public class MenuConfiguratorTest {
      */
     @Test
     public void testConfigureMenuForUser() {
+        // Stelle sicher, dass frontendMock.getUser() den userMock zurückgibt
+        when(frontendMock.getUser()).thenReturn(userMock);
         // Konfiguriere Menü für Benutzer
         Menu menu = menuConfiguratorForUser.configureMenu();
+        
 
         // Überprüfe Menüstruktur - Menü sollte 6 Einträge haben (5 Spezifische + QuitAppAction)
         String menuDescriptions = menu.getAllDescriptions();
+        // Debug Ausgabe
+        System.out.println("Menübeschreibungen: " + menuDescriptions);
         assertTrue(menuDescriptions.contains("List all Books"));
         assertTrue(menuDescriptions.contains("Lend A Book by ID"));
         assertTrue(menuDescriptions.contains("Return a loan Book by Lending ID"));
@@ -126,12 +131,12 @@ public class MenuConfiguratorTest {
     @Test
     public void testMenuActionsAreCorrectlyCreated() {
         // Erstelle eine Menü-Simulation, die den registerAction-Aufruf protokolliert
-        Menu menuMock = mock(Menu.class);
+        Menu menuMock = new Menu();
 
         // Erstelle einen Mocking-Wrapper für die configureMenu-Methode
         MenuConfigurator spyConfiguratorForEmployee = spy(menuConfiguratorForEmployee);
         doReturn(menuMock).when(spyConfiguratorForEmployee).configureMenu();
-
+        
         // Rufe die Methode auf
         spyConfiguratorForEmployee.configureMenu();
 

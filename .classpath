@@ -33,5 +33,10 @@
 			<attribute name="module" value="true"/>
 		</attributes>
 	</classpathentry>
+	<classpathentry kind="lib" path="libraries/byte-buddy-1.14.12.jar"/>
+	<classpathentry kind="lib" path="libraries/byte-buddy-agent-1.14.12.jar"/>
+	<classpathentry kind="lib" path="libraries/mockito-core-5.10.0.jar"/>
+	<classpathentry kind="lib" path="libraries/mockito-core-5.10.0 (1).jar"/>
+	<classpathentry kind="lib" path="libraries/objenesis-3.3.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
