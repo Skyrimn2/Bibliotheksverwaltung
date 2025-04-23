@@ -9,3 +9,4 @@ public class Bibliotheksverwaltung {
         application.Bibliotheksverwaltung.auswahl();
     }
 }
+Test
