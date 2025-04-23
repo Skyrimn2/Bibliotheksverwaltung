@@ -13,8 +13,6 @@ Der Kunde kann :
  - Benutzer verwalten
  - Bücher verwalten
  - Bücher ausleihen und zurückgeben
- - Mahngebühren festlegen
- - Bibliotheken verwalten
  - Informationen über Bücher abfragen
 ## Verwendete Technologie(n)
 - Java
