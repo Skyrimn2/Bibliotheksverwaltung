@@ -8,7 +8,7 @@ public class Lending {
     private BookCopy book;
     private Timestamp lendingDate;
     private Timestamp returnDate;
-    
+
     public Lending(User user, BookCopy book, Timestamp lendingDate, int lendingID) {
         this.user = user;
         this.book = book;
@@ -22,7 +22,7 @@ public class Lending {
         this.lendingDate = lendingDate;
         this.returnDate = null;
     }
-    
+
     public Lending(User user, BookCopy book, Timestamp lendingDate, int lendingID, Timestamp returnDate) {
         this.user = user;
         this.book = book;
@@ -30,19 +30,19 @@ public class Lending {
         this.lendingID = lendingID;
         this.returnDate = returnDate;
     }
-    
+
     public User getUser() {
     	return this.user;
     }
-    
+
     public BookCopy getBookCopy() {
     	return this.book;
     }
-    
+
     public Timestamp getLendingDate() {
     	return this.lendingDate;
     }
-    
+
     public void setReturnDate(Timestamp date) {
     	this.returnDate = date;
     }
@@ -50,7 +50,7 @@ public class Lending {
 	public Timestamp getReturnDate() {
 		return this.returnDate;
 	}
-	
+
 	public int getID() {
 		return this.lendingID;
 	}

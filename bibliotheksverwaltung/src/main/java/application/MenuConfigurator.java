@@ -16,8 +16,8 @@ public class MenuConfigurator {
     private final DBHandler<Lending> lendingDB;
     private final DBHandler<User> userDB;
 
-    public MenuConfigurator(String dbPath, FrontendHandler frontend, 
-                            DBHandler<Book> bookDB, DBHandler<BookCopy> bookCopyDB, 
+    public MenuConfigurator(String dbPath, FrontendHandler frontend,
+                            DBHandler<Book> bookDB, DBHandler<BookCopy> bookCopyDB,
                             DBHandler<Lending> lendingDB, DBHandler<User> userDB) {
         this.dbPath = dbPath;
         this.frontend = frontend;
@@ -54,4 +54,4 @@ public class MenuConfigurator {
         menu.registerAction(new ListBookByTitleAction(bookDB, frontend));
         menu.registerAction(new ListUserLendings(lendingDB, frontend));
     }
-} 
+}

@@ -1,9 +1,5 @@
 package domain;
 
-import java.util.ArrayList;
-// import java.util.ArrayList;
-import java.util.List;
-
 public class Book {
     private int id;
     private String titel;
@@ -17,7 +13,7 @@ public class Book {
         this.titel = titel;
         this.autor = autor;
     }
-    
+
     public Book(String titel, String autor, int id, int available, BookCategory category, int copies) {
         this.id = id;
         this.titel = titel;
@@ -43,11 +39,11 @@ public class Book {
     public void setId(int id) {
         this.id = id;
     }
-    
+
     public int getAvailableCopies() {
     	return this.availableCopies;
     }
-    
+
     public String getCategoryString() {
     	return category.name().replace("_", " ").toLowerCase();
     }

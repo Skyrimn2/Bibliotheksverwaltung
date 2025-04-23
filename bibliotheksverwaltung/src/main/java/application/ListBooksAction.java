@@ -8,21 +8,21 @@ import domain.Book;
 import domain.Displayable;
 
 public class ListBooksAction implements MenuAction{
-	
+
 	private final String description = "List all Books";
 	private DBHandler<Book> bookDB;
 	private FrontendHandler frontend;
-	
+
 	public ListBooksAction(DBHandler<Book> bookDB, FrontendHandler frontend) {
 		super();
 		this.bookDB = bookDB;
 		this.frontend = frontend;
 	}
-	
+
 	@Override
 	public void executeAction() {
 		List<Book> allBooks = bookDB.loadAllOfItem();
-		List<Displayable> disps = new ArrayList<Displayable>();
+		List<Displayable> disps = new ArrayList<>();
 		for (Book b: allBooks) {
 			disps.add(new DisplayableBook(b));
 		}

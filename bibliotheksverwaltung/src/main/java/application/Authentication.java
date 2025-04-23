@@ -11,7 +11,7 @@ public interface Authentication {
     boolean authenticate(String username, String password);
     public default byte[] hashPassword(String password, byte[] salt){
     	byte[] hash = null;
-    	
+
     	PBEKeySpec spec = new PBEKeySpec(password.toCharArray(), salt, 65536, 128);
     	SecretKeyFactory factory = null;
     	try {

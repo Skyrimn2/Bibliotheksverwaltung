@@ -14,25 +14,25 @@ public class User implements UserInterface{
         this.userID = userID;
         this.password = password;
     }
-    
+
     public User(String name, byte[] password, int userID, byte[] salt) {
         this.name = name;
         this.userID = userID;
         this.password = password;
         this.password_salt = salt;
     }
-    
+
     public User(String name, byte[] password, byte[] salt) {
         this.name = name;
         this.password = password;
         this.password_salt = salt;
     }
-    
+
     public User(String name, int userID) {
     	this.name = name;
     	this.userID = userID;
     }
-    
+
     public byte[] getPassword() {
     	return this.password;
     }
@@ -41,7 +41,7 @@ public class User implements UserInterface{
 	public String getName() {
 		return this.name;
 	}
-	
+
 	public byte[] getSalt() {
 		return this.password_salt;
 	}
@@ -56,6 +56,6 @@ public class User implements UserInterface{
 		// TODO Auto-generated method stub
 		return 0;
 	}
-	
+
 
 }

@@ -8,7 +8,6 @@ import java.util.List;
 
 import adapter.DBHandlerConnection;
 import domain.Employee;
-import domain.User;
 
 public class EmployeeDB extends DBHandlerConnection<Employee> {
 
@@ -25,9 +24,9 @@ public class EmployeeDB extends DBHandlerConnection<Employee> {
 	@Override
 	public void saveItem(Employee item) {
 		try {
-			
+
 			String sql = "INSERT INTO EMPLOYEES(name, password, salt) VALUES (?, ?, ?)";
-			
+
 			Connection conn = this.conn();
 			PreparedStatement pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, item.getName());
@@ -45,7 +44,7 @@ public class EmployeeDB extends DBHandlerConnection<Employee> {
 	@Override
 	public void updateItemByID(Employee item, int id) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
@@ -57,23 +56,23 @@ public class EmployeeDB extends DBHandlerConnection<Employee> {
 	@Override
 	public Employee getItemByString(String column, String value) {
 		try {
-			
+
 			if (!column.equals("name") && !column.equals("id")) {
 		        throw new IllegalArgumentException("Ungültiger Spaltenname");
 		    }
 
 		    String sql = "SELECT * FROM USERS WHERE " + column + " = ?";
-			
+
 			Connection conn = this.conn();
 			PreparedStatement pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, value);
 			ResultSet result = pstmt.executeQuery();
-			
+
 			if (!result.next()) {
 				return null;
 			}
 
-			
+
 			Employee emp = new Employee(result.getString("name"), result.getBytes("password"), result.getInt("id"), result.getBytes("salt"));
 			conn.close();
 			return emp;

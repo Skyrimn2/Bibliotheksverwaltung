@@ -5,8 +5,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import adapter.DisplayableLending;
-import domain.Book;
-import domain.BookCopy;
 import domain.Displayable;
 import domain.Lending;
 import domain.UserInterface;
@@ -16,7 +14,7 @@ public class ListUserLendings implements MenuAction {
 	private String description = "List all your lendings";
 	private DBHandler<Lending> lendingDB;
 	private FrontendHandler frontend;
-	
+
 	public ListUserLendings(DBHandler<Lending> lendingDB, FrontendHandler frontend) {
 	    this.lendingDB = lendingDB;
 	    this.frontend = frontend;

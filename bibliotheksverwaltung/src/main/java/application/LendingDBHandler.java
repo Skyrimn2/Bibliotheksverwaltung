@@ -8,4 +8,3 @@ public interface LendingDBHandler {
     public void deleteLending(int lendingID);
     public void updateLending(Lending lending);
 }
-    

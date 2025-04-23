@@ -11,7 +11,6 @@ import adapter.UserAuthentication;
 import adapter.UserRegistration;
 import application.Authentication;
 import application.DBHandler;
-import application.FrontendHandler;
 import application.Menu;
 import application.Registration;
 import domain.Book;
@@ -21,21 +20,21 @@ import domain.User;
 import domain.UserInterface;
 
 public class ConsoleFrontend extends Frontend {
-	
+
 	private String dbPath;
-	
+
 	public ConsoleFrontend(String dbpath) {
 		super();
 		this.dbPath = dbpath;
 	}
-    
+
     @Override
     public void showMenu(Menu menu) {
     	System.out.println(menu.getAllDescriptions());
     	System.out.print("\n"+"Please enter a number: ");
-    	
+
     }
-    
+
     @Override
     public int readMenuOption() {
     	Scanner scanner = new Scanner(System.in);
@@ -54,7 +53,7 @@ public class ConsoleFrontend extends Frontend {
 
 	    return selection;
     }
-    
+
     @Override
     public void showResultList(List<Displayable> disps) {
     	for (Displayable disp : disps) {
@@ -63,24 +62,24 @@ public class ConsoleFrontend extends Frontend {
     }
     @Override
     public void showResult(Displayable disp) {
-    	disp.getDisplayText();	
+    	disp.getDisplayText();
     }
 
 
 	@Override
 	public boolean loginView() {
 		System.out.println("Please select:\n0\t\tlogin with User\n1\t\tregister User\n2\t\tlogin as employee\n3\t\tregister employee");
-		
+
 		int selection = this.readMenuOption();
 		boolean state = false;
-		
+
 		System.out.println("Input username:\t\t");
 		String username = this.readString();
 		System.out.println("Input password:\t\t");
 		String password = this.readString();
-		
+
 		UserInterface user;
-		
+
 		switch (selection) {
 		case 0:
 			DBHandler<User> db = new UserDB(this.dbPath);
@@ -89,7 +88,7 @@ public class ConsoleFrontend extends Frontend {
 			Authentication UserAuth = new UserAuthentication(db);
 			state = UserAuth.authenticate(username, password);
 			break;
-			
+
 		case 1:
 			DBHandler<User> db1 = new UserDB(this.dbPath);
 			user = db1.getItemByString("name", username);
@@ -111,7 +110,7 @@ public class ConsoleFrontend extends Frontend {
 			Authentication EmpAuth = new EmployeeAuthentication(db2);
 			state = EmpAuth.authenticate(username, password);
 			break;
-			
+
 		case 3:
 			DBHandler<Employee> db3 = new EmployeeDB(this.dbPath);
 			user = db3.getItemByString("name", username);
@@ -121,18 +120,18 @@ public class ConsoleFrontend extends Frontend {
 			this.setUser(user);
 			Registration EmpReg = new EmployeeRegistration(db3);
 			state = EmpReg.register(username, password);
-			
+
 		default:
 			break;
 		}
-		if (state == false) {
+		if (!state) {
 			System.out.println("Wrong username or password. Try again.\n\n");
 			this.deleteUser();
-			state = this.loginView();	
+			state = this.loginView();
 		}
 		return state;
 	}
-	
+
 	@Override
 	public String readString() {
 		Scanner scanner = new Scanner(System.in);
@@ -144,29 +143,29 @@ public class ConsoleFrontend extends Frontend {
 	@Override
 	public void showBook(Book buch) {
 		// TODO Auto-generated method stub
-		
+
 	}
-	
+
 	@Override
 	public void setUser(User user) {
 		UserInterface u = new User(user.getName(), user.getID());
 		this.user = u;
 	}
-	
+
 	@Override
 	public void setUser(Employee emp) {
 		UserInterface u = new Employee(emp.getName(), emp.getID());
 		this.user = u;
 	}
-	
+
 	@Override
 	public void setUser(UserInterface user) {
 		this.user = user;
 	}
-	
+
 	@Override
 	public void deleteUser() {
 		this.user = null;
 	}
-	
+
 }
