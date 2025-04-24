@@ -55,5 +55,9 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="lib" path="D:/git/Bibliotheksverwaltung/libraries/sqlite-jdbc-3.49.1.0.jar"/>
+	<classpathentry kind="lib" path="D:/git/Bibliotheksverwaltung/libraries/byte-buddy-1.14.12.jar"/>
+	<classpathentry kind="lib" path="D:/git/Bibliotheksverwaltung/libraries/byte-buddy-agent-1.14.12.jar"/>
+	<classpathentry kind="lib" path="D:/git/Bibliotheksverwaltung/libraries/mockito-core-5.10.0.jar"/>
+	<classpathentry kind="lib" path="D:/git/Bibliotheksverwaltung/libraries/objenesis-3.3.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>
