@@ -18,7 +18,7 @@ public class LendBookAction implements MenuAction {
 	private DBHandler<Lending> lendingDB;
 	private DBHandler<User> userDB;
 	private FrontendHandler frontend;
-	
+
 	public LendBookAction(DBHandler<Book> bookDB, DBHandler<BookCopy> copyDB, DBHandler<Lending> lendingDB, DBHandler<User> userDB, FrontendHandler frontend) {
 		super();
 		this.bookDB = bookDB;
@@ -42,31 +42,31 @@ public class LendBookAction implements MenuAction {
 			System.out.println("No Copy available.");
 			return;
 		}
-		
+
 		List<BookCopy> copies = copyDB.getItemsByString("BookID", String.valueOf(book.getId()));
-		
+
 		int i = 0;
-		
-		while(copies.get(i).isAvailable() == false) {
+
+		while(!copies.get(i).isAvailable()) {
 			i++;
 		}
-		
+
 		BookCopy copyToLend = copies.get(i);
-		
+
 		copyToLend.setAvailability(false);
-		
+
 		int lendCopyID = copyToLend.getCopyID();
-		
+
 		copyDB.updateItemByID(copyToLend, lendCopyID);
-		
+
 		UserInterface user_interface = frontend.getUser();
-		
+
 		User user = userDB.loadItemByID(user_interface.getID());
-		
+
 		Lending lending = new Lending(user, copyToLend, Timestamp.valueOf(LocalDateTime.now()));
-		
+
 		lendingDB.saveItem(lending);
-		
+
 	}
 
 }

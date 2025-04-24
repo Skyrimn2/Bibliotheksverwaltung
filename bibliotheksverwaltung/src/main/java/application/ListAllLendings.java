@@ -8,13 +8,13 @@ import domain.Displayable;
 import domain.Lending;
 
 public class ListAllLendings implements MenuAction {
-	
-	
+
+
 
 	private String description = "List all lendings";
 	private DBHandler<Lending> lendingDB;
 	private FrontendHandler frontend;
-	
+
 	public ListAllLendings(DBHandler<Lending> lendingDB, FrontendHandler frontend) {
 	    this.lendingDB = lendingDB;
 	    this.frontend = frontend;

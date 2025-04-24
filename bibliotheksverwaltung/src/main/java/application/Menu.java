@@ -4,21 +4,21 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Menu {
-	
+
 	private List<MenuAction> actions;
-	
+
 	public Menu() {
-		actions = new ArrayList<MenuAction>();
+		actions = new ArrayList<>();
 	}
-	
+
 	public void registerAction(MenuAction action) {
 		actions.add(action);
 	}
-	
+
 	public void unregisterAction(MenuAction action) {
 		actions.remove(action);
 	}
-	
+
 	public String getAllDescriptions() {
 		String returnString = "";
 		int i = 0;
@@ -28,9 +28,9 @@ public class Menu {
 		}
 		return returnString;
 	}
-	
+
 	public void executeAction(int actionNum) {
 		actions.get(actionNum).executeAction();
 	}
-	
+
 }

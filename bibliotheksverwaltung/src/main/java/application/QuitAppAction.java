@@ -3,7 +3,7 @@ package application;
 public class QuitAppAction implements MenuAction {
 
 	private String description = "Quit app";
-	
+
 	public QuitAppAction() {
 		super();
 	}

@@ -12,7 +12,7 @@ public class ListBookByTitleAction implements MenuAction {
 	private String description = "List books with given title";
 	private DBHandler<Book> db;
 	private FrontendHandler frontend;
-	
+
 	public ListBookByTitleAction(DBHandler<Book> db, FrontendHandler frontend) {
 		this.db = db;
 		this.frontend = frontend;
@@ -28,12 +28,12 @@ public class ListBookByTitleAction implements MenuAction {
 		System.out.println("Input Title you want to search:\t\t");
 		String title = frontend.readString();
 		List<Book> books = db.getItemsByString("Title", title);
-		
-		List<Displayable> disps = new ArrayList<Displayable>();
+
+		List<Displayable> disps = new ArrayList<>();
 		for (Book b: books) {
 			disps.add(new DisplayableBook(b));
 		}
-		
+
 		frontend.showResultList(disps);
 	}
 

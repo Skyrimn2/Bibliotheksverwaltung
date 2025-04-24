@@ -18,19 +18,19 @@ public class UserDB extends DBHandlerConnection<User>{
 	@Override
 	public User loadItemByID(int id) {
 		try {
-			
+
 			String sql = "SELECT * FROM USERS WHERE ID = ?";
-			
+
 			Connection conn = this.conn();
 			PreparedStatement pstmt = conn.prepareStatement(sql);
 			pstmt.setInt(1, id);
 			ResultSet result = pstmt.executeQuery();
-			
+
 			if (!result.next()) {
 				return null;
 			}
 
-			
+
 			User user = new User(result.getString("Name"), result.getBytes("Password"), result.getInt("ID"));
 			conn.close();
 			return user;
@@ -44,9 +44,9 @@ public class UserDB extends DBHandlerConnection<User>{
 	@Override
 	public void saveItem(User item) {
 		try {
-			
+
 			String sql = "INSERT INTO USERS(name, password, salt) VALUES (?, ?, ?)";
-			
+
 			Connection conn = this.conn();
 			PreparedStatement pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, item.getName());
@@ -64,7 +64,7 @@ public class UserDB extends DBHandlerConnection<User>{
 	@Override
 	public void updateItemByID(User item, int id) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
@@ -76,24 +76,24 @@ public class UserDB extends DBHandlerConnection<User>{
 	@Override
 	public User getItemByString(String column, String value) {
 		try {
-			
+
 			if (!column.equals("name") && !column.equals("id") && !column.equals("membership_id")) {
 		        throw new IllegalArgumentException("Ungültiger Spaltenname");
 		    }
 
 		    String sql = "SELECT * FROM USERS WHERE " + column + " = ?";
 
-			
+
 			Connection conn = this.conn();
 			PreparedStatement pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, value);
 			ResultSet result = pstmt.executeQuery();
-			
+
 			if (!result.next()) {
 				return null;
 			}
 
-			
+
 			User user = new User(result.getString("Name"), result.getBytes("Password"), result.getInt("ID"), result.getBytes("salt"));
 			conn.close();
 			return user;

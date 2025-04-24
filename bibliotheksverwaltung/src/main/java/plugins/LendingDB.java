@@ -8,8 +8,6 @@ import java.sql.Timestamp;
 import java.util.List;
 
 import adapter.DBHandlerConnection;
-import domain.Book;
-import domain.BookCategory;
 import domain.BookCopy;
 import domain.Lending;
 import domain.User;
@@ -52,12 +50,12 @@ public class LendingDB extends DBHandlerConnection<Lending> {
 	@Override
 	public void saveItem(Lending item) {
 	    String sql = "INSERT INTO LENDING (UserID, CopyID, LendingDate, ReturnDate) VALUES (?, ?, ?, ?)";
-	    
+
 	    try (Connection conn = this.conn(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
 	        pstmt.setInt(1, item.getUser().getID());
 	        pstmt.setInt(2, item.getBookCopy().getCopyID());
 	        pstmt.setTimestamp(3, item.getLendingDate());
-	        
+
 	        if (item.getReturnDate() != null) {
 	            pstmt.setTimestamp(4, item.getReturnDate());
 	        } else {
@@ -161,12 +159,12 @@ public class LendingDB extends DBHandlerConnection<Lending> {
 	    return lendings;
 	}
 
-	
+
 	private User getUser(int id) {
 		UserDB userDB = new UserDB(this.dbPath);
 		return userDB.loadItemByID(id);
 	}
-	
+
 	private BookCopy getBookBopy(int id) {
 		BookCopyDB copyDB = new BookCopyDB(dbPath);
 		return copyDB.loadItemByID(id);

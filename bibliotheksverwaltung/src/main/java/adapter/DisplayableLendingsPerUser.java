@@ -1,6 +1,5 @@
 package adapter;
 
-import domain.Displayable;
 import domain.Lending;
 
 public class DisplayableLendingsPerUser extends DisplayableLending {

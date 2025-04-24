@@ -23,17 +23,17 @@ public class BookCopyDB extends DBHandlerConnection<BookCopy> {
 		try {
 			String sql = "SELECT * FROM BOOKCOPIES WHERE CopyID = ?";
 
-			
+
 			Connection conn = this.conn();
 			PreparedStatement pstmt = conn.prepareStatement(sql);
 			pstmt.setInt(1, id);
 			ResultSet result = pstmt.executeQuery();
-			
+
 			if (!result.next()) {
 				return null;
 			}
 
-			
+
 			BookCopy copy = new BookCopy(this.getBook(result.getInt("BookID")), result.getInt("CopyID"));
 			conn.close();
 			return copy;
@@ -47,18 +47,18 @@ public class BookCopyDB extends DBHandlerConnection<BookCopy> {
 	@Override
 	public void saveItem(BookCopy item) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void updateItemByID(BookCopy item, int id) {
 	    String sql = "UPDATE BOOKCOPIES SET BookID = ?, IsAvailable = ? WHERE CopyID = ?";
-	    
+
 	    try (Connection conn = this.conn(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
 	        pstmt.setInt(1, item.getBook().getId());
 	        pstmt.setBoolean(2, item.isAvailable());
 	        pstmt.setInt(3, id);
-	        
+
 	        pstmt.executeUpdate();
 
 	    } catch (SQLException e) {
@@ -84,17 +84,17 @@ public class BookCopyDB extends DBHandlerConnection<BookCopy> {
 	    if (!column.equals("BookID")) {
 	        throw new IllegalArgumentException("Ungültiger Spaltenname. Nur 'BookID' erlaubt.");
 	    }
-	    
+
 	    try {
 	        String sql = "SELECT * FROM BOOKCOPIES WHERE " + column + " = ?";
 
 	        Connection conn = this.conn();
 	        PreparedStatement pstmt = conn.prepareStatement(sql);
-	        pstmt.setInt(1, Integer.parseInt(value)); 
+	        pstmt.setInt(1, Integer.parseInt(value));
 	        ResultSet result = pstmt.executeQuery();
 
 	        List<BookCopy> copies = new ArrayList<>();
-	        
+
 	        while (result.next()) {
 	            BookCopy copy = new BookCopy(this.getBook(result.getInt("BookID")), result.getInt("CopyID"), result.getBoolean("IsAvailable"));
 	            copies.add(copy);
@@ -110,7 +110,7 @@ public class BookCopyDB extends DBHandlerConnection<BookCopy> {
 	    return null;
 	}
 
-	
+
 	private Book getBook(int id) {
 		BookDB bookDB = new BookDB(dbPath);
 		return bookDB.loadItemByID(id);

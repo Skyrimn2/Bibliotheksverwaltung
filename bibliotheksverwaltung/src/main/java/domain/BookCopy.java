@@ -14,7 +14,7 @@ public class BookCopy {
         this.copyID = copyID;
         this.isAvailable = isAvailable;
     }
-    
+
     public Book getBook() {
         return this.book;
     }
@@ -22,7 +22,7 @@ public class BookCopy {
     public int getCopyID() {
         return this.copyID;
     }
-    
+
     public void setBook(Book book) {
         this.book = book;
     }
@@ -30,11 +30,11 @@ public class BookCopy {
     public void setCopyID(int copyID) {
         this.copyID = copyID;
     }
-    
+
     public boolean isAvailable() {
     	return this.isAvailable;
     }
-    
+
     public void setAvailability(boolean isAvailable) {
     	this.isAvailable = isAvailable;
     }

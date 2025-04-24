@@ -12,7 +12,7 @@ public class ReturnLendingAction implements MenuAction {
 	private DBHandler<Lending> lendingDB;
 	private DBHandler<BookCopy> copyDB;
 	private FrontendHandler frontend;
-	
+
 	public ReturnLendingAction(DBHandler<Lending> lendingDB, DBHandler<BookCopy> copyDB, FrontendHandler frontend) {
 		super();
 		this.lendingDB = lendingDB;
@@ -28,10 +28,10 @@ public class ReturnLendingAction implements MenuAction {
 	@Override
 	public void executeAction() {
 		System.out.println("Enter lending ID");
-		
+
 		int id  = frontend.readMenuOption();
 		Lending lending = lendingDB.loadItemByID(id);
-		
+
 		if (lending == null) {
 			System.out.println("No such lending\n");
 			return;
@@ -40,18 +40,18 @@ public class ReturnLendingAction implements MenuAction {
 			System.out.println("Lending is already returned\n");
 			return;
 		}
-		
+
 		BookCopy copy = copyDB.loadItemByID(lending.getBookCopy().getCopyID());
-		
+
 		lending.setReturnDate(Timestamp.valueOf(LocalDateTime.now()));
 		System.out.println(lending.getReturnDate().toString());
 		copy.setAvailability(true);
-		
+
 		lendingDB.updateItemByID(lending, id);
 		copyDB.updateItemByID(copy, copy.getCopyID());
-		
+
 		System.out.println("Book returned\n");
-		
+
 	}
 
 }
