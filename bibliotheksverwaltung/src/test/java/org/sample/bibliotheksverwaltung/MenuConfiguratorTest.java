@@ -151,7 +151,7 @@ public class MenuConfiguratorTest {
      * Test, dass die konfigurierten MenuAction-Objekte korrekt erstellt werden
      */
     @Test
-    public void testMenuActionsAreCorrectlyCreated() {
+    public void testMenuActionsEmployeeAreCorrectlyCreated() {
         // 1. Test für Mitarbeiter-Menü
         // Mitarbeiterkontext sicherstellen
         when(frontendMock.getUser()).thenReturn(employeeMock);
@@ -161,6 +161,8 @@ public class MenuConfiguratorTest {
         
         // Menü-Beschreibungen holen und analysieren
         String employeeMenuDesc = employeeMenu.getAllDescriptions();
+        
+        
         assertTrue("Mitarbeitermenü sollte 'List all Books' enthalten", 
                   employeeMenuDesc.contains("List all Books"));
         assertTrue("Mitarbeitermenü sollte 'List books with given title' enthalten", 
@@ -170,15 +172,26 @@ public class MenuConfiguratorTest {
         assertTrue("Mitarbeitermenü sollte 'Quit app' enthalten", 
                   employeeMenuDesc.contains("Quit app"));
         
-        // 2. Test für Benutzer-Menü
-        // Benutzerkontext sicherstellen
-        when(frontendMock.getUser()).thenReturn(userMock);
+
+        // Sicherstellen, dass die Anzahl der Menüeinträge korrekt ist
+        String[] employeeLines = employeeMenuDesc.split("\n");
+        assertEquals("Mitarbeitermenü sollte 4 Einträge haben", 4, employeeLines.length);
         
+    }
+        
+    @Test
+    public void testMenuActionsUserAreCorrectlyCreated() {
+        
+    	// Benutzerkontext sicherstellen
+    	when(frontendMock.getUser()).thenReturn(userMock);
+    	
         // Menü für Benutzer konfigurieren
         Menu userMenu = menuConfiguratorForUser.configureMenu();
         
         // Menü-Beschreibungen holen und analysieren
         String userMenuDesc = userMenu.getAllDescriptions();
+        
+        
         assertTrue("Benutzermenü sollte 'List all Books' enthalten", 
                   userMenuDesc.contains("List all Books"));
         assertTrue("Benutzermenü sollte 'Lend A Book by ID' enthalten", 
@@ -193,9 +206,6 @@ public class MenuConfiguratorTest {
                   userMenuDesc.contains("Quit app"));
         
         // Sicherstellen, dass die Anzahl der Menüeinträge korrekt ist
-        String[] employeeLines = employeeMenuDesc.split("\n");
-        assertEquals("Mitarbeitermenü sollte 4 Einträge haben", 4, employeeLines.length);
-        
         String[] userLines = userMenuDesc.split("\n");
         assertEquals("Benutzermenü sollte 6 Einträge haben", 6, userLines.length);
     }
