@@ -92,6 +92,10 @@ public class ListBookByTitleActionTest {
         
         // Überprüfe, dass die Beschreibung korrekt gesetzt wurde
         assertEquals("List books with given title", action.getDescription());
+        
+        // Da die aktuelle Implementierung keine Null-Checks im Konstruktor hat,
+        // können wir das Verhalten nicht wie erwartet testen.
+        // In einer verbesserten Version würde man hier Null-Checks hinzufügen.
     }
 
     /**
@@ -184,6 +188,74 @@ public class ListBookByTitleActionTest {
         
         // Überprüfe, dass die Fehlermeldung ausgegeben wurde
         assert(outContent.toString().contains("Keine Bücher gefunden oder Datenbankfehler aufgetreten"));
+    }
+    
+    /**
+     * Testet das Verhalten, wenn der DisplayableBook-Konstruktor Probleme verursacht
+     */
+    @Test
+    public void testExecuteActionWithDisplayableBookIssue() {
+        // Erstelle ein Buch, das bei der Umwandlung in DisplayableBook Probleme verursachen könnte
+        Book problematicBook = mock(Book.class);
+        when(problematicBook.getId()).thenReturn(-1); // Ungültige ID
+        when(problematicBook.getTitle()).thenReturn(null); // Kein Titel
+        when(problematicBook.getAutor()).thenReturn(null); // Kein Autor
+        when(problematicBook.getCategoryString()).thenReturn(null); // Keine Kategorie
+        when(problematicBook.getCopies()).thenReturn(-1); // Ungültige Anzahl
+        when(problematicBook.getAvailableCopies()).thenReturn(-1); // Ungültige Anzahl
+        
+        // Vorbereitung: Liste mit problematischem Buch
+        List<Book> books = Arrays.asList(problematicBook);
+        when(bookDBMock.getItemsByString(eq("Title"), anyString())).thenReturn(books);
+        
+        // Ausführen der zu testenden Aktion
+        listBookByTitleAction.executeAction();
+        
+        // Überprüfungen
+        // 1. Frontend wurde aufgefordert, den Suchbegriff zu lesen
+        verify(frontendMock, times(1)).readString();
+        
+        // 2. Datenbankabfrage wurde mit dem korrekten Suchbegriff durchgeführt
+        verify(bookDBMock, times(1)).getItemsByString("Title", TEST_TITLE);
+        
+        // 3. Die Liste mit einem Displayable wurde an das Frontend übergeben
+        ArgumentCaptor<List<Displayable>> displayablesCaptor = ArgumentCaptor.forClass(List.class);
+        verify(frontendMock, times(1)).showResultList(displayablesCaptor.capture());
+        
+        // Die Liste sollte ein Element enthalten
+        List<Displayable> capturedDisplayables = displayablesCaptor.getValue();
+        assertEquals(1, capturedDisplayables.size());
+    }
+    
+    /**
+     * Testet das Verhalten, wenn mit verschiedenen Arten von leeren Werten aufgerufen wird
+     */
+    @Test
+    public void testExecuteActionWithEmptyValues() {
+        // Vorbereitung: Frontend gibt leeren String zurück
+        when(frontendMock.readString()).thenReturn("");
+        
+        // Vorbereitung: Bücher mit passendem Titel (leerer String)
+        List<Book> books = Arrays.asList(testBook1, testBook2);
+        when(bookDBMock.getItemsByString(eq("Title"), eq(""))).thenReturn(books);
+        
+        // Ausführen der zu testenden Aktion
+        listBookByTitleAction.executeAction();
+        
+        // Überprüfungen
+        // 1. Frontend wurde aufgefordert, den Suchbegriff zu lesen
+        verify(frontendMock, times(1)).readString();
+        
+        // 2. Datenbankabfrage wurde mit dem korrekten Suchbegriff durchgeführt
+        verify(bookDBMock, times(1)).getItemsByString("Title", "");
+        
+        // 3. Die gefundenen Bücher wurden als Displayables an das Frontend übergeben
+        ArgumentCaptor<List<Displayable>> displayablesCaptor = ArgumentCaptor.forClass(List.class);
+        verify(frontendMock, times(1)).showResultList(displayablesCaptor.capture());
+        
+        // Die Liste sollte 2 Displayables enthalten (für jedes gefundene Buch)
+        List<Displayable> capturedDisplayables = displayablesCaptor.getValue();
+        assertEquals(2, capturedDisplayables.size());
     }
     
     /**
