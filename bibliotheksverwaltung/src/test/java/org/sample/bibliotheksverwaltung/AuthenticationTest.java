@@ -1,6 +1,7 @@
 package org.sample.bibliotheksverwaltung;
 
 import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
@@ -123,10 +124,4 @@ public class AuthenticationTest {
         assertEquals("Der Hash sollte eine Länge von 16 Bytes (128 Bits) haben", 16, hash.length);
     }
     
-    /**
-     * Hilfsmethod für assertEquals mit int-Werten
-     */
-    private void assertEquals(String message, int expected, int actual) {
-        org.junit.Assert.assertEquals(message, expected, actual);
-    }
 }
