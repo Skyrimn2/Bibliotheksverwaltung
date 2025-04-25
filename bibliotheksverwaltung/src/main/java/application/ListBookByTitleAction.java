@@ -28,10 +28,16 @@ public class ListBookByTitleAction implements MenuAction {
 		System.out.println("Input Title you want to search:\t\t");
 		String title = frontend.readString();
 		List<Book> books = db.getItemsByString("Title", title);
-
+		
+		// Null-Prüfung hinzugefügt, um NullPointerException zu vermeiden
 		List<Displayable> disps = new ArrayList<>();
-		for (Book b: books) {
-			disps.add(new DisplayableBook(b));
+		if (books != null) {
+			for (Book b: books) {
+				disps.add(new DisplayableBook(b));
+			}
+		} else {
+			// Logging für den Fall, dass die Datenbank null zurückgibt
+			System.out.println("Keine Bücher gefunden oder Datenbankfehler aufgetreten.");
 		}
 
 		frontend.showResultList(disps);
