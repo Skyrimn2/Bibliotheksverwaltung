@@ -10,11 +10,9 @@ import static org.mockito.Mockito.when;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
-
 import adapter.DisplayableBook;
 import application.DBHandler;
 import application.FrontendHandler;
