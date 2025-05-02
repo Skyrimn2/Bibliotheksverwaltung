@@ -1,30 +1,16 @@
 package adapter;
 
-
-
 import application.DBHandler;
-import application.Registration;
 import domain.User;
 
-public class UserRegistration implements Registration {
-
-	private DBHandler<User> db;
-
-	public UserRegistration(DBHandler<User> db){
-		super();
-		this.db = db;
-	}
-
-	@Override
-	public boolean register(String username, String password) {
-		byte[] salt = this.generateSalt();
-		byte[] password_hash = this.hashPassword(password, salt);
-		User user = new User(username, password_hash, salt);
-
-		db.saveItem(user);
-
-		return true;
-
-	}
-
+public class UserRegistration extends BaseRegistration<User> {
+    
+    public UserRegistration(DBHandler<User> db) {
+        super(db);
+    }
+    
+    @Override
+    protected User createEntity(String username, byte[] passwordHash, byte[] salt) {
+        return new User(username, passwordHash, salt);
+    }
 }

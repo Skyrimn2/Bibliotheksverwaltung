@@ -1,28 +1,16 @@
 package adapter;
 
 import application.DBHandler;
-import application.Registration;
 import domain.Employee;
 
-public class EmployeeRegistration implements Registration {
-
-	private DBHandler<Employee> db;
-
-	public EmployeeRegistration(DBHandler<Employee> db){
-		super();
-		this.db = db;
-	}
-
-	@Override
-	public boolean register(String username, String password) {
-		byte[] salt = this.generateSalt();
-		byte[] password_hash = this.hashPassword(password, salt);
-		Employee emp = new Employee(username, password_hash, 0, salt);
-
-		db.saveItem(emp);
-
-		return true;
-
-	}
-
+public class EmployeeRegistration extends BaseRegistration<Employee> {
+    
+    public EmployeeRegistration(DBHandler<Employee> db) {
+        super(db);
+    }
+    
+    @Override
+    protected Employee createEntity(String username, byte[] passwordHash, byte[] salt) {
+        return new Employee(username, passwordHash, 0, salt);
+    }
 }
