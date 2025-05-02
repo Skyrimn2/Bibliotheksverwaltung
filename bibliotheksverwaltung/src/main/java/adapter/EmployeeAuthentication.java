@@ -1,39 +1,21 @@
 package adapter;
 
-import java.util.Arrays;
-
-import application.Authentication;
 import application.DBHandler;
 import domain.Employee;
 
-public class EmployeeAuthentication implements Authentication {
-
-	private DBHandler<Employee> db;
-
-	public EmployeeAuthentication(DBHandler<Employee> db) {
-		super();
-		this.db = db;
-	}
-
-	@Override
-	public boolean authenticate(String username, String password) {
-		Employee emp_db = db.getItemByString("name", username);
-		if(emp_db == null) {
-			return false;
-		}
-		byte[] salt = emp_db.getSalt();
-		byte[] password_hash = this.hashPassword(password, salt);
-		byte[] db_password_hash = null;
-
-		db_password_hash = emp_db.getPassword();
-
-
-		if (Arrays.equals(password_hash, db_password_hash) && db_password_hash != null) {
-			return true;
-		}
-		else {
-			return false;
-		}
-	}
-
+public class EmployeeAuthentication extends BaseAuthentication<Employee> {
+    
+    public EmployeeAuthentication(DBHandler<Employee> db) {
+        super(db);
+    }
+    
+    @Override
+    protected byte[] getSalt(Employee entity) {
+        return entity.getSalt();
+    }
+    
+    @Override
+    protected byte[] getPassword(Employee entity) {
+        return entity.getPassword();
+    }
 }

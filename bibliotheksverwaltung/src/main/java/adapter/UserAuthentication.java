@@ -1,43 +1,21 @@
 package adapter;
 
-
-import java.util.Arrays;
-
-import application.Authentication;
 import application.DBHandler;
 import domain.User;
 
-
-public class UserAuthentication implements Authentication {
-
-	DBHandler<User> db;
-
-	public UserAuthentication(DBHandler<User> db) {
-		super();
-		this.db = db;
-	}
-
-	@Override
-	public boolean authenticate(String username, String password) {
-		User user_db = db.getItemByString("name", username);
-		if(user_db == null) {
-			return false;
-		}
-		byte[] salt = user_db.getSalt();
-		byte[] password_hash = this.hashPassword(password, salt);
-		byte[] db_password_hash = null;
-
-
-		db_password_hash = user_db.getPassword();
-
-
-		if (Arrays.equals(password_hash, db_password_hash) && db_password_hash != null) {
-			return true;
-		}
-		else {
-			return false;
-		}
-
-	}
-
+public class UserAuthentication extends BaseAuthentication<User> {
+    
+    public UserAuthentication(DBHandler<User> db) {
+        super(db);
+    }
+    
+    @Override
+    protected byte[] getSalt(User entity) {
+        return entity.getSalt();
+    }
+    
+    @Override
+    protected byte[] getPassword(User entity) {
+        return entity.getPassword();
+    }
 }
