@@ -19,12 +19,10 @@ public class Menu {
 		actions.remove(action);
 	}
 
-	public String getAllDescriptions() {
-		String returnString = "";
-		int i = 0;
+	public List<String> getAllDescriptions() {
+		List<String> returnString = new ArrayList<>();
 		for (MenuAction action : actions) {
-			returnString += String.valueOf(i) + "\t\t" + action.getDescription() + "\n";
-			i++;
+			returnString.add(action.getDescription());
 		}
 		return returnString;
 	}

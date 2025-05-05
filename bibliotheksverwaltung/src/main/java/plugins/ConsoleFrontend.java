@@ -30,8 +30,12 @@ public class ConsoleFrontend extends Frontend {
 
     @Override
     public void showMenu(Menu menu) {
-    	System.out.println(menu.getAllDescriptions());
-    	System.out.print("\n"+"Please enter a number: ");
+    	List<String> menuItems = menu.getAllDescriptions();
+    	int i = 0;
+    	for(String action : menuItems) {
+			System.out.println(String.valueOf(i) + "\t\t" + action);
+			i++;
+		}
 
     }
 
