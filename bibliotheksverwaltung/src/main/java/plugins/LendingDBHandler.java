@@ -1,4 +1,4 @@
-package application;
+package plugins;
 
 import domain.Lending;
 
