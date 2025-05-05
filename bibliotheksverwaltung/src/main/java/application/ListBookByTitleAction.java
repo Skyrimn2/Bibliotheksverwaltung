@@ -25,7 +25,7 @@ public class ListBookByTitleAction implements MenuAction {
 
 	@Override
 	public void executeAction() {
-		System.out.println("Input Title you want to search:\t\t");
+		frontend.showMessage("Input Title you want to search:\t\t");
 		String title = frontend.readString();
 		List<Book> books = db.getItemsByString("Title", title);
 		
@@ -37,7 +37,7 @@ public class ListBookByTitleAction implements MenuAction {
 			}
 		} else {
 			// Logging für den Fall, dass die Datenbank null zurückgibt
-			System.out.println("Keine Bücher gefunden oder Datenbankfehler aufgetreten.");
+			frontend.showMessage("Keine Bücher gefunden oder Datenbankfehler aufgetreten.");
 		}
 
 		frontend.showResultList(disps);

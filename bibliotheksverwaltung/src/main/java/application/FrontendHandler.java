@@ -21,4 +21,5 @@ public interface FrontendHandler {
     public void deleteUser();
     public void setUser(UserInterface user);
     public UserInterface getUser();
+    public void showMessage(String message);
 }

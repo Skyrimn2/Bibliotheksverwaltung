@@ -30,7 +30,7 @@ public class ListUserLendings implements MenuAction {
 		UserInterface user = frontend.getUser();
 		List<Lending> lends = lendingDB.getItemsByString("userID", String.valueOf(user.getID()));
 		if (lends == null) {
-			System.out.println("No fitting lendings found.");
+			frontend.showMessage("No fitting lendings found.");
 		}
 		List <Displayable> disps = new ArrayList<>();
 		for(Lending l : lends) {

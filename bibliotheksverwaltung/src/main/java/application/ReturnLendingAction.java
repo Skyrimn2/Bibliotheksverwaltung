@@ -27,17 +27,17 @@ public class ReturnLendingAction implements MenuAction {
 
 	@Override
 	public void executeAction() {
-		System.out.println("Enter lending ID");
+		frontend.showMessage("Enter lending ID");
 
 		int id  = frontend.readMenuOption();
 		Lending lending = lendingDB.loadItemByID(id);
 
 		if (lending == null) {
-			System.out.println("No such lending\n");
+			frontend.showMessage("No such lending\n");
 			return;
 		}
 		if (lending.getReturnDate() != null) {
-			System.out.println("Lending is already returned\n");
+			frontend.showMessage("Lending is already returned\n");
 			return;
 		}
 
@@ -50,7 +50,7 @@ public class ReturnLendingAction implements MenuAction {
 		lendingDB.updateItemByID(lending, id);
 		copyDB.updateItemByID(copy, copy.getCopyID());
 
-		System.out.println("Book returned\n");
+		frontend.showMessage("Book returned\n");
 
 	}
 

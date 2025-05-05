@@ -168,4 +168,9 @@ public class ConsoleFrontend extends Frontend {
 		this.user = null;
 	}
 
+	@Override
+	public void showMessage(String message) {
+		System.out.println(message);		
+	}
+
 }

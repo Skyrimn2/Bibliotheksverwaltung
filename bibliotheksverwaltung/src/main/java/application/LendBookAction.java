@@ -35,7 +35,7 @@ public class LendBookAction implements MenuAction {
 
 	@Override
 	public void executeAction() {
-		System.out.println("Enter book ID to lend the book:\t");
+		frontend.showMessage("Enter book ID to lend the book:\t");
 		int bookID = frontend.readMenuOption();
 		Book book = bookDB.loadItemByID(bookID);
 		if (book.getAvailableCopies() <= 0) {
