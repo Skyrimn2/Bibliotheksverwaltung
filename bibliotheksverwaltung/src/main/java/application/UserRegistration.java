@@ -1,9 +1,7 @@
-package adapter;
+package application;
 
 
 
-import application.DBHandler;
-import application.Registration;
 import domain.User;
 
 public class UserRegistration implements Registration {

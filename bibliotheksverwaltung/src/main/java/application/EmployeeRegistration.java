@@ -1,7 +1,5 @@
-package adapter;
+package application;
 
-import application.DBHandler;
-import application.Registration;
 import domain.Employee;
 
 public class EmployeeRegistration implements Registration {

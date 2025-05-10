@@ -1,9 +1,7 @@
-package adapter;
+package application;
 
 import java.util.Arrays;
 
-import application.Authentication;
-import application.DBHandler;
 import domain.Employee;
 
 public class EmployeeAuthentication implements Authentication {
