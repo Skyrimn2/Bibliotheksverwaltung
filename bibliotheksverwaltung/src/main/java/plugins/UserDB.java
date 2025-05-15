@@ -7,6 +7,8 @@ import java.sql.SQLException;
 import java.util.List;
 
 import adapter.DBHandlerConnection;
+import application.DatabaseException;
+import application.ItemNotFoundException;
 import domain.User;
 
 public class UserDB extends DBHandlerConnection<User>{
@@ -74,34 +76,34 @@ public class UserDB extends DBHandlerConnection<User>{
 	}
 
 	@Override
-	public User getItemByString(String column, String value) {
-		try {
+	public User getItemByString(String column, String value) throws DatabaseException {
+	    try {
+	        if (!column.equals("name") && !column.equals("id") && !column.equals("membership_id")) {
+	            throw new IllegalArgumentException("Ungültiger Spaltenname");
+	        }
 
-			if (!column.equals("name") && !column.equals("id") && !column.equals("membership_id")) {
-		        throw new IllegalArgumentException("Ungültiger Spaltenname");
-		    }
+	        String sql = "SELECT * FROM USERS WHERE " + column + " = ?";
 
-		    String sql = "SELECT * FROM USERS WHERE " + column + " = ?";
+	        Connection conn = this.conn();
+	        PreparedStatement pstmt = conn.prepareStatement(sql);
+	        pstmt.setString(1, value);
+	        ResultSet result = pstmt.executeQuery();
 
+	        if (!result.next()) {
+	            throw new ItemNotFoundException("Kein Benutzer mit " + column + " = " + value + " gefunden");
+	        }
 
-			Connection conn = this.conn();
-			PreparedStatement pstmt = conn.prepareStatement(sql);
-			pstmt.setString(1, value);
-			ResultSet result = pstmt.executeQuery();
-
-			if (!result.next()) {
-				return null;
-			}
-
-
-			User user = new User(result.getString("Name"), result.getBytes("Password"), result.getInt("ID"), result.getBytes("salt"));
-			conn.close();
-			return user;
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return null;
+	        User user = new User(
+	            result.getString("Name"), 
+	            result.getBytes("Password"), 
+	            result.getInt("ID"), 
+	            result.getBytes("salt")
+	        );
+	        conn.close();
+	        return user;
+	    } catch (SQLException e) {
+	        throw new DatabaseException("Fehler beim Suchen des Benutzers: " + e.getMessage(), e);
+	    }
 	}
 
 	@Override
@@ -110,4 +112,5 @@ public class UserDB extends DBHandlerConnection<User>{
 		return null;
 	}
 
+	
 }

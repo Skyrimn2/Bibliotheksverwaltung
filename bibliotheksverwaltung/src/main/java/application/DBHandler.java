@@ -3,12 +3,10 @@ package application;
 import java.util.List;
 
 public interface DBHandler<T> {
-
-
-	public T loadItemByID(int id);
-	public void saveItem(T item);
-	public void updateItemByID(T item, int id);
-	public List<T> loadAllOfItem();
-	public T getItemByString(String column, String value);
-	public List<T> getItemsByString(String column, String value);
+    T loadItemByID(int id) throws DatabaseException;
+    void saveItem(T item) throws DatabaseException;
+    void updateItemByID(T item, int id) throws DatabaseException;
+    List<T> loadAllOfItem() throws DatabaseException;
+    T getItemByString(String column, String value) throws DatabaseException;
+    List<T> getItemsByString(String column, String value) throws DatabaseException;
 }
