@@ -70,71 +70,114 @@ public class ConsoleFrontend extends Frontend {
     }
 
 
-	@Override
-	public boolean loginView() {
-		System.out.println("Please select:\n0\t\tlogin with User\n1\t\tregister User\n2\t\tlogin as employee\n3\t\tregister employee");
+    @Override
+    public boolean loginView() {
+        displayLoginOptions();
+        int selection = this.readMenuOption();
+        boolean state = false;
 
-		int selection = this.readMenuOption();
-		boolean state = false;
+        switch (selection) {
+            case 0:
+                state = handleUserLogin();
+                break;
+            case 1:
+                state = handleUserRegistration();
+                break;
+            case 2:
+                state = handleEmployeeLogin();
+                break;
+            case 3:
+                state = handleEmployeeRegistration();
+                break;
+            default:
+                return false;
+        }
 
-		System.out.println("Input username:\t\t");
-		String username = this.readString();
-		System.out.println("Input password:\t\t");
-		String password = this.readString();
+        if (!state) {
+            handleLoginFailure();
+        }
+        
+        return state;
+    }
 
-		UserInterface user;
+    private void displayLoginOptions() {
+        System.out.println("Please select:\n0\t\tlogin with User\n1\t\tregister User\n2\t\tlogin as employee\n3\t\tregister employee");
+    }
 
-		switch (selection) {
-		case 0:
-			DBHandler<User> db = new UserDB(this.dbPath);
-			user = db.getItemByString("name", username);
-			this.setUser(user);
-			Authentication UserAuth = new UserAuthentication(db);
-			state = UserAuth.authenticate(username, password);
-			break;
+    private boolean handleUserLogin() {
+        String username = readCredentialInput("username");
+        String password = readCredentialInput("password");
+        
+        DBHandler<User> db = new UserDB(this.dbPath);
+        UserInterface user = db.getItemByString("name", username);
+        
+        if (user == null) {
+            return false;
+        }
+        
+        this.setUser(user);
+        Authentication userAuth = new UserAuthentication(db);
+        return userAuth.authenticate(username, password);
+    }
 
-		case 1:
-			DBHandler<User> db1 = new UserDB(this.dbPath);
-			user = db1.getItemByString("name", username);
-			if (user == null)  {
-				return this.loginView();
-			}
-			this.setUser(user);
-			Registration UserReg = new UserRegistration(db1);
-			state = UserReg.register(username, password);
-			break;
+    private boolean handleUserRegistration() {
+        String username = readCredentialInput("username");
+        String password = readCredentialInput("password");
+        
+        DBHandler<User> db = new UserDB(this.dbPath);
+        UserInterface user = db.getItemByString("name", username);
+        
+        if (user == null) {
+            return false;
+        }
+        
+        this.setUser(user);
+        Registration userReg = new UserRegistration(db);
+        return userReg.register(username, password);
+    }
 
-		case 2:
-			DBHandler<Employee> db2 = new EmployeeDB(this.dbPath);
-			user = db2.getItemByString("name", username);
-			if (user == null)  {
-				return this.loginView();
-			}
-			this.setUser(user);
-			Authentication EmpAuth = new EmployeeAuthentication(db2);
-			state = EmpAuth.authenticate(username, password);
-			break;
+    private boolean handleEmployeeLogin() {
+        String username = readCredentialInput("username");
+        String password = readCredentialInput("password");
+        
+        DBHandler<Employee> db = new EmployeeDB(this.dbPath);
+        UserInterface user = db.getItemByString("name", username);
+        
+        if (user == null) {
+            return false;
+        }
+        
+        this.setUser(user);
+        Authentication empAuth = new EmployeeAuthentication(db);
+        return empAuth.authenticate(username, password);
+    }
 
-		case 3:
-			DBHandler<Employee> db3 = new EmployeeDB(this.dbPath);
-			user = db3.getItemByString("name", username);
-			if (user == null)  {
-				return this.loginView();
-			}
-			this.setUser(user);
-			Registration EmpReg = new EmployeeRegistration(db3);
-			state = EmpReg.register(username, password);
+    private boolean handleEmployeeRegistration() {
+        String username = readCredentialInput("username");
+        String password = readCredentialInput("password");
+        
+        DBHandler<Employee> db = new EmployeeDB(this.dbPath);
+        UserInterface user = db.getItemByString("name", username);
+        
+        if (user == null) {
+            return false;
+        }
+        
+        this.setUser(user);
+        Registration empReg = new EmployeeRegistration(db);
+        return empReg.register(username, password);
+    }
 
-		default:
-			break;
-		}
-		if (!state) {
-			System.out.println("Wrong username or password. Try again.\n\n");
-			this.deleteUser();
-			state = this.loginView();
-		}
-		return state;
-	}
+    private String readCredentialInput(String credentialType) {
+        System.out.println("Input " + credentialType + ":\t\t");
+        return this.readString();
+    }
+
+    private void handleLoginFailure() {
+        System.out.println("Wrong username or password. Try again.\n\n");
+        this.deleteUser();
+        this.loginView();
+    }
 
 	@Override
 	public String readString() {
