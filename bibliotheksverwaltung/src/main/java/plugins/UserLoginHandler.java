@@ -2,6 +2,8 @@ package plugins;
 
 import application.Authentication;
 import application.DBHandler;
+import application.DatabaseException;
+import application.ItemNotFoundException;
 import application.LoginHandler;
 import application.UserAuthentication;
 import domain.User;
@@ -18,15 +20,27 @@ public class UserLoginHandler implements LoginHandler {
 
     @Override
     public boolean handleLogin(String username, String password) {
-        DBHandler<User> db = new UserDB(this.dbPath);
-        UserInterface user = db.getItemByString("name", username);
-        
-        if (user == null) {
+        try {
+            DBHandler<User> db = new UserDB(this.dbPath);
+            UserInterface user = null;
+            
+            try {
+                user = db.getItemByString("name", username);
+            } catch (ItemNotFoundException e) {
+                // User not found
+                return false;
+            }
+            
+            if (user == null) {
+                return false;
+            }
+            
+            this.frontend.setUser(user);
+            Authentication userAuth = new UserAuthentication(db);
+            return userAuth.authenticate(username, password);
+        } catch (DatabaseException e) {
+            e.printStackTrace();
             return false;
         }
-        
-        this.frontend.setUser(user);
-        Authentication userAuth = new UserAuthentication(db);
-        return userAuth.authenticate(username, password);
     }
 }

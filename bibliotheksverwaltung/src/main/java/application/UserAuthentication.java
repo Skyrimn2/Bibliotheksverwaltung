@@ -17,25 +17,27 @@ public class UserAuthentication implements Authentication {
 
 	@Override
 	public boolean authenticate(String username, String password) {
-		User user_db = db.getItemByString("name", username);
-		if(user_db == null) {
-			return false;
-		}
-		byte[] salt = user_db.getSalt();
-		byte[] password_hash = this.hashPassword(password, salt);
-		byte[] db_password_hash = null;
+	    try {
+	        User user_db = db.getItemByString("name", username);
+	        if(user_db == null) {
+	            return false;
+	        }
+	        byte[] salt = user_db.getSalt();
+	        byte[] password_hash = this.hashPassword(password, salt);
+	        byte[] db_password_hash = null;
 
+	        db_password_hash = user_db.getPassword();
 
-		db_password_hash = user_db.getPassword();
-
-
-		if (Arrays.equals(password_hash, db_password_hash) && db_password_hash != null) {
-			return true;
-		}
-		else {
-			return false;
-		}
-
+	        if (Arrays.equals(password_hash, db_password_hash) && db_password_hash != null) {
+	            return true;
+	        }
+	        else {
+	            return false;
+	        }
+	    } catch (DatabaseException e) {
+	        e.printStackTrace();
+	        return false;
+	    }
 	}
 
 }

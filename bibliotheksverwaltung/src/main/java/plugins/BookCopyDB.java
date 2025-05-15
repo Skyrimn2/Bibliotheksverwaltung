@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import adapter.DBHandlerConnection;
+import application.DatabaseException;
 import domain.Book;
 import domain.BookCopy;
 
@@ -20,28 +21,28 @@ public class BookCopyDB extends DBHandlerConnection<BookCopy> {
 
 	@Override
 	public BookCopy loadItemByID(int id) {
-		try {
-			String sql = "SELECT * FROM BOOKCOPIES WHERE CopyID = ?";
+	    try {
+	        String sql = "SELECT * FROM BOOKCOPIES WHERE CopyID = ?";
 
+	        Connection conn = this.conn();
+	        PreparedStatement pstmt = conn.prepareStatement(sql);
+	        pstmt.setInt(1, id);
+	        ResultSet result = pstmt.executeQuery();
 
-			Connection conn = this.conn();
-			PreparedStatement pstmt = conn.prepareStatement(sql);
-			pstmt.setInt(1, id);
-			ResultSet result = pstmt.executeQuery();
+	        if (!result.next()) {
+	            conn.close();
+	            return null;
+	        }
 
-			if (!result.next()) {
-				return null;
-			}
-
-
-			BookCopy copy = new BookCopy(this.getBook(result.getInt("BookID")), result.getInt("CopyID"));
-			conn.close();
-			return copy;
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return null;
+	        BookCopy copy = new BookCopy(this.getBook(result.getInt("BookID")), result.getInt("CopyID"), result.getBoolean("IsAvailable"));
+	        conn.close();
+	        return copy;
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    } catch (DatabaseException e) {
+	        e.printStackTrace();
+	    }
+	    return null;
 	}
 
 	@Override
@@ -54,14 +55,18 @@ public class BookCopyDB extends DBHandlerConnection<BookCopy> {
 	public void updateItemByID(BookCopy item, int id) {
 	    String sql = "UPDATE BOOKCOPIES SET BookID = ?, IsAvailable = ? WHERE CopyID = ?";
 
-	    try (Connection conn = this.conn(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
+	    try (Connection conn = this.conn(); 
+	         PreparedStatement pstmt = conn.prepareStatement(sql)) {
+	        
 	        pstmt.setInt(1, item.getBook().getId());
 	        pstmt.setBoolean(2, item.isAvailable());
 	        pstmt.setInt(3, id);
 
 	        pstmt.executeUpdate();
-
+	        
 	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    } catch (DatabaseException e) {
 	        e.printStackTrace();
 	    }
 	}
@@ -96,7 +101,11 @@ public class BookCopyDB extends DBHandlerConnection<BookCopy> {
 	        List<BookCopy> copies = new ArrayList<>();
 
 	        while (result.next()) {
-	            BookCopy copy = new BookCopy(this.getBook(result.getInt("BookID")), result.getInt("CopyID"), result.getBoolean("IsAvailable"));
+	            BookCopy copy = new BookCopy(
+	                this.getBook(result.getInt("BookID")), 
+	                result.getInt("CopyID"), 
+	                result.getBoolean("IsAvailable")
+	            );
 	            copies.add(copy);
 	        }
 
@@ -104,6 +113,10 @@ public class BookCopyDB extends DBHandlerConnection<BookCopy> {
 	        return copies;
 
 	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    } catch (DatabaseException e) {
+	        e.printStackTrace();
+	    } catch (NumberFormatException e) {
 	        e.printStackTrace();
 	    }
 

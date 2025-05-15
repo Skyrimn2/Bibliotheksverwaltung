@@ -21,15 +21,21 @@ public class ListBooksAction implements MenuAction{
 
 	@Override
 	public void executeAction() {
-		List<Book> allBooks = bookDB.loadAllOfItem();
-		List<Displayable> disps = new ArrayList<>();
-		for (Book b: allBooks) {
-			disps.add(new DisplayableBook(b));
-		}
-		frontend.showResultList(disps);
+	    try {
+	        List<Book> allBooks = bookDB.loadAllOfItem();
+	        List<Displayable> disps = new ArrayList<>();
+	        for (Book b: allBooks) {
+	            disps.add(new DisplayableBook(b));
+	        }
+	        frontend.showResultList(disps);
+	    } catch (DatabaseException e) {
+	        frontend.showMessage("Database error: " + e.getMessage());
+	        e.printStackTrace();
+	    }
 	}
+
 	@Override
 	public String getDescription() {
-		return description;
+	    return description;
 	}
 }

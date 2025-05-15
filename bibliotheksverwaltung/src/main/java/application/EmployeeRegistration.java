@@ -1,26 +1,43 @@
 package application;
 
+import java.util.Arrays;
+
 import domain.Employee;
 
-public class EmployeeRegistration implements Registration {
+public class EmployeeRegistration implements Authentication {
 
-	private DBHandler<Employee> db;
+    private DBHandler<Employee> db;
 
-	public EmployeeRegistration(DBHandler<Employee> db){
-		super();
-		this.db = db;
-	}
+    public EmployeeRegistration(DBHandler<Employee> db) {
+        super();
+        this.db = db;
+    }
 
-	@Override
-	public boolean register(String username, String password) {
-		byte[] salt = this.generateSalt();
-		byte[] password_hash = this.hashPassword(password, salt);
-		Employee emp = new Employee(username, password_hash, 0, salt);
+    @Override
+    public boolean authenticate(String username, String password) {
+        Employee emp_db;
+        try {
+            emp_db = db.getItemByString("name", username);
+        } catch (DatabaseException e) {
+            System.err.println("Datenbankfehler bei der Authentifizierung: " + e.getMessage());
+            return false;
+        }
+        
+        if(emp_db == null) {
+            return false;
+        }
+        
+        byte[] salt = emp_db.getSalt();
+        byte[] password_hash = this.hashPassword(password, salt);
+        byte[] db_password_hash = null;
 
-		db.saveItem(emp);
+        db_password_hash = emp_db.getPassword();
 
-		return true;
-
-	}
-
+        if (Arrays.equals(password_hash, db_password_hash) && db_password_hash != null) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
 }

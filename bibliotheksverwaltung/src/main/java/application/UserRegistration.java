@@ -15,14 +15,18 @@ public class UserRegistration implements Registration {
 
 	@Override
 	public boolean register(String username, String password) {
-		byte[] salt = this.generateSalt();
-		byte[] password_hash = this.hashPassword(password, salt);
-		User user = new User(username, password_hash, salt);
+	    try {
+	        byte[] salt = this.generateSalt();
+	        byte[] password_hash = this.hashPassword(password, salt);
+	        User user = new User(username, password_hash, salt);
 
-		db.saveItem(user);
+	        db.saveItem(user);
 
-		return true;
-
+	        return true;
+	    } catch (DatabaseException e) {
+	        e.printStackTrace();
+	        return false;
+	    }
 	}
 
 }

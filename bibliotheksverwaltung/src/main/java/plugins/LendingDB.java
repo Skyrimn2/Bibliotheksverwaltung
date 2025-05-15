@@ -8,6 +8,7 @@ import java.sql.Timestamp;
 import java.util.List;
 
 import adapter.DBHandlerConnection;
+import application.DatabaseException;
 import domain.BookCopy;
 import domain.Lending;
 import domain.User;
@@ -42,10 +43,11 @@ public class LendingDB extends DBHandlerConnection<Lending> {
 	        return new Lending(user, copy, lendingDate, lendingID, returnDate);
 	    } catch (SQLException e) {
 	        e.printStackTrace();
+	    } catch (DatabaseException e) {
+	        e.printStackTrace();
 	    }
 	    return null;
 	}
-
 
 	@Override
 	public void saveItem(Lending item) {
@@ -64,6 +66,8 @@ public class LendingDB extends DBHandlerConnection<Lending> {
 
 	        pstmt.executeUpdate();
 	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    } catch (DatabaseException e) {
 	        e.printStackTrace();
 	    }
 	}
@@ -88,9 +92,10 @@ public class LendingDB extends DBHandlerConnection<Lending> {
 	        pstmt.executeUpdate();
 	    } catch (SQLException e) {
 	        e.printStackTrace();
+	    } catch (DatabaseException e) {
+	        e.printStackTrace();
 	    }
 	}
-
 
 	@Override
 	public List<Lending> loadAllOfItem() {
@@ -110,14 +115,14 @@ public class LendingDB extends DBHandlerConnection<Lending> {
 
 	            lendings.add(new Lending(user, copy, lendingDate, lendingID, returnDate));
 	        }
-
 	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    } catch (DatabaseException e) {
 	        e.printStackTrace();
 	    }
 
 	    return lendings;
 	}
-
 
 	@Override
 	public Lending getItemByString(String column, String value) {
@@ -151,14 +156,14 @@ public class LendingDB extends DBHandlerConnection<Lending> {
 
 	            lendings.add(new Lending(user, copy, lendingDate, lendingID, returnDate));
 	        }
-
 	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    } catch (DatabaseException e) {
 	        e.printStackTrace();
 	    }
 
 	    return lendings;
 	}
-
 
 	private User getUser(int id) {
 		UserDB userDB = new UserDB(this.dbPath);

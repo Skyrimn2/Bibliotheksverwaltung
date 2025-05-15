@@ -4,6 +4,8 @@ import application.DBHandler;
 import application.EmployeeRegistration;
 import application.Registration;
 import application.RegistrationHandler;
+import application.DatabaseException;
+import application.ItemNotFoundException;
 import domain.Employee;
 import domain.UserInterface;
 
@@ -18,22 +20,35 @@ public class EmployeeRegistrationHandler implements RegistrationHandler {
 
     @Override
     public boolean handleRegistration(String username, String password) {
-        DBHandler<Employee> db = new EmployeeDB(this.dbPath);
-        UserInterface user = db.getItemByString("name", username);
-        
-        if (user != null) {
-            return false; // Employee already exists
+        try {
+            DBHandler<Employee> db = new EmployeeDB(this.dbPath);
+            UserInterface user = null;
+            
+            try {
+                user = db.getItemByString("name", username);
+                if (user != null) {
+                    return false;
+                }
+            } catch (ItemNotFoundException e) {
+            }
+            
+            Registration empReg = (Registration) new EmployeeRegistration(db);
+            boolean success = empReg.register(username, password);
+            
+            if (success) {
+                try {
+                    user = db.getItemByString("name", username);
+                    this.frontend.setUser(user);
+                } catch (DatabaseException e) {
+                    e.printStackTrace();
+                    return false;
+                }
+            }
+            
+            return success;
+        } catch (DatabaseException e) {
+            e.printStackTrace();
+            return false;
         }
-        
-        Registration empReg = new EmployeeRegistration(db);
-        boolean success = empReg.register(username, password);
-        
-        if (success) {
-            // After successful registration, retrieve the newly created employee
-            user = db.getItemByString("name", username);
-            this.frontend.setUser(user);
-        }
-        
-        return success;
     }
 }

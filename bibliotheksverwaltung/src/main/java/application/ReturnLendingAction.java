@@ -27,31 +27,36 @@ public class ReturnLendingAction implements MenuAction {
 
 	@Override
 	public void executeAction() {
-		frontend.showMessage("Enter lending ID");
+	    try {
+	        frontend.showMessage("Enter lending ID");
 
-		int id  = frontend.readMenuOption();
-		Lending lending = lendingDB.loadItemByID(id);
+	        int id = frontend.readMenuOption();
+	        Lending lending = lendingDB.loadItemByID(id);
 
-		if (lending == null) {
-			frontend.showMessage("No such lending\n");
-			return;
-		}
-		if (lending.getReturnDate() != null) {
-			frontend.showMessage("Lending is already returned\n");
-			return;
-		}
+	        if (lending == null) {
+	            frontend.showMessage("No such lending\n");
+	            return;
+	        }
+	        
+	        if (lending.getReturnDate() != null) {
+	            frontend.showMessage("Lending is already returned\n");
+	            return;
+	        }
 
-		BookCopy copy = copyDB.loadItemByID(lending.getBookCopy().getCopyID());
+	        BookCopy copy = copyDB.loadItemByID(lending.getBookCopy().getCopyID());
 
-		lending.setReturnDate(Timestamp.valueOf(LocalDateTime.now()));
-		System.out.println(lending.getReturnDate().toString());
-		copy.setAvailability(true);
+	        lending.setReturnDate(Timestamp.valueOf(LocalDateTime.now()));
+	        System.out.println(lending.getReturnDate().toString());
+	        copy.setAvailability(true);
 
-		lendingDB.updateItemByID(lending, id);
-		copyDB.updateItemByID(copy, copy.getCopyID());
+	        lendingDB.updateItemByID(lending, id);
+	        copyDB.updateItemByID(copy, copy.getCopyID());
 
-		frontend.showMessage("Book returned\n");
-
+	        frontend.showMessage("Book returned\n");
+	    } catch (DatabaseException e) {
+	        frontend.showMessage("Database error: " + e.getMessage());
+	        e.printStackTrace();
+	    }
 	}
 
 }

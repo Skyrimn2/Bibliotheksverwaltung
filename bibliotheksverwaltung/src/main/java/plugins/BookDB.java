@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import adapter.DBHandlerConnection;
+import application.DatabaseException;
 import domain.Book;
 import domain.BookCategory;
 
@@ -46,7 +47,8 @@ public class BookDB extends DBHandlerConnection<Book> {
 
 	    } catch (SQLException e) {
 	        e.printStackTrace();
-
+	    } catch (DatabaseException e) {
+	        e.printStackTrace();
 	    }
 
 	    return null;
@@ -95,66 +97,76 @@ public class BookDB extends DBHandlerConnection<Book> {
 
 	@Override
 	public Book getItemByString(String column, String value) {
-		if (!column.equals("Title") && !column.equals("title") && !column.equals("Author") && !column.equals("Author")) {
-			throw new IllegalArgumentException("Ungültiger Spaltenname");
-		}
+	    try {
+	        String sql = "SELECT * FROM BOOKS WHERE " + column + " = ?";
 
-		try {
-			String sql = "SELECT * FROM BOOKS WHERE " + column + " = ?";
+	        Connection conn = this.conn();
+	        PreparedStatement pstmt = conn.prepareStatement(sql);
+	        pstmt.setString(1, value);
+	        ResultSet result = pstmt.executeQuery();
 
+	        if (!result.next()) {
+	            conn.close();
+	            return null;
+	        }
 
-			Connection conn = this.conn();
-			PreparedStatement pstmt = conn.prepareStatement(sql);
-			pstmt.setString(1, value);
-			ResultSet result = pstmt.executeQuery();
-
-			if (!result.next()) {
-				return null;
-			}
-
-
-			Book book = new Book(result.getString("Title"), result.getString("Author"), result.getInt("BookID"), this.getAvailableCopies(conn, result.getInt("BookID")), BookCategory.valueOf(result.getString("Category")), this.getCopies(conn, result.getInt("BookID")));
-			conn.close();
-			return book;
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return null;
-
-
+	        Book book = new Book(
+	            result.getString("Title"), 
+	            result.getString("Author"), 
+	            result.getInt("BookID"),
+	            this.getAvailableCopies(conn, result.getInt("BookID")),
+	            BookCategory.valueOf(result.getString("Category")),
+	            this.getCopies(conn, result.getInt("BookID"))
+	        );
+	        
+	        conn.close();
+	        return book;
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    } catch (DatabaseException e) {
+	        e.printStackTrace();
+	    }
+	    
+	    return null;
 	}
 
 
 	@Override
 	public List<Book> getItemsByString(String column, String value) {
-		if (!column.equals("Title") && !column.equals("title") && !column.equals("Author") && !column.equals("Author")) {
-			throw new IllegalArgumentException("Ungültiger Spaltenname");
-		}
+	    if (!column.equals("Title") && !column.equals("title") && !column.equals("Author") && !column.equals("Author")) {
+	        throw new IllegalArgumentException("Ungültiger Spaltenname");
+	    }
 
-		try {
-			String sql = "SELECT * FROM BOOKS WHERE " + column + " LIKE ?";
+	    try {
+	        String sql = "SELECT * FROM BOOKS WHERE " + column + " LIKE ?";
 
+	        Connection conn = this.conn();
+	        PreparedStatement pstmt = conn.prepareStatement(sql);
+	        pstmt.setString(1, "%" + value + "%");
+	        ResultSet result = pstmt.executeQuery();
 
-			Connection conn = this.conn();
-			PreparedStatement pstmt = conn.prepareStatement(sql);
-			pstmt.setString(1, "%" + value + "%");
-			ResultSet result = pstmt.executeQuery();
+	        List<Book> books = new ArrayList<>();
 
-			List<Book> books = new ArrayList<>();
+	        while (result.next()) {
+	            Book book = new Book(
+	                result.getString("Title"), 
+	                result.getString("Author"), 
+	                result.getInt("BookID"), 
+	                this.getAvailableCopies(conn, result.getInt("BookID")), 
+	                BookCategory.valueOf(result.getString("Category")), 
+	                this.getCopies(conn, result.getInt("BookID"))
+	            );
+	            books.add(book);
+	        }
 
-			while (result.next()) {
-				Book book = new Book(result.getString("Title"), result.getString("Author"), result.getInt("BookID"), this.getAvailableCopies(conn, result.getInt("BookID")), BookCategory.valueOf(result.getString("Category")), this.getCopies(conn, result.getInt("BookID")));
-				books.add(book);
-			}
-
-			conn.close();
-			return books;
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return null;
+	        conn.close();
+	        return books;
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    } catch (DatabaseException e) {
+	        e.printStackTrace();
+	    }
+	    return null;
 	}
 
 	private int getAvailableCopies(Connection conn, int BookID) {

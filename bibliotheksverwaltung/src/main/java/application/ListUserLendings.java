@@ -27,16 +27,24 @@ public class ListUserLendings implements MenuAction {
 
 	@Override
 	public void executeAction() {
-		UserInterface user = frontend.getUser();
-		List<Lending> lends = lendingDB.getItemsByString("userID", String.valueOf(user.getID()));
-		if (lends == null) {
-			frontend.showMessage("No fitting lendings found.");
-		}
-		List <Displayable> disps = new ArrayList<>();
-		for(Lending l : lends) {
-			disps.add(new DisplayableLending(l));
-		}
-		frontend.showResultList(disps);
+	    try {
+	        UserInterface user = frontend.getUser();
+	        List<Lending> lends = lendingDB.getItemsByString("userID", String.valueOf(user.getID()));
+	        
+	        if (lends == null) {
+	            frontend.showMessage("No fitting lendings found.");
+	            return;
+	        }
+	        
+	        List<Displayable> disps = new ArrayList<>();
+	        for (Lending l : lends) {
+	            disps.add(new DisplayableLending(l));
+	        }
+	        
+	        frontend.showResultList(disps);
+	    } catch (DatabaseException e) {
+	        frontend.showMessage("Database error: " + e.getMessage());
+	    }
 	}
 
 }
