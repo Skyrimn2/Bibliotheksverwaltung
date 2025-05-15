@@ -5,6 +5,7 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 import application.DBHandler;
+import application.DatabaseException;
 
 public abstract class DBHandlerConnection<T> implements DBHandler<T> {
 
@@ -15,12 +16,14 @@ public abstract class DBHandlerConnection<T> implements DBHandler<T> {
 		this.dbPath = indbPath;
 	}
 
-	protected Connection conn() throws SQLException {
+	protected Connection conn() throws DatabaseException {
+	    try {
+	        String db = "jdbc:sqlite:";
+	        String connectionstring = db + this.dbPath;
 
-		String db = "jdbc:sqlite:";
-		String connectionstring = db + this.dbPath;
-
-		Connection conn = DriverManager.getConnection(connectionstring);
-		return conn;
+	        return DriverManager.getConnection(connectionstring);
+	    } catch (SQLException e) {
+	        throw new DatabaseException("Verbindung zur Datenbank konnte nicht hergestellt werden: " + e.getMessage(), e);
+	    }
 	}
 }
