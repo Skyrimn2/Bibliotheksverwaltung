@@ -9,6 +9,7 @@ import application.Authentication;
 import application.DBHandler;
 import application.EmployeeAuthentication;
 import application.EmployeeRegistration;
+import application.LoginHandler;
 import application.Menu;
 import application.Registration;
 import application.UserAuthentication;
@@ -74,30 +75,37 @@ public class ConsoleFrontend extends Frontend {
     public boolean loginView() {
         displayLoginOptions();
         int selection = this.readMenuOption();
-        boolean state = false;
-
-        switch (selection) {
-            case 0:
-                state = handleUserLogin();
-                break;
-            case 1:
-                state = handleUserRegistration();
-                break;
-            case 2:
-                state = handleEmployeeLogin();
-                break;
-            case 3:
-                state = handleEmployeeRegistration();
-                break;
-            default:
-                return false;
+        
+        LoginHandler handler = createLoginHandler(selection);
+        if (handler == null) {
+            return false;
         }
-
-        if (!state) {
+        
+        String username = readCredentialInput("username");
+        String password = readCredentialInput("password");
+        
+        boolean success = handler.handleLogin(username, password);
+        
+        if (!success) {
             handleLoginFailure();
         }
         
-        return state;
+        return success;
+    }
+
+    private LoginHandler createLoginHandler(int selection) {
+        switch (selection) {
+            case 0:
+                return new UserLoginHandler(dbPath, this);
+            case 1:
+                return (LoginHandler) new UserRegistrationHandler(dbPath, this);
+            case 2:
+                return new EmployeeLoginHandler(dbPath, this);
+            case 3:
+                return (LoginHandler) new EmployeeRegistrationHandler(dbPath, this);
+            default:
+                return null;
+        }
     }
 
     private void displayLoginOptions() {
