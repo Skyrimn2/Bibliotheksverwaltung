@@ -12,11 +12,13 @@ public class ListBooksAction implements MenuAction{
 	private final String description = "List all Books";
 	private DBHandler<Book> bookDB;
 	private FrontendHandler frontend;
+	private IDisplayableFactory displayableFactory;
 
-	public ListBooksAction(DBHandler<Book> bookDB, FrontendHandler frontend) {
+	public ListBooksAction(DBHandler<Book> bookDB, FrontendHandler frontend, IDisplayableFactory displayableFactory) {
 		super();
 		this.bookDB = bookDB;
 		this.frontend = frontend;
+		this.displayableFactory = displayableFactory;
 	}
 
 	@Override
@@ -24,7 +26,7 @@ public class ListBooksAction implements MenuAction{
 		List<Book> allBooks = bookDB.loadAllOfItem();
 		List<Displayable> disps = new ArrayList<>();
 		for (Book b: allBooks) {
-			disps.add(new DisplayableBook(b));
+			disps.add(displayableFactory.createDisplayableBook(b));
 		}
 		frontend.showResultList(disps);
 	}
