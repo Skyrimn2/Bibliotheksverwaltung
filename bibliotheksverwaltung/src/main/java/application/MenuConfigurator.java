@@ -15,16 +15,18 @@ public class MenuConfigurator {
     private final DBHandler<BookCopy> bookCopyDB;
     private final DBHandler<Lending> lendingDB;
     private final DBHandler<User> userDB;
+    private final IDisplayableFactory displayableFactory;
 
     public MenuConfigurator(String dbPath, FrontendHandler frontend,
                             DBHandler<Book> bookDB, DBHandler<BookCopy> bookCopyDB,
-                            DBHandler<Lending> lendingDB, DBHandler<User> userDB) {
+                            DBHandler<Lending> lendingDB, DBHandler<User> userDB, IDisplayableFactory displayableFactory) {
         this.dbPath = dbPath;
         this.frontend = frontend;
         this.bookDB = bookDB;
         this.bookCopyDB = bookCopyDB;
         this.lendingDB = lendingDB;
         this.userDB = userDB;
+        this.displayableFactory = displayableFactory;
     }
 
     public Menu configureMenu() {
@@ -42,16 +44,16 @@ public class MenuConfigurator {
     }
 
     private void addEmployeeActions(Menu menu) {
-        menu.registerAction(new ListBooksAction(bookDB, frontend));
-        menu.registerAction(new ListBookByTitleAction(bookDB, frontend));
-        menu.registerAction(new ListAllLendings(lendingDB, frontend));
+        menu.registerAction(new ListBooksAction(bookDB, frontend, displayableFactory));
+        menu.registerAction(new ListBookByTitleAction(bookDB, frontend, displayableFactory));
+        menu.registerAction(new ListAllLendings(lendingDB, frontend, displayableFactory));
     }
 
     private void addUserActions(Menu menu) {
-        menu.registerAction(new ListBooksAction(bookDB, frontend));
+        menu.registerAction(new ListBooksAction(bookDB, frontend, displayableFactory));
         menu.registerAction(new LendBookAction(bookDB, bookCopyDB, lendingDB, userDB, frontend));
         menu.registerAction(new ReturnLendingAction(lendingDB, bookCopyDB, frontend));
-        menu.registerAction(new ListBookByTitleAction(bookDB, frontend));
-        menu.registerAction(new ListUserLendings(lendingDB, frontend));
+        menu.registerAction(new ListBookByTitleAction(bookDB, frontend, displayableFactory));
+        menu.registerAction(new ListUserLendings(lendingDB, frontend, displayableFactory));
     }
 }

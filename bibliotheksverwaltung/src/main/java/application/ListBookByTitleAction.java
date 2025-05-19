@@ -12,10 +12,12 @@ public class ListBookByTitleAction implements MenuAction {
 	private String description = "List books with given title";
 	private DBHandler<Book> db;
 	private FrontendHandler frontend;
+	private IDisplayableFactory displayableFactory;
 
-	public ListBookByTitleAction(DBHandler<Book> db, FrontendHandler frontend) {
+	public ListBookByTitleAction(DBHandler<Book> db, FrontendHandler frontend, IDisplayableFactory displayableFactory) {
 		this.db = db;
 		this.frontend = frontend;
+		this.displayableFactory = displayableFactory;
 	}
 
 	@Override
@@ -33,7 +35,7 @@ public class ListBookByTitleAction implements MenuAction {
 		List<Displayable> disps = new ArrayList<>();
 		if (books != null) {
 			for (Book b: books) {
-				disps.add(new DisplayableBook(b));
+				disps.add(displayableFactory.createDisplayableBook(b));
 			}
 		} else {
 			// Logging für den Fall, dass die Datenbank null zurückgibt

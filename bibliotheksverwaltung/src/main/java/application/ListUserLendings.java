@@ -14,8 +14,9 @@ public class ListUserLendings implements MenuAction {
 	private String description = "List all your lendings";
 	private DBHandler<Lending> lendingDB;
 	private FrontendHandler frontend;
+	private IDisplayableFactory displayableFactory;
 
-	public ListUserLendings(DBHandler<Lending> lendingDB, FrontendHandler frontend) {
+	public ListUserLendings(DBHandler<Lending> lendingDB, FrontendHandler frontend, IDisplayableFactory displayableFactory) {
 	    this.lendingDB = lendingDB;
 	    this.frontend = frontend;
 	}
@@ -34,7 +35,7 @@ public class ListUserLendings implements MenuAction {
 		}
 		List <Displayable> disps = new ArrayList<>();
 		for(Lending l : lends) {
-			disps.add(new DisplayableLending(l));
+			disps.add(displayableFactory.createDisplayableLending(l));
 		}
 		frontend.showResultList(disps);
 	}
