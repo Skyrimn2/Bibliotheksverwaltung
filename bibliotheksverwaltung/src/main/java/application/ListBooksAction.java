@@ -14,10 +14,10 @@ public class ListBooksAction implements MenuAction{
 	private DBHandler<Book> bookDB;
 	private ConsoleFrontend frontend;
 
-	public ListBooksAction(DBHandler<Book> bookDB, String dbPath) {
+	public ListBooksAction(DBHandler<Book> bookDB, ConsoleFrontend frontend) {
 		super();
 		this.bookDB = bookDB;
-		this.frontend = new ConsoleFrontend(dbPath);
+		this.frontend = frontend;
 	}
 
 	@Override
