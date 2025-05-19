@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import adapter.DisplayableBook;
-import adapter.DisplayableFactory;
 import domain.Book;
 import domain.Displayable;
 
@@ -13,9 +12,8 @@ public class ListBooksAction implements MenuAction{
 	private final String description = "List all Books";
 	private DBHandler<Book> bookDB;
 	private FrontendHandler frontend;
-	private DisplayableFactory displayableFactory;
 
-	public ListBooksAction(DBHandler<Book> bookDB, FrontendHandler frontend, DisplayableFactory displayableFactory) {
+	public ListBooksAction(DBHandler<Book> bookDB, FrontendHandler frontend) {
 		super();
 		this.bookDB = bookDB;
 		this.frontend = frontend;
@@ -26,7 +24,7 @@ public class ListBooksAction implements MenuAction{
 		List<Book> allBooks = bookDB.loadAllOfItem();
 		List<Displayable> disps = new ArrayList<>();
 		for (Book b: allBooks) {
-			disps.add(displayableFactory.createDisplayableBook(b));
+			disps.add(new DisplayableBook(b));
 		}
 		frontend.showResultList(disps);
 	}
