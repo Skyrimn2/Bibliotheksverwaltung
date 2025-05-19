@@ -6,15 +6,14 @@ import java.util.List;
 import adapter.DisplayableBook;
 import domain.Book;
 import domain.Displayable;
-import plugins.ConsoleFrontend;
 
 public class ListBooksAction implements MenuAction{
 
 	private final String description = "List all Books";
 	private DBHandler<Book> bookDB;
-	private ConsoleFrontend frontend;
+	private FrontendHandler frontend;
 
-	public ListBooksAction(DBHandler<Book> bookDB, ConsoleFrontend frontend) {
+	public ListBooksAction(DBHandler<Book> bookDB, FrontendHandler frontend) {
 		super();
 		this.bookDB = bookDB;
 		this.frontend = frontend;
