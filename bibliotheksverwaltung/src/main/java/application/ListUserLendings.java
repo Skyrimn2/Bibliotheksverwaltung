@@ -4,7 +4,6 @@ package application;
 import java.util.ArrayList;
 import java.util.List;
 
-import adapter.DisplayableLending;
 import domain.Displayable;
 import domain.Lending;
 import domain.UserInterface;

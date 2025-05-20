@@ -3,7 +3,6 @@ package application;
 import java.util.ArrayList;
 import java.util.List;
 
-import adapter.DisplayableBook;
 import domain.Book;
 import domain.Displayable;
 

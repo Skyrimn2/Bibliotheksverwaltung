@@ -3,7 +3,6 @@ package application;
 import java.util.ArrayList;
 import java.util.List;
 
-import adapter.DisplayableLendingsPerUser;
 import domain.Displayable;
 import domain.Lending;
 
