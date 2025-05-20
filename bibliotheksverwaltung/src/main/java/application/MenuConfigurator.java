@@ -43,13 +43,13 @@ public class MenuConfigurator {
         return menu;
     }
 
-    private void addEmployeeActions(Menu menu) {
+    protected void addEmployeeActions(Menu menu) {
         menu.registerAction(new ListBooksAction(bookDB, frontend, displayableFactory));
         menu.registerAction(new ListBookByTitleAction(bookDB, frontend, displayableFactory));
         menu.registerAction(new ListAllLendings(lendingDB, frontend, displayableFactory));
     }
 
-    private void addUserActions(Menu menu) {
+    protected void addUserActions(Menu menu) {
         menu.registerAction(new ListBooksAction(bookDB, frontend, displayableFactory));
         menu.registerAction(new LendBookAction(bookDB, bookCopyDB, lendingDB, userDB, frontend));
         menu.registerAction(new ReturnLendingAction(lendingDB, bookCopyDB, frontend));
