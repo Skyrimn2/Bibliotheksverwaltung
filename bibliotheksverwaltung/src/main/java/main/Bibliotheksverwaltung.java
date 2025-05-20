@@ -2,7 +2,9 @@ package main;
 
 import java.util.Scanner;
 
+import adapter.DisplayableFactory;
 import application.FrontendHandler;
+import application.IDisplayableFactory;
 import application.Menu;
 import application.MenuConfigurator;
 import plugins.BookCopyDB;
@@ -21,8 +23,10 @@ public class Bibliotheksverwaltung {
 
         FrontendHandler frontend = new ConsoleFrontend(dbPath);
         frontend.loginView();
+        
+        IDisplayableFactory displayableFactory = new DisplayableFactory();
 
-        MenuConfigurator menuconfig = new MenuConfigurator(dbPath, frontend, new BookDB(dbPath), new BookCopyDB(dbPath), new LendingDB(dbPath), new UserDB(dbPath));
+        MenuConfigurator menuconfig = new MenuConfigurator(dbPath, frontend, new BookDB(dbPath), new BookCopyDB(dbPath), new LendingDB(dbPath), new UserDB(dbPath), displayableFactory);
         Menu menu = menuconfig.configureMenu();
 
         while (true) {
