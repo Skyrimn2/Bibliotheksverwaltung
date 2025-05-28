@@ -1,180 +1,111 @@
 package plugins;
 
-import java.util.InputMismatchException;
 import java.util.List;
-import java.util.Scanner;
 
 import adapter.Frontend;
-import application.Authentication;
-import application.DBHandler;
-import application.EmployeeAuthentication;
-import application.EmployeeRegistration;
+import application.AuthenticationController;
+import application.EmployeeAuthenticationStrategy;
 import application.Menu;
-import application.Registration;
-import application.UserAuthentication;
-import application.UserRegistration;
+import application.UserAuthenticationStrategy;
 import domain.Book;
 import domain.Displayable;
 import domain.Employee;
 import domain.User;
 import domain.UserInterface;
 
+/**
+ * Refactored ConsoleFrontend - now follows Single Responsibility Principle
+ * Delegates responsibilities to specialized components
+ */
 public class ConsoleFrontend extends Frontend {
 
-	private String dbPath;
+    private String dbPath;
+    private ConsoleDisplay display;
+    private ConsoleInputHandler inputHandler;
+    private AuthenticationController authController;
 
-	public ConsoleFrontend(String dbpath) {
-		super();
-		this.dbPath = dbpath;
-	}
+    public ConsoleFrontend(String dbpath) {
+        super();
+        this.dbPath = dbpath;
+        this.display = new ConsoleDisplay();
+        this.inputHandler = new ConsoleInputHandler();
+        this.authController = new AuthenticationController(display, inputHandler);
+        
+        // Initialize authentication strategies
+        initializeAuthenticationStrategies();
+    }
+    
+    private void initializeAuthenticationStrategies() {
+        UserAuthenticationStrategy userStrategy = new UserAuthenticationStrategy(new UserDB(dbPath));
+        EmployeeAuthenticationStrategy employeeStrategy = new EmployeeAuthenticationStrategy(new EmployeeDB(dbPath));
+        
+        authController.registerStrategies(userStrategy, employeeStrategy);
+    }
 
     @Override
     public void showMenu(Menu menu) {
-    	List<String> menuItems = menu.getAllDescriptions();
-    	int i = 0;
-    	for(String action : menuItems) {
-			System.out.println(String.valueOf(i) + "\t\t" + action);
-			i++;
-		}
-
+        display.showMenu(menu);
     }
 
     @Override
     public int readMenuOption() {
-    	Scanner scanner = new Scanner(System.in);
-	    int selection = -1;
-
-	    while (true) {
-	        try {
-	            selection = scanner.nextInt();
-	            scanner.nextLine();
-	            break;
-	        } catch (InputMismatchException e) {
-	            System.out.println("Invalid input. Please enter a valid number.");
-	            scanner.nextLine();
-	        }
-	    }
-
-	    return selection;
+        return inputHandler.readMenuOption();
     }
 
     @Override
     public void showResultList(List<Displayable> disps) {
-    	for (Displayable disp : disps) {
-    		System.out.println(disp.getDisplayText());
-    	}
+        display.showResultList(disps);
     }
+    
     @Override
     public void showResult(Displayable disp) {
-    	disp.getDisplayText();
+        display.showResult(disp);
     }
 
+    @Override
+    public boolean loginView() {
+        UserInterface user = authController.handleLogin();
+        if (user != null) {
+            this.setUser(user);
+            return true;
+        }
+        return false;
+    }
 
-	@Override
-	public boolean loginView() {
-		System.out.println("Please select:\n0\t\tlogin with User\n1\t\tregister User\n2\t\tlogin as employee\n3\t\tregister employee");
+    @Override
+    public String readString() {
+        return inputHandler.readString();
+    }
 
-		int selection = this.readMenuOption();
-		boolean state = false;
+    @Override
+    public void showBook(Book buch) {
+        display.showBook(buch);
+    }
 
-		System.out.println("Input username:\t\t");
-		String username = this.readString();
-		System.out.println("Input password:\t\t");
-		String password = this.readString();
+    @Override
+    public void setUser(User user) {
+        UserInterface u = new User(user.getName(), user.getID());
+        this.user = u;
+    }
 
-		UserInterface user;
+    @Override
+    public void setUser(Employee emp) {
+        UserInterface u = new Employee(emp.getName(), emp.getID());
+        this.user = u;
+    }
 
-		switch (selection) {
-		case 0:
-			DBHandler<User> db = new UserDB(this.dbPath);
-			user = db.getItemByString("name", username);
-			this.setUser(user);
-			Authentication UserAuth = new UserAuthentication(db);
-			state = UserAuth.authenticate(username, password);
-			break;
+    @Override
+    public void setUser(UserInterface user) {
+        this.user = user;
+    }
 
-		case 1:
-			DBHandler<User> db1 = new UserDB(this.dbPath);
-			user = db1.getItemByString("name", username);
-			if (user == null)  {
-				return this.loginView();
-			}
-			this.setUser(user);
-			Registration UserReg = new UserRegistration(db1);
-			state = UserReg.register(username, password);
-			break;
+    @Override
+    public void deleteUser() {
+        this.user = null;
+    }
 
-		case 2:
-			DBHandler<Employee> db2 = new EmployeeDB(this.dbPath);
-			user = db2.getItemByString("name", username);
-			if (user == null)  {
-				return this.loginView();
-			}
-			this.setUser(user);
-			Authentication EmpAuth = new EmployeeAuthentication(db2);
-			state = EmpAuth.authenticate(username, password);
-			break;
-
-		case 3:
-			DBHandler<Employee> db3 = new EmployeeDB(this.dbPath);
-			user = db3.getItemByString("name", username);
-			if (user == null)  {
-				return this.loginView();
-			}
-			this.setUser(user);
-			Registration EmpReg = new EmployeeRegistration(db3);
-			state = EmpReg.register(username, password);
-
-		default:
-			break;
-		}
-		if (!state) {
-			System.out.println("Wrong username or password. Try again.\n\n");
-			this.deleteUser();
-			state = this.loginView();
-		}
-		return state;
-	}
-
-	@Override
-	public String readString() {
-		Scanner scanner = new Scanner(System.in);
-    	String value = scanner.next();
-    	scanner.nextLine();
-    	return value;
-	}
-
-	@Override
-	public void showBook(Book buch) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void setUser(User user) {
-		UserInterface u = new User(user.getName(), user.getID());
-		this.user = u;
-	}
-
-	@Override
-	public void setUser(Employee emp) {
-		UserInterface u = new Employee(emp.getName(), emp.getID());
-		this.user = u;
-	}
-
-	@Override
-	public void setUser(UserInterface user) {
-		this.user = user;
-	}
-
-	@Override
-	public void deleteUser() {
-		this.user = null;
-	}
-
-	@Override
-	public void showMessage(String message) {
-		System.out.println(message);		
-	}
-
+    @Override
+    public void showMessage(String message) {
+        display.showMessage(message);
+    }
 }
