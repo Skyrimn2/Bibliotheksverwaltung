@@ -41,10 +41,10 @@ public class LendBookActionTest {
     private DBHandler<Lending> lendingDBMock;
     private DBHandler<User> userDBMock;
     private FrontendHandler frontendMock;
-    private UserInterface userInterfaceMock;
-    private User userMock;
-    private Book bookMock;
-    private List<BookCopy> bookCopiesMock;
+    private UserInterface userInterface;
+    private User user;
+    private Book book;
+    private List<BookCopy> bookCopies;
     
     @SuppressWarnings("unchecked")
     @Before
@@ -55,17 +55,17 @@ public class LendBookActionTest {
         lendingDBMock = mock(DBHandler.class);
         userDBMock = mock(DBHandler.class);
         frontendMock = mock(FrontendHandler.class);
-        userInterfaceMock = mock(UserInterface.class);
-        userMock = mock(User.class);
-        bookMock = mock(Book.class);
+        user = new User("testuser", 42);
+        userInterface = user;
+        book = new Book("Testbook", "Testauthor", 101, 1, BookCategory.FICTION, 2);
         
         // LendBookAction initialisieren
+        		
         lendBookAction = new LendBookAction(bookDBMock, copyDBMock, lendingDBMock, userDBMock, frontendMock);
         
         // Standardverhalten für Mocks konfigurieren
-        when(frontendMock.getUser()).thenReturn(userInterfaceMock);
-        when(userInterfaceMock.getID()).thenReturn(42);
-        when(userDBMock.loadItemByID(42)).thenReturn(userMock);
+        when(frontendMock.getUser()).thenReturn(userInterface);
+        when(userDBMock.loadItemByID(42)).thenReturn(user);
     }
 
     /**
@@ -75,29 +75,25 @@ public class LendBookActionTest {
     public void testExecuteActionSuccessful() {
         // Vorbereitung: Buch mit verfügbaren Exemplaren
         int bookId = 101;
+        book = new Book("Testbook", "Testauthor", 101, 1, BookCategory.FICTION, 2);
         when(frontendMock.readMenuOption()).thenReturn(bookId);
-        when(bookMock.getId()).thenReturn(bookId);
-        when(bookMock.getAvailableCopies()).thenReturn(2); // Es gibt 2 verfügbare Exemplare
-        when(bookDBMock.loadItemByID(bookId)).thenReturn(bookMock);
+        when(bookDBMock.loadItemByID(bookId)).thenReturn(book);
         
         // Vorbereitung: Buchexemplare
-        BookCopy copy1 = mock(BookCopy.class);
-        BookCopy copy2 = mock(BookCopy.class);
-        bookCopiesMock = new ArrayList<>();
-        bookCopiesMock.add(copy1);
-        bookCopiesMock.add(copy2);
+        BookCopy copy1 = new BookCopy(book, 1001, true);
+        BookCopy copy2 = new BookCopy(book, 1002, true);
+        bookCopies = new ArrayList<>();
+        bookCopies.add(copy1);
+        bookCopies.add(copy2);
         
-        when(copy1.isAvailable()).thenReturn(true);
-        when(copy1.getCopyID()).thenReturn(1001);
-        when(copy1.getBook()).thenReturn(bookMock);
-        when(copyDBMock.getItemsByString(eq("BookID"), anyString())).thenReturn(bookCopiesMock);
+        when(copyDBMock.getItemsByString(eq("BookID"), anyString())).thenReturn(bookCopies);
         
         // Ausführen der zu testenden Aktion
         lendBookAction.executeAction();
         
         // Überprüfungen
         // 1. Verfügbarkeit des Exemplars wurde auf false gesetzt
-        verify(copy1).setAvailability(false);
+        assertEquals(copy1.isAvailable(), false);
         
         // 2. Das Exemplar wurde in der Datenbank aktualisiert
         verify(copyDBMock).updateItemByID(copy1, 1001);
@@ -107,7 +103,7 @@ public class LendBookActionTest {
         verify(lendingDBMock).saveItem(lendingCaptor.capture());
         
         Lending capturedLending = lendingCaptor.getValue();
-        assertEquals(userMock, capturedLending.getUser());
+        assertEquals(user, capturedLending.getUser());
         assertEquals(copy1, capturedLending.getBookCopy());
     }
 
@@ -118,9 +114,9 @@ public class LendBookActionTest {
     public void testExecuteActionNoAvailableCopies() {
         // Vorbereitung: Buch ohne verfügbare Exemplare
         int bookId = 102;
+        book = new Book("Testbook", "Testauthor", 102, 0, BookCategory.FICTION, 0);
         when(frontendMock.readMenuOption()).thenReturn(bookId);
-        when(bookMock.getAvailableCopies()).thenReturn(0); // Keine verfügbaren Exemplare
-        when(bookDBMock.loadItemByID(bookId)).thenReturn(bookMock);
+        when(bookDBMock.loadItemByID(bookId)).thenReturn(book);
         
         // Ausführen der zu testenden Aktion
         lendBookAction.executeAction();
@@ -138,31 +134,26 @@ public class LendBookActionTest {
     @Test
     public void testExecuteActionSecondCopyAvailable() {
         // Vorbereitung: Buch mit verfügbaren Exemplaren
-        int bookId = 103;
+    	int bookId = 103;
+    	book = new Book("Testbook", "Testauthor", 103, 1, BookCategory.FICTION, 2);
         when(frontendMock.readMenuOption()).thenReturn(bookId);
-        when(bookMock.getId()).thenReturn(bookId);
-        when(bookMock.getAvailableCopies()).thenReturn(1); // Es gibt 1 verfügbares Exemplar
-        when(bookDBMock.loadItemByID(bookId)).thenReturn(bookMock);
+        when(bookDBMock.loadItemByID(bookId)).thenReturn(book);
         
         // Vorbereitung: Buchexemplare (erstes nicht verfügbar, zweites verfügbar)
-        BookCopy copy1 = mock(BookCopy.class);
-        BookCopy copy2 = mock(BookCopy.class);
-        bookCopiesMock = new ArrayList<>();
-        bookCopiesMock.add(copy1);
-        bookCopiesMock.add(copy2);
+        BookCopy copy1 = new BookCopy(book, 1001, false);
+        BookCopy copy2 = new BookCopy(book, 1002, true);
+        bookCopies = new ArrayList<>();
+        bookCopies.add(copy1);
+        bookCopies.add(copy2);
         
-        when(copy1.isAvailable()).thenReturn(false); // Erstes Exemplar nicht verfügbar
-        when(copy2.isAvailable()).thenReturn(true);  // Zweites Exemplar verfügbar
-        when(copy2.getCopyID()).thenReturn(1002);
-        when(copy2.getBook()).thenReturn(bookMock);
-        when(copyDBMock.getItemsByString(eq("BookID"), anyString())).thenReturn(bookCopiesMock);
+        when(copyDBMock.getItemsByString(eq("BookID"), anyString())).thenReturn(bookCopies);
         
         // Ausführen der zu testenden Aktion
         lendBookAction.executeAction();
         
         // Überprüfungen
         // 1. Verfügbarkeit des zweiten Exemplars wurde auf false gesetzt
-        verify(copy2).setAvailability(false);
+        assertEquals(copy2.isAvailable(), false);
         
         // 2. Das zweite Exemplar wurde in der Datenbank aktualisiert
         verify(copyDBMock).updateItemByID(copy2, 1002);
@@ -172,7 +163,7 @@ public class LendBookActionTest {
         verify(lendingDBMock).saveItem(lendingCaptor.capture());
         
         Lending capturedLending = lendingCaptor.getValue();
-        assertEquals(userMock, capturedLending.getUser());
+        assertEquals(user, capturedLending.getUser());
         assertEquals(copy2, capturedLending.getBookCopy());
     }
 }
